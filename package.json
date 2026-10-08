@@ -1,0 +1,18 @@
+{
+  "name": "tienda-online",
+  "version": "1.0.0",
+  "description": "Diseño moderno, limpio y de alta gama para tienda de comercio electrónico (E-Commerce). Desarrollado con enfoque en maquetación visual de primer nivel, micro-interacciones fluidas y cero dependencias de compilación.",
+  "main": "admin.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "tailwindcss": "^3.4.17",
+    "ws": "^8.21.3"
+  }
+}

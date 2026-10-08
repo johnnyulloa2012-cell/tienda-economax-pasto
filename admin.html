@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TIENDA ECONOMAX | Panel de Administración (Pasto)</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Estilos compilados completos de Tailwind y diseño de ECONOMAX -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Estilos defensivos inmediatos para asegurar renderizado correcto en cualquier celular -->
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    img, svg, video { max-width: 100%; height: auto; }
+    .logo-img-admin {
+      width: 40px !important;
+      height: 40px !important;
+      min-width: 40px !important;
+      max-width: 40px !important;
+      max-height: 40px !important;
+      object-fit: cover !important;
+      border-radius: 1rem !important;
+    }
+  </style>
+
+  <!-- Lucide Icons local con fallback CDN -->
+  <script src="lucide.min.js"></script>
+  <script>
+    if (typeof lucide === 'undefined') {
+      document.write('<script src="https://unpkg.com/lucide@latest"><\/script>');
+    }
+  </script>
+</head>
+<body class="bg-slate-100 text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex antialiased selection:bg-red-600 selection:text-white">
+
+  <!-- Backdrop para el sidebar en móviles -->
+  <div id="admin-sidebar-backdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-30 hidden lg:hidden" onclick="toggleSidebar()"></div>
+
+  <!-- ================= SIDEBAR LATERAL (NAVEGACIÓN DEL EMPRENDEDOR) ================= -->
+  <aside id="admin-sidebar" class="fixed inset-y-0 left-0 z-40 w-64 bg-white dark:bg-slate-900 border-r border-slate-200/80 dark:border-slate-800 flex flex-col shrink-0 -translate-x-full lg:translate-x-0 transition-transform duration-300">
+    
+    <!-- Header del Sidebar con Identidad de Tienda ECONOMAX -->
+    <div class="h-20 px-6 flex items-center justify-between border-b border-slate-200/80 dark:border-slate-800">
+      <div class="flex items-center gap-3">
+        <img src="logo.jpg" alt="Logo Tienda ECONOMAX" class="logo-img-admin w-10 h-10 rounded-2xl object-cover shadow-md border border-amber-300" width="40" height="40" style="width:40px;height:40px;max-width:40px;max-height:40px;object-fit:cover;">
+        <div>
+          <span class="font-display font-bold text-base text-slate-900 dark:text-white leading-tight block">TIENDA <span class="text-red-600">ECONOMAX</span></span>
+          <span class="block text-[10px] font-mono uppercase font-bold text-amber-600 dark:text-amber-400">Juanoy Bajo • Pasto</span>
+        </div>
+      </div>
+      <button onclick="toggleSidebar()" class="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-white" title="Cerrar menú">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <!-- Menú de Navegación Principal -->
+    <div class="flex-1 py-6 px-4 space-y-1.5 overflow-y-auto">
+      
+      <div class="px-3 pb-2 text-[10px] font-mono font-bold uppercase tracking-widest text-slate-400">
+        Gestión Comercial
+      </div>
+
+      <a href="#dashboard" data-tab="dashboard" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold bg-red-600 text-white shadow-md transition">
+        <i data-lucide="pie-chart" class="w-4 h-4"></i>
+        <span>Resumen General</span>
+      </a>
+
+      <a href="#inventory" data-tab="inventory" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+        <i data-lucide="box" class="w-4 h-4"></i>
+        <span>Inventario & Productos</span>
+      </a>
+
+      <a href="#orders" data-tab="orders" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+        <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+        <span>Pedidos & Ventas</span>
+        <span class="ml-auto w-5 h-5 rounded-full bg-amber-500 text-white text-[10px] font-bold flex items-center justify-center">2</span>
+      </a>
+
+      <div class="pt-6 px-3 pb-2 text-[10px] font-mono font-bold uppercase tracking-widest text-slate-400">
+        Crecimiento & Ajustes
+      </div>
+
+      <a href="#coupons" data-tab="coupons" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+        <i data-lucide="tag" class="w-4 h-4"></i>
+        <span>Cupones de Descuento</span>
+      </a>
+
+      <a href="#settings" data-tab="settings" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+        <i data-lucide="sliders" class="w-4 h-4"></i>
+        <span>Configuración Tienda</span>
+      </a>
+
+    </div>
+
+    <!-- Botón Destacado: Ver Tienda del Cliente -->
+    <div class="p-4 border-t border-slate-200/80 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
+      <a href="index.html" class="w-full py-2.5 px-3 rounded-xl border border-red-200 dark:border-red-900/60 bg-red-50/50 dark:bg-red-950/40 text-red-700 dark:text-red-300 hover:bg-red-100 dark:hover:bg-red-900/60 text-xs font-bold flex items-center justify-between transition group">
+        <span class="flex items-center gap-2">
+          <i data-lucide="store" class="w-4 h-4 text-red-600 dark:text-red-400"></i>
+          <span>Ver Vitrina Tienda</span>
+        </span>
+        <i data-lucide="external-link" class="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"></i>
+      </a>
+    </div>
+
+  </aside>
+
+  <!-- ================= CONTENEDOR PRINCIPAL ================= -->
+  <div class="flex-1 ml-0 lg:ml-64 flex flex-col min-h-screen">
+    
+    <!-- Top Bar Superior -->
+    <header class="h-20 glass sticky top-0 z-20 border-b border-slate-200/80 dark:border-slate-800 px-4 sm:px-8 flex items-center justify-between gap-2">
+      <div class="flex items-center gap-3">
+        <!-- Botón Menú Hamburguesa para Móvil -->
+        <button onclick="toggleSidebar()" class="lg:hidden p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 shrink-0" title="Abrir menú">
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+        <div>
+          <h1 id="page-title" class="font-display font-bold text-base sm:text-xl text-slate-900 dark:text-white truncate">
+            Resumen General
+          </h1>
+          <p class="hidden sm:block text-xs text-slate-500 dark:text-slate-400 mt-0.5">Tienda ECONOMAX • Juanoy Bajo, Pasto</p>
+        </div>
+      </div>
+
+      <!-- Acciones de Cabecera -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        
+        <!-- Botón rápido + Nuevo Producto -->
+        <button onclick="openAddProductModal()" class="px-3 sm:px-4 py-2 bg-red-600 hover:bg-red-700 active:scale-95 text-white font-bold text-xs rounded-xl shadow-md shadow-red-600/20 flex items-center gap-1.5 transition">
+          <i data-lucide="plus" class="w-4 h-4"></i>
+          <span class="hidden sm:inline">Nuevo Producto</span>
+        </button>
+
+        <!-- Toggle Modo Oscuro / Claro -->
+        <button id="theme-toggle-btn" class="w-10 h-10 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition shrink-0" title="Cambiar tema">
+          <i data-lucide="moon" class="w-5 h-5"></i>
+        </button>
+
+        <!-- Perfil de la Emprendedora -->
+        <div class="flex items-center gap-3 pl-3 border-l border-slate-200 dark:border-slate-800">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-red-600 to-amber-500 text-white flex items-center justify-center font-bold text-xs shadow-sm">
+            LV
+          </div>
+          <div class="hidden sm:block text-left">
+            <div class="text-xs font-bold text-slate-900 dark:text-white">Luz Angela Valencia</div>
+            <div class="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold">● Tienda Abierta (Pasto)</div>
+          </div>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- Contenido Dinámico de las Pestañas -->
+    <main class="flex-1 p-6 sm:p-8 max-w-7xl w-full">
+
+      <!-- ================= 1. SECCIÓN: DASHBOARD (RESUMEN) ================= -->
+      <section id="section-dashboard" class="space-y-8 animate-fade-in">
+        
+        <!-- 4 KPI Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          
+          <!-- Ingresos del Mes -->
+          <div class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-slate-500">Ingresos del Mes</span>
+              <div class="w-9 h-9 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                <i data-lucide="dollar-sign" class="w-5 h-5"></i>
+              </div>
+            </div>
+            <div class="font-display font-extrabold text-2xl text-slate-900 dark:text-white mt-2" id="metric-revenue">$4,850.00</div>
+            <div class="flex items-center gap-1 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 mt-2">
+              <i data-lucide="trending-up" class="w-3.5 h-3.5"></i>
+              <span>+18.2% vs mes anterior</span>
+            </div>
+          </div>
+
+          <!-- Pedidos Pendientes -->
+          <div class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-slate-500">Pedidos por Despachar</span>
+              <div class="w-9 h-9 rounded-xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center">
+                <i data-lucide="package" class="w-5 h-5"></i>
+              </div>
+            </div>
+            <div class="font-display font-extrabold text-2xl text-slate-900 dark:text-white mt-2" id="metric-orders">2</div>
+            <div class="flex items-center gap-1 text-[11px] font-semibold text-amber-600 dark:text-amber-400 mt-2">
+              <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+              <span>Requieren preparación</span>
+            </div>
+          </div>
+
+          <!-- Alertas de Stock Bajo -->
+          <div class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-slate-500">Alertas de Inventario</span>
+              <div class="w-9 h-9 rounded-xl bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center justify-center">
+                <i data-lucide="alert-triangle" class="w-5 h-5"></i>
+              </div>
+            </div>
+            <div class="font-display font-extrabold text-2xl text-slate-900 dark:text-white mt-2" id="metric-stock">2</div>
+            <div class="flex items-center gap-1 text-[11px] font-semibold text-rose-600 dark:text-rose-400 mt-2">
+              <i data-lucide="arrow-down-right" class="w-3.5 h-3.5"></i>
+              <span>Menos de 5 unidades restantes</span>
+            </div>
+          </div>
+
+          <!-- Productos Activos -->
+          <div class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-slate-500">Catálogo Activo</span>
+              <div class="w-9 h-9 rounded-xl bg-red-50 dark:bg-red-950/60 text-red-600 dark:text-red-400 flex items-center justify-center">
+                <i data-lucide="check-circle" class="w-5 h-5"></i>
+              </div>
+            </div>
+            <div class="font-display font-extrabold text-2xl text-slate-900 dark:text-white mt-2" id="metric-products">14</div>
+            <div class="flex items-center gap-1 text-[11px] font-semibold text-red-600 dark:text-red-400 mt-2">
+              <i data-lucide="grid" class="w-3.5 h-3.5"></i>
+              <span>Listos para vender en Pasto</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Gráfico Visual de Ventas y Pedidos Recientes -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          
+          <!-- Mockup Gráfico Semanal -->
+          <div class="lg:col-span-7 p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs">
+            <div class="flex items-center justify-between mb-6">
+              <div>
+                <h3 class="font-display font-bold text-base text-slate-900 dark:text-white">Rendimiento Semanal</h3>
+                <p class="text-xs text-slate-400">Facturación estimada de los últimos 7 días</p>
+              </div>
+              <span class="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2.5 py-1 rounded-full">+24% vs semana pasada</span>
+            </div>
+
+            <!-- Gráfico de Barras CSS Elegante -->
+            <div class="h-48 flex items-end justify-between gap-3 pt-6 border-b border-slate-100 dark:border-slate-800">
+              <div class="flex-1 flex flex-col items-center gap-2 group">
+                <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-t-xl group-hover:bg-red-600 transition-all duration-300" style="height: 45%;"></div>
+                <span class="text-[10px] font-semibold text-slate-400">Lun</span>
+              </div>
+              <div class="flex-1 flex flex-col items-center gap-2 group">
+                <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-t-xl group-hover:bg-red-600 transition-all duration-300" style="height: 60%;"></div>
+                <span class="text-[10px] font-semibold text-slate-400">Mar</span>
+              </div>
+              <div class="flex-1 flex flex-col items-center gap-2 group">
+                <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-t-xl group-hover:bg-red-600 transition-all duration-300" style="height: 35%;"></div>
+                <span class="text-[10px] font-semibold text-slate-400">Mié</span>
+              </div>
+              <div class="flex-1 flex flex-col items-center gap-2 group">
+                <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-t-xl group-hover:bg-red-600 transition-all duration-300" style="height: 75%;"></div>
+                <span class="text-[10px] font-semibold text-slate-400">Jue</span>
+              </div>
+              <div class="flex-1 flex flex-col items-center gap-2 group">
+                <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-t-xl group-hover:bg-red-600 transition-all duration-300" style="height: 90%;"></div>
+                <span class="text-[10px] font-semibold text-slate-400">Vie</span>
+              </div>
+              <div class="flex-1 flex flex-col items-center gap-2 group">
+                <div class="w-full bg-red-600 rounded-t-xl shadow-md shadow-red-600/30" style="height: 100%;"></div>
+                <span class="text-[10px] font-bold text-red-600">Sáb</span>
+              </div>
+              <div class="flex-1 flex flex-col items-center gap-2 group">
+                <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-t-xl group-hover:bg-red-600 transition-all duration-300" style="height: 70%;"></div>
+                <span class="text-[10px] font-semibold text-slate-400">Dom</span>
+              </div>
+            </div>
+
+            <div class="mt-4 flex items-center justify-between text-xs text-slate-500">
+              <span>Día más activo: <strong>Sábado ($485.000 COP)</strong></span>
+              <span>Ticket promedio: <strong>$24.500 COP</strong></span>
+            </div>
+          </div>
+
+          <!-- Mini-Tabla de Pedidos Recientes -->
+          <div class="lg:col-span-5 p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="font-display font-bold text-base text-slate-900 dark:text-white">Últimas Ventas</h3>
+                <button onclick="switchTab('orders')" class="text-xs font-bold text-red-600 dark:text-red-400 hover:underline">Ver todas →</button>
+              </div>
+
+              <table class="w-full text-left">
+                <thead>
+                  <tr class="text-[11px] font-mono text-slate-400 border-b border-slate-100 dark:border-slate-800">
+                    <th class="pb-2">Orden</th>
+                    <th class="pb-2">Cliente</th>
+                    <th class="pb-2">Total</th>
+                    <th class="pb-2">Estado</th>
+                  </tr>
+                </thead>
+                <tbody id="dashboard-recent-orders"></tbody>
+              </table>
+            </div>
+
+            <!-- Banner de Acción Rápida -->
+            <div class="mt-6 p-4 rounded-2xl bg-gradient-to-r from-red-50 to-amber-50 dark:from-red-950/40 dark:to-amber-950/40 border border-red-100 dark:border-red-900/60 flex items-center justify-between">
+              <div>
+                <div class="text-xs font-bold text-red-950 dark:text-red-200">¿Nuevo lote de productos?</div>
+                <div class="text-[11px] text-slate-600 dark:text-slate-400">Cárgalo en tu tienda en 30 segundos.</div>
+              </div>
+              <button onclick="openAddProductModal()" class="px-3 py-1.5 bg-red-600 text-white rounded-lg text-xs font-bold shadow-xs">
+                + Crear
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ================= 2. SECCIÓN: INVENTARIO & PRODUCTOS ================= -->
+      <section id="section-inventory" class="hidden space-y-6 animate-fade-in">
+        
+        <!-- Barra de Búsqueda, Filtros y Botón de Nuevo Producto -->
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+          
+          <div class="flex items-center gap-3 w-full sm:w-auto flex-1 max-w-lg">
+            <!-- Buscador -->
+            <div class="relative flex-1">
+              <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+              <input 
+                type="text" 
+                id="inventory-search" 
+                placeholder="Buscar por nombre, código o categoría..." 
+                class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl pl-10 pr-4 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-red-500"
+              />
+            </div>
+
+            <!-- Filtro de Categoría -->
+            <select id="inventory-category-filter" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-semibold rounded-xl px-3 py-2 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-red-500 cursor-pointer shrink-0">
+              <option value="all">Todas las categorías</option>
+              <option value="Canasta Familiar">Canasta Familiar</option>
+              <option value="Snacks & Dulcería">Snacks & Dulcería</option>
+              <option value="Bebidas & Refrescos">Bebidas & Refrescos</option>
+              <option value="Aseo & Limpieza">Aseo & Limpieza</option>
+              <option value="Utensilios de Cocina">Utensilios de Cocina</option>
+              <option value="Prendas de Vestir">Prendas de Vestir</option>
+              <option value="Ferretería & Variedades">Ferretería & Variedades</option>
+            </select>
+          </div>
+
+          <button onclick="openAddProductModal()" class="w-full sm:w-auto px-5 py-2.5 bg-red-600 hover:bg-red-700 active:scale-95 text-white font-bold text-xs rounded-xl shadow-md shadow-red-600/20 flex items-center justify-center gap-2 transition">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            <span>Agregar Producto al Catálogo</span>
+          </button>
+
+        </div>
+
+        <!-- Tabla de Inventario de Productos -->
+        <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 overflow-hidden shadow-xs">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-800/60 border-b border-slate-200/80 dark:border-slate-800 text-[11px] font-mono uppercase tracking-wider text-slate-500">
+                  <th class="py-3.5 px-4">Producto</th>
+                  <th class="py-3.5 px-4">Categoría</th>
+                  <th class="py-3.5 px-4">Precio & Margen</th>
+                  <th class="py-3.5 px-4">Inventario</th>
+                  <th class="py-3.5 px-4">Ventas</th>
+                  <th class="py-3.5 px-4">Estado</th>
+                  <th class="py-3.5 px-4 text-right">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="products-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================= 3. SECCIÓN: PEDIDOS & VENTAS ================= -->
+      <section id="section-orders" class="hidden space-y-6 animate-fade-in">
+        
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white">Órdenes de Compra</h3>
+            <p class="text-xs text-slate-400">Puedes cambiar el estado de despacho de cada pedido en el menú desplegable.</p>
+          </div>
+          <button onclick="showToast('📋 Lista de pedidos actualizada')" class="px-3.5 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 transition flex items-center gap-1.5">
+            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+            <span>Actualizar</span>
+          </button>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 overflow-hidden shadow-xs">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-800/60 border-b border-slate-200/80 dark:border-slate-800 text-[11px] font-mono uppercase tracking-wider text-slate-500">
+                  <th class="py-3.5 px-4">ID Orden</th>
+                  <th class="py-3.5 px-4">Fecha</th>
+                  <th class="py-3.5 px-4">Cliente</th>
+                  <th class="py-3.5 px-4">Artículos</th>
+                  <th class="py-3.5 px-4">Total</th>
+                  <th class="py-3.5 px-4">Método</th>
+                  <th class="py-3.5 px-4">Estado Entrega</th>
+                </tr>
+              </thead>
+              <tbody id="orders-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================= 4. SECCIÓN: CUPONES DE DESCUENTO ================= -->
+      <section id="section-coupons" class="hidden space-y-6 animate-fade-in">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          
+          <!-- Formulario para Crear Cupón -->
+          <div class="lg:col-span-5 p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs">
+            <div class="flex items-center gap-2 mb-4">
+              <div class="w-8 h-8 rounded-xl bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400 flex items-center justify-center">
+                <i data-lucide="tag" class="w-4 h-4"></i>
+              </div>
+              <h3 class="font-display font-bold text-base text-slate-900 dark:text-white">Crear Nuevo Cupón</h3>
+            </div>
+
+            <form id="coupon-create-form" class="space-y-4 text-xs">
+              <div>
+                <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Código del Cupón</label>
+                <input 
+                  type="text" 
+                  id="coupon-code-input" 
+                  required 
+                  placeholder="Ej: PASTO2026" 
+                  class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 uppercase font-mono font-bold focus:ring-2 focus:ring-red-500 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Porcentaje de Descuento</label>
+                <input 
+                  type="text" 
+                  id="coupon-discount-input" 
+                  required 
+                  placeholder="Ej: 15%" 
+                  class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 font-bold focus:ring-2 focus:ring-red-500 focus:outline-none"
+                />
+              </div>
+
+              <button type="submit" class="w-full py-3 bg-red-600 hover:bg-red-700 active:scale-95 text-white font-bold text-xs rounded-xl shadow-md shadow-red-600/20 transition">
+                Activar Cupón Promocional
+              </button>
+            </form>
+          </div>
+
+          <!-- Lista de Cupones Activos -->
+          <div class="lg:col-span-7 space-y-4">
+            <h3 class="font-display font-bold text-base text-slate-900 dark:text-white">Cupones Existentes</h3>
+            <div id="coupons-list" class="space-y-3"></div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ================= 5. SECCIÓN: CONFIGURACIÓN TIENDA ================= -->
+      <section id="section-settings" class="hidden space-y-6 animate-fade-in">
+        
+        <div class="max-w-2xl bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-xs">
+          
+          <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100 dark:border-slate-800">
+            <div class="w-10 h-10 rounded-2xl bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400 flex items-center justify-center">
+              <i data-lucide="sliders" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white">Parámetros del Negocio</h3>
+              <p class="text-xs text-slate-400">Datos oficiales de Tienda ECONOMAX reflejados en la vitrina pública.</p>
+            </div>
+          </div>
+
+          <form id="settings-form" class="space-y-4 text-xs">
+            <div>
+              <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Nombre Oficial de la Tienda</label>
+              <input type="text" id="setting-store-name" class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-red-500 focus:outline-none" />
+            </div>
+
+            <div>
+              <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">WhatsApp / Teléfono de Pedidos Directos</label>
+              <input type="text" id="setting-whatsapp" class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-red-500 focus:outline-none" />
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Cuenta Nequi Oficial</label>
+                <input type="text" id="setting-nequi" class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-red-500 focus:outline-none" />
+              </div>
+              <div>
+                <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Titular de la Cuenta Nequi</label>
+                <input type="text" id="setting-holder" class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-red-500 focus:outline-none" />
+              </div>
+            </div>
+
+            <div>
+              <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Dirección Física en San Juan de Pasto</label>
+              <input type="text" id="setting-address" class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-red-500 focus:outline-none" />
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Pedido Mínimo Exigido ($ COP)</label>
+                <input type="number" id="setting-min-order" class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-red-500 focus:outline-none" />
+              </div>
+              <div>
+                <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Tarifa Domicilio (al repartidor)</label>
+                <input type="text" id="setting-delivery" class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-red-500 focus:outline-none" />
+              </div>
+            </div>
+
+            <div>
+              <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Correo Electrónico de Contacto</label>
+              <input type="email" id="setting-email" class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-red-500 focus:outline-none" />
+            </div>
+
+            <div class="pt-4">
+              <button type="submit" class="px-6 py-3 bg-red-600 hover:bg-red-700 active:scale-95 text-white font-bold text-xs rounded-xl shadow-md shadow-red-600/20 transition">
+                Guardar Parámetros
+              </button>
+            </div>
+          </form>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- ================= MODAL PARA AGREGAR NUEVO PRODUCTO ================= -->
+  <div id="add-product-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+    <!-- Backdrop -->
+    <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeAddProductModal()"></div>
+
+    <!-- Modal Box -->
+    <div class="relative w-full max-w-xl bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden z-10 animate-fade-in">
+      
+      <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i data-lucide="plus-circle" class="w-5 h-5 text-red-600 dark:text-red-400"></i>
+          <h3 class="font-display font-bold text-base text-slate-900 dark:text-white">Añadir Producto a ECONOMAX Pasto</h3>
+        </div>
+        <button onclick="closeAddProductModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form id="add-product-form" class="p-6 space-y-4 text-xs">
+        
+        <!-- Foto del Producto (Cámara / Galería desde Celular o PC) -->
+        <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+          <label class="block font-semibold mb-2 text-slate-700 dark:text-slate-300">Foto del Producto (Celular o PC)</label>
+          <div class="flex flex-col sm:flex-row items-center gap-4">
+            <div class="w-24 h-24 rounded-2xl bg-white dark:bg-slate-900 border-2 border-dashed border-slate-300 dark:border-slate-700 flex items-center justify-center overflow-hidden shrink-0 relative group shadow-xs">
+              <img id="new-product-image-preview" src="logo.jpg" alt="Preview" class="w-full h-full object-contain" onerror="this.src='logo.jpg'" />
+              <div id="new-product-upload-spinner" class="hidden absolute inset-0 bg-slate-900/60 flex items-center justify-center text-white text-xs font-bold">
+                <i data-lucide="loader-2" class="w-6 h-6 animate-spin"></i>
+              </div>
+            </div>
+            <div class="flex-1 w-full space-y-2">
+              <input type="hidden" id="new-product-image" value="" />
+              <input 
+                type="file" 
+                id="new-product-file-input" 
+                accept="image/*" 
+                class="hidden" 
+                onchange="handleImageFileUpload(event, 'new-product-image', 'new-product-image-preview', 'new-product-upload-spinner')"
+              />
+              <div class="flex flex-wrap gap-2">
+                <button 
+                  type="button" 
+                  onclick="triggerFileInput('new-product-file-input')" 
+                  class="flex-1 py-2.5 px-3 bg-red-600 hover:bg-red-700 active:scale-95 text-white font-bold rounded-xl shadow-xs transition flex items-center justify-center gap-1.5 text-xs"
+                >
+                  <i data-lucide="camera" class="w-4 h-4"></i>
+                  <span>Subir Foto / Tomar con Celular</span>
+                </button>
+              </div>
+              <p class="text-[10px] text-slate-400">Toma una foto con tu cámara o elígela de tu galería. Se comprime y optimiza automáticamente.</p>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Nombre del Producto *</label>
+          <input 
+            type="text" 
+            id="new-product-name" 
+            required 
+            placeholder="Ej: Aceite Premier 900ml" 
+            class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-red-500 focus:outline-none"
+          />
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Categoría *</label>
+            <select id="new-product-category" class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-red-500 focus:outline-none cursor-pointer">
+              <option value="Canasta Familiar">Canasta Familiar</option>
+              <option value="Snacks & Dulcería">Snacks & Dulcería</option>
+              <option value="Bebidas & Refrescos">Bebidas & Refrescos</option>
+              <option value="Aseo & Limpieza">Aseo & Limpieza</option>
+              <option value="Utensilios de Cocina">Utensilios de Cocina</option>
+              <option value="Prendas de Vestir">Prendas de Vestir</option>
+              <option value="Ferretería & Variedades">Ferretería & Variedades</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Insignia / Badge</label>
+            <select id="new-product-badge" class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-red-500 focus:outline-none cursor-pointer">
+              <option value="OFERTA">OFERTA</option>
+              <option value="DESPENSA">DESPENSA</option>
+              <option value="NUEVO">NUEVO</option>
+              <option value="DESTACADO">DESTACADO</option>
+              <option value="POPULAR">POPULAR</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Precio Venta ($ COP) *</label>
+            <input 
+              type="number" 
+              step="any" 
+              id="new-product-price" 
+              required 
+              placeholder="9500" 
+              class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 font-bold focus:ring-2 focus:ring-red-500 focus:outline-none"
+            />
+          </div>
+
+          <div>
+            <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Costo ($ COP)</label>
+            <input 
+              type="number" 
+              step="any" 
+              id="new-product-cost" 
+              placeholder="7200" 
+              class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-red-500 focus:outline-none"
+            />
+          </div>
+
+          <div>
+            <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Stock Inicial *</label>
+            <input 
+              type="number" 
+              id="new-product-stock" 
+              required 
+              placeholder="30" 
+              class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 font-bold focus:ring-2 focus:ring-red-500 focus:outline-none"
+            />
+          </div>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 text-[11px] text-slate-500">
+          💡 <strong>Nota del sistema:</strong> El producto se agregará de forma reactiva al inventario de Tienda ECONOMAX Pasto.
+        </div>
+
+        <div class="flex justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-800">
+          <button type="button" onclick="closeAddProductModal()" class="px-4 py-2.5 text-slate-600 dark:text-slate-400 font-semibold hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition">
+            Cancelar
+          </button>
+          <button type="submit" class="px-6 py-2.5 bg-red-600 hover:bg-red-700 active:scale-95 text-white font-bold rounded-xl shadow-md shadow-red-600/20 transition">
+            Guardar y Publicar
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <!-- ================= MODAL PARA EDITAR PRODUCTO COMPLETO ================= -->
+  <div id="edit-product-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+    <!-- Backdrop -->
+    <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeEditProductModal()"></div>
+
+    <!-- Modal Box -->
+    <div class="relative w-full max-w-xl max-h-[90vh] flex flex-col bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden z-10 animate-fade-in">
+      
+      <!-- Header -->
+      <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-red-50 dark:bg-red-950/60 text-red-600 dark:text-red-400 flex items-center justify-center">
+            <i data-lucide="edit" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="font-display font-bold text-base text-slate-900 dark:text-white">Editar Producto</h3>
+            <span id="edit-product-code-badge" class="text-[10px] font-mono font-bold text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/50 px-2 py-0.5 rounded-md">ID: ECO-001</span>
+          </div>
+        </div>
+        <button onclick="closeEditProductModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-white p-1 rounded-lg">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Formulario con scroll -->
+      <form id="edit-product-form" class="p-6 space-y-4 text-xs overflow-y-auto">
+        <input type="hidden" id="edit-product-id" />
+
+        <!-- Foto Real del Producto & Preview con soporte para Celular y Cámara -->
+        <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 flex flex-col sm:flex-row items-center gap-4">
+          <div class="w-24 h-24 rounded-2xl bg-white dark:bg-slate-900 border-2 border-dashed border-slate-300 dark:border-slate-700 flex items-center justify-center overflow-hidden shrink-0 relative group shadow-xs">
+            <img id="edit-product-image-preview" src="logo.jpg" alt="Preview" class="w-full h-full object-contain" onerror="this.src='logo.jpg'" />
+            <div id="edit-product-upload-spinner" class="hidden absolute inset-0 bg-slate-900/60 flex items-center justify-center text-white text-xs font-bold">
+              <i data-lucide="loader-2" class="w-6 h-6 animate-spin"></i>
+            </div>
+          </div>
+          <div class="flex-1 w-full space-y-2">
+            <label class="block font-semibold text-slate-700 dark:text-slate-300">Foto del Producto (Celular o PC)</label>
+            <input 
+              type="file" 
+              id="edit-product-file-input" 
+              accept="image/*" 
+              class="hidden" 
+              onchange="handleImageFileUpload(event, 'edit-product-image', 'edit-product-image-preview', 'edit-product-upload-spinner')"
+            />
+            <div class="flex flex-wrap gap-2">
+              <button 
+                type="button" 
+                onclick="triggerFileInput('edit-product-file-input')" 
+                class="flex-1 py-2 px-3 bg-red-600 hover:bg-red-700 active:scale-95 text-white font-bold rounded-xl shadow-xs transition flex items-center justify-center gap-1.5 text-xs"
+              >
+                <i data-lucide="camera" class="w-4 h-4"></i>
+                <span>Tomar Foto / Subir desde Celular</span>
+              </button>
+            </div>
+            <div class="relative">
+              <input 
+                type="text" 
+                id="edit-product-image" 
+                placeholder="images/prod-dessini.jpg o enlace web" 
+                oninput="document.getElementById('edit-product-image-preview').src = this.value || 'logo.jpg'"
+                class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-red-500 focus:outline-none"
+              />
+            </div>
+            <p class="text-[10px] text-slate-400">Puedes tomar una foto real con la cámara de tu celular, elegirla de tu galería o escribir la ruta.</p>
+          </div>
+        </div>
+
+        <!-- Nombre del Producto -->
+        <div>
+          <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Nombre del Producto *</label>
+          <input 
+            type="text" 
+            id="edit-product-name" 
+            required 
+            placeholder="Ej: Aceite Premier 900ml" 
+            class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-red-500 focus:outline-none"
+          />
+        </div>
+
+        <!-- Categoría e Insignia Promocional -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Categoría *</label>
+            <select id="edit-product-category" class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-red-500 focus:outline-none cursor-pointer">
+              <option value="Canasta Familiar">Canasta Familiar</option>
+              <option value="Snacks & Dulcería">Snacks & Dulcería</option>
+              <option value="Bebidas & Refrescos">Bebidas & Refrescos</option>
+              <option value="Aseo & Limpieza">Aseo & Limpieza</option>
+              <option value="Utensilios de Cocina">Utensilios de Cocina</option>
+              <option value="Prendas de Vestir">Prendas de Vestir</option>
+              <option value="Ferretería & Variedades">Ferretería & Variedades</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Insignia / Etiqueta Promoción</label>
+            <select id="edit-product-badge" class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-red-500 focus:outline-none cursor-pointer">
+              <option value="OFERTA">OFERTA</option>
+              <option value="DESPENSA">DESPENSA</option>
+              <option value="NUEVO">NUEVO</option>
+              <option value="DESTACADO">DESTACADO</option>
+              <option value="POPULAR">POPULAR</option>
+              <option value="CALIDAD">CALIDAD</option>
+              <option value="AHORRO">AHORRO</option>
+              <option value="ESENCIAL">ESENCIAL</option>
+              <option value="LIQUIDACIÓN">LIQUIDACIÓN</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Precios y Costo -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div>
+            <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Precio Venta ($ COP) *</label>
+            <input 
+              type="number" 
+              step="any" 
+              id="edit-product-price" 
+              required 
+              placeholder="9500" 
+              class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 font-bold text-red-600 dark:text-red-400 focus:ring-2 focus:ring-red-500 focus:outline-none"
+            />
+          </div>
+
+          <div>
+            <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Precio Antes ($ COP)</label>
+            <input 
+              type="number" 
+              step="any" 
+              id="edit-product-original-price" 
+              placeholder="11000" 
+              class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 text-slate-500 focus:ring-2 focus:ring-red-500 focus:outline-none"
+            />
+          </div>
+
+          <div>
+            <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Costo ($ COP)</label>
+            <input 
+              type="number" 
+              step="any" 
+              id="edit-product-cost" 
+              placeholder="7200" 
+              class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-red-500 focus:outline-none"
+            />
+          </div>
+        </div>
+
+        <!-- Stock y Estado -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Stock Actual (Unidades) *</label>
+            <input 
+              type="number" 
+              id="edit-product-stock" 
+              required 
+              placeholder="35" 
+              class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 font-bold focus:ring-2 focus:ring-red-500 focus:outline-none"
+            />
+          </div>
+
+          <div>
+            <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Disponibilidad / Estado</label>
+            <select id="edit-product-status" class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-red-500 focus:outline-none cursor-pointer">
+              <option value="Activo">🟢 Activo (Disponible en Vitrina)</option>
+              <option value="Bajo Stock">🟡 Bajo Stock (Pocas unidades)</option>
+              <option value="Agotado">🔴 Agotado (Sin existencia)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Descuento Texto e Icono / Foto -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Descuento Promocional (% o texto)</label>
+            <input 
+              type="text" 
+              id="edit-product-discount" 
+              placeholder="Ej: -15% o 2x1" 
+              class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-red-500 focus:outline-none"
+            />
+          </div>
+
+          <div>
+            <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Icono Ilustrativo</label>
+            <select id="edit-product-icon" class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-red-500 focus:outline-none cursor-pointer">
+              <option value="shopping-bag">Bolsa de Mercado</option>
+              <option value="utensils">Utensilios de Cocina</option>
+              <option value="shirt">Prenda de Vestir</option>
+              <option value="wrench">Herramienta / Ferretería</option>
+              <option value="zap">Bombillo / Electricidad</option>
+              <option value="sparkles">Novedad / Oferta</option>
+              <option value="box">Caja de Mercadería</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Descripción -->
+        <div>
+          <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Descripción del Producto</label>
+          <textarea 
+            id="edit-product-description" 
+            rows="2" 
+            placeholder="Presentación, detalles de empaque o características..." 
+            class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3 focus:ring-2 focus:ring-red-500 focus:outline-none resize-none"
+          ></textarea>
+        </div>
+
+        <!-- Footer botones -->
+        <div class="flex justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-800 shrink-0">
+          <button type="button" onclick="closeEditProductModal()" class="px-4 py-2.5 text-slate-600 dark:text-slate-400 font-semibold hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition">
+            Cancelar
+          </button>
+          <button type="submit" class="px-6 py-2.5 bg-red-600 hover:bg-red-700 active:scale-95 text-white font-bold rounded-xl shadow-md shadow-red-600/20 flex items-center gap-2 transition">
+            <i data-lucide="check" class="w-4 h-4"></i>
+            <span>Guardar Cambios</span>
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <!-- Contenedor de Alertas Toasts -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none max-w-sm"></div>
+
+  <!-- Catálogo de datos oficiales de productos (Planilla & Audios) -->
+  <script src="products-data.js?v=2.1"></script>
+  <!-- Script del Panel de Emprendedor -->
+  <script src="admin.js?v=2.1"></script>
+</body>
+</html>

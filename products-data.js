@@ -1,0 +1,1843 @@
+/**
+ * TIENDA ECONOMAX - Catálogo Oficial de Productos e Inventario
+ * San Juan de Pasto, Nariño, Colombia
+ * Tel / WhatsApp: +57 300 472 0904 | Nequi: 300 472 0904 (Luz Angela Valencia Sinza)
+ */
+
+const ECONOMAX_PRODUCTS = [
+  {
+    "id": "prod-dessini",
+    "image": "images/prod-dessini.jpg",
+    "code": "ECO-001",
+    "name": "Sartén Dessini Italy Original (Doble Parrilla)",
+    "category": "cocina",
+    "categoryName": "Utensilios de Cocina",
+    "price": 180000,
+    "originalPrice": 220000,
+    "cost": 135000,
+    "discount": "-18%",
+    "rating": 5,
+    "reviews": 38,
+    "badge": "ORIGINAL ITALY",
+    "badgeColor": "bg-red-600 text-white",
+    "colors": [
+      "#0f172a",
+      "#dc2626"
+    ],
+    "sizes": [
+      "32 cm Doble Cara"
+    ],
+    "description": "Sartén doble cara a presión Dessini Italy original de alta gama. Revestimiento antiadherente de mármol, cierre magnético de silicón para asados y carnes sin humo ni salpicaduras.",
+    "icon": "utensils",
+    "stock": 10,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-swiss-home",
+    "image": "images/prod-swiss-home.jpg",
+    "code": "ECO-002",
+    "name": "Juego de Ollas Swiss Home 12 Piezas Acero Inox",
+    "category": "cocina",
+    "categoryName": "Utensilios de Cocina",
+    "price": 400000,
+    "originalPrice": 480000,
+    "cost": 290000,
+    "discount": "-17%",
+    "rating": 5,
+    "reviews": 29,
+    "badge": "SWISS HOME 12 PCS",
+    "badgeColor": "bg-amber-600 text-white",
+    "colors": [
+      "#94a3b8",
+      "#cbd5e1"
+    ],
+    "sizes": [
+      "Set Completo 12 Piezas"
+    ],
+    "description": "Batería de cocina premium de 12 piezas en acero inoxidable quirúrgico de alta durabilidad. Fondos de difusión térmica de múltiples capas y tapas de vidrio templado con termostato.",
+    "icon": "package",
+    "stock": 10,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-cuchillos-acero",
+    "image": "images/prod-cuchillos-acero.jpg",
+    "code": "ECO-004",
+    "name": "Juego de Cuchillos de Cocina en Acero x3",
+    "category": "cocina",
+    "categoryName": "Utensilios de Cocina",
+    "price": 16500,
+    "originalPrice": 22000,
+    "cost": 11000,
+    "discount": "-25%",
+    "rating": 4.7,
+    "reviews": 41,
+    "badge": "OFERTA",
+    "badgeColor": "bg-rose-600 text-white",
+    "colors": [
+      "#0f172a"
+    ],
+    "sizes": [
+      "Set 3 Cuchillos"
+    ],
+    "description": "Cuchillos con filo de alta precisión para carnes, verduras y pan. Mango ergonómico seguro.",
+    "icon": "utensils",
+    "stock": 6,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-ropa-surtida",
+    "image": "images/prod-ropa-surtida.jpg",
+    "code": "ECO-010",
+    "name": "Prendas de Vestir Surtidas (Dama, Caballero y Niños)",
+    "category": "ropa",
+    "categoryName": "Prendas de Vestir",
+    "price": 3500,
+    "originalPrice": 5000,
+    "cost": 2000,
+    "discount": "RANGO $2K-$5K",
+    "rating": 4.8,
+    "reviews": 64,
+    "badge": "$2.000 - $5.000 COP",
+    "badgeColor": "bg-red-600 text-white",
+    "colors": [
+      "#0f172a",
+      "#dc2626",
+      "#2563eb",
+      "#10b981"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "description": "Prendas de vestir seleccionadas para toda la familia. Según la indicación de la tienda, los precios oscilan entre $2.000 y $5.000 COP. Consulta fotos de prendas disponibles por WhatsApp.",
+    "icon": "shirt",
+    "stock": 35,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-ropa-infantil",
+    "image": "images/prod-ropa-infantil.jpg",
+    "code": "ECO-013",
+    "name": "Prendas Infantiles y para Bebé",
+    "category": "ropa",
+    "categoryName": "Prendas de Vestir",
+    "price": 2500,
+    "originalPrice": 3500,
+    "cost": 1500,
+    "discount": "INFANTIL",
+    "rating": 4.9,
+    "reviews": 42,
+    "badge": "$2.000 - $3.500 COP",
+    "badgeColor": "bg-purple-600 text-white",
+    "colors": [
+      "#38bdf8",
+      "#fb7185",
+      "#facc15"
+    ],
+    "sizes": [
+      "2 a 10 años"
+    ],
+    "description": "Ropa suave, cómoda y colorida para niños y niñas de todas las edades.",
+    "icon": "shirt",
+    "stock": 20,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-leche-grande",
+    "image": "images/prod-leche-grande.jpg",
+    "code": "ECO-020",
+    "name": "Leche Entera Grande 1.000ml",
+    "category": "canasta",
+    "categoryName": "Canasta Familiar",
+    "price": 4800,
+    "originalPrice": 5200,
+    "cost": 4300,
+    "discount": "LÁCTEOS",
+    "rating": 4.9,
+    "reviews": 95,
+    "badge": "DESPENSA",
+    "badgeColor": "bg-red-600 text-white",
+    "colors": [
+      "#ffffff",
+      "#0284c7"
+    ],
+    "sizes": [
+      "1 Litro"
+    ],
+    "description": "Leche líquida entera pasteurizada de máxima frescura. Nutrición diaria para la familia.",
+    "icon": "package",
+    "stock": 10,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-leche-mediana",
+    "image": "images/prod-leche-mediana.jpg",
+    "code": "ECO-021",
+    "name": "Leche Mediana en Bolsa",
+    "category": "canasta",
+    "categoryName": "Canasta Familiar",
+    "price": 2500,
+    "originalPrice": 2800,
+    "cost": 1900,
+    "discount": "BÁSICO",
+    "rating": 4.8,
+    "reviews": 62,
+    "badge": "DIARIO",
+    "badgeColor": "bg-blue-600 text-white",
+    "colors": [
+      "#ffffff"
+    ],
+    "sizes": [
+      "Mediana"
+    ],
+    "description": "Bolsa de leche mediana fresca y lista para tomar con café o avena.",
+    "icon": "package",
+    "stock": 10,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-huevos-unidad",
+    "image": "images/prod-huevos-unidad.jpg",
+    "code": "ECO-022",
+    "name": "Huevos Frescos Tipo AA",
+    "category": "canasta",
+    "categoryName": "Canasta Familiar",
+    "price": 500,
+    "originalPrice": 600,
+    "cost": 430,
+    "discount": "$500 c/u",
+    "rating": 5,
+    "reviews": 140,
+    "badge": "GRANJA",
+    "badgeColor": "bg-amber-600 text-white",
+    "colors": [
+      "#f59e0b"
+    ],
+    "sizes": [
+      "Unidad o Panal"
+    ],
+    "description": "Huevos frescos campesinos seleccionados. Disponibles por unidad ($500) o por cubeta de 30 unidades.",
+    "icon": "package",
+    "stock": 150,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-mac-pollo-trozos",
+    "image": "images/prod-mac-pollo-trozos.jpg",
+    "code": "ECO-023",
+    "name": "Mac Pollo en Trozos",
+    "category": "canasta",
+    "categoryName": "Canasta Familiar",
+    "price": 7000,
+    "originalPrice": 8500,
+    "cost": 4133,
+    "discount": "-17%",
+    "rating": 4.9,
+    "reviews": 88,
+    "badge": "CARNES",
+    "badgeColor": "bg-red-600 text-white",
+    "colors": [
+      "#dc2626"
+    ],
+    "sizes": [
+      "Bolsa Trozos"
+    ],
+    "description": "Pollo fresco en trozos seleccionados de la marca Mac Pollo. Máxima calidad y rendimiento.",
+    "icon": "shopping-bag",
+    "stock": 15,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-salchicha-mac-pollo",
+    "image": "images/prod-salchicha-mac-pollo.jpg",
+    "code": "ECO-024",
+    "name": "Salchicha Manguera Mac Pollo",
+    "category": "canasta",
+    "categoryName": "Canasta Familiar",
+    "price": 3500,
+    "originalPrice": 4200,
+    "cost": 2583,
+    "discount": "EMBUTIDOS",
+    "rating": 4.7,
+    "reviews": 52,
+    "badge": "DESAYUNO",
+    "badgeColor": "bg-red-700 text-white",
+    "colors": [
+      "#b91c1c"
+    ],
+    "sizes": [
+      "Paquete Manguera"
+    ],
+    "description": "Salchicha tradicional Mac Pollo, ideal para desayunos, arepas, fritos y picadas.",
+    "icon": "package",
+    "stock": 9,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-yogourth-colacteos",
+    "image": "images/prod-yogourth-colacteos.jpg",
+    "code": "ECO-025",
+    "name": "Yogourth Colácteos de Pasto",
+    "category": "canasta",
+    "categoryName": "Canasta Familiar",
+    "price": 1500,
+    "originalPrice": 1800,
+    "cost": 937,
+    "discount": "NARIÑO",
+    "rating": 5,
+    "reviews": 110,
+    "badge": "COLÁCTEOS",
+    "badgeColor": "bg-blue-600 text-white",
+    "colors": [
+      "#0284c7",
+      "#38bdf8"
+    ],
+    "sizes": [
+      "Vaso 200g"
+    ],
+    "description": "Yogurt original de la cooperativa Colácteos de Nariño. Cremoso, nutritivo y delicioso.",
+    "icon": "package",
+    "stock": 8,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-pan-dulce-sal",
+    "image": "images/prod-pan-dulce-sal.jpg",
+    "code": "ECO-026",
+    "name": "Pan Tradicional de Dulce y de Sal",
+    "category": "canasta",
+    "categoryName": "Canasta Familiar",
+    "price": 250,
+    "originalPrice": 300,
+    "cost": 200,
+    "discount": "$250 c/u",
+    "rating": 4.9,
+    "reviews": 180,
+    "badge": "HORNEADO",
+    "badgeColor": "bg-amber-700 text-white",
+    "colors": [
+      "#d97706"
+    ],
+    "sizes": [
+      "Unidad ($250)"
+    ],
+    "description": "Pan artesanal fresco recién horneado de sal o de dulce. El acompañamiento de tus tardes.",
+    "icon": "box",
+    "stock": 100,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-panela-cuadro",
+    "image": "images/prod-panela-cuadro.jpg",
+    "code": "ECO-027",
+    "name": "Panela en Cuadro Pastusa",
+    "category": "canasta",
+    "categoryName": "Canasta Familiar",
+    "price": 5500,
+    "originalPrice": 6200,
+    "cost": 4800,
+    "discount": "TRADICIÓN",
+    "rating": 4.9,
+    "reviews": 76,
+    "badge": "100% CAÑA",
+    "badgeColor": "bg-amber-800 text-white",
+    "colors": [
+      "#78350f"
+    ],
+    "sizes": [
+      "Cuadro Grande"
+    ],
+    "description": "Panela natural de trapiche nariñense. Para aguapanela bien caliente con queso campesino.",
+    "icon": "box",
+    "stock": 10,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-azucar-blanca",
+    "image": "images/prod-azucar-blanca.jpg",
+    "code": "ECO-028",
+    "name": "Azúcar Blanca Refinada 1.000g",
+    "category": "canasta",
+    "categoryName": "Canasta Familiar",
+    "price": 3600,
+    "originalPrice": 4200,
+    "cost": 3100,
+    "discount": "DESPENSA",
+    "rating": 4.8,
+    "reviews": 82,
+    "badge": "BÁSICO",
+    "badgeColor": "bg-blue-600 text-white",
+    "colors": [
+      "#ffffff"
+    ],
+    "sizes": [
+      "1.000 g"
+    ],
+    "description": "Azúcar refinada de alta pureza para jugos, café, postres y recetas caseras.",
+    "icon": "package",
+    "stock": 10,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-arrocillo",
+    "image": "images/prod-arrocillo.jpg",
+    "code": "ECO-029",
+    "name": "Arrocillo Seleccionado de Calidad",
+    "category": "canasta",
+    "categoryName": "Canasta Familiar",
+    "price": 2000,
+    "originalPrice": 2400,
+    "cost": 1400,
+    "discount": "AHORRO",
+    "rating": 4.7,
+    "reviews": 39,
+    "badge": "ECONÓMICO",
+    "badgeColor": "bg-amber-600 text-white",
+    "colors": [
+      "#f8fafc"
+    ],
+    "sizes": [
+      "Bolsa 500g"
+    ],
+    "description": "Arrocillo rendidor y limpio para sopas, coladas y platos rendidores de la casa.",
+    "icon": "package",
+    "stock": 10,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-harina-narino",
+    "image": "images/prod-harina-narino.jpg",
+    "code": "ECO-030",
+    "name": "Harina de Trigo Nariño",
+    "category": "canasta",
+    "categoryName": "Canasta Familiar",
+    "price": 2000,
+    "originalPrice": 2500,
+    "cost": 1250,
+    "discount": "LOCAL",
+    "rating": 4.8,
+    "reviews": 47,
+    "badge": "NARIÑO",
+    "badgeColor": "bg-amber-500 text-slate-950 font-bold",
+    "colors": [
+      "#fef08a"
+    ],
+    "sizes": [
+      "500 g"
+    ],
+    "description": "Harina de trigo de la región para empanadas, coladas, buñuelos y amasijos pastusos.",
+    "icon": "package",
+    "stock": 10,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-lenteja",
+    "image": "images/prod-lenteja.jpg",
+    "code": "ECO-031",
+    "name": "Lenteja Seleccionada en Grano",
+    "category": "canasta",
+    "categoryName": "Canasta Familiar",
+    "price": 2000,
+    "originalPrice": 2500,
+    "cost": 1500,
+    "discount": "GRANOS",
+    "rating": 4.8,
+    "reviews": 58,
+    "badge": "NUTRICIÓN",
+    "badgeColor": "bg-amber-700 text-white",
+    "colors": [
+      "#78350f"
+    ],
+    "sizes": [
+      "500 g"
+    ],
+    "description": "Lentejas de grano parejo, cocinan suave y rinden para todo el almuerzo familiar.",
+    "icon": "package",
+    "stock": 10,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-maiz-amarillo",
+    "image": "images/prod-maiz-amarillo.jpg",
+    "code": "ECO-032",
+    "name": "Maíz Amarillo Seleccionado",
+    "category": "canasta",
+    "categoryName": "Canasta Familiar",
+    "price": 2800,
+    "originalPrice": 3400,
+    "cost": 2150,
+    "discount": "GRANOS",
+    "rating": 4.7,
+    "reviews": 33,
+    "badge": "TRADICIÓN",
+    "badgeColor": "bg-amber-600 text-white",
+    "colors": [
+      "#eab308"
+    ],
+    "sizes": [
+      "500 g"
+    ],
+    "description": "Maíz amarillo limpio y seco para mazamorras, sopas campesinas y arepas caseras.",
+    "icon": "package",
+    "stock": 10,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-pasta-comarrico",
+    "image": "images/prod-pasta-comarrico.jpg",
+    "code": "ECO-033",
+    "name": "Pasta Comarrico Tipo Caracol",
+    "category": "canasta",
+    "categoryName": "Canasta Familiar",
+    "price": 1800,
+    "originalPrice": 2200,
+    "cost": 1150,
+    "discount": "PASTAS",
+    "rating": 4.8,
+    "reviews": 51,
+    "badge": "COMARRICO",
+    "badgeColor": "bg-red-600 text-white",
+    "colors": [
+      "#fef08a"
+    ],
+    "sizes": [
+      "250 g"
+    ],
+    "description": "Pasta con sémola de trigo duro. No se pega ni se desbarata en la cocción.",
+    "icon": "package",
+    "stock": 10,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-avena-bary",
+    "image": "images/prod-avena-bary.jpg",
+    "code": "ECO-034",
+    "name": "Avena en Hojuelas Bary",
+    "category": "canasta",
+    "categoryName": "Canasta Familiar",
+    "price": 2500,
+    "originalPrice": 3000,
+    "cost": 2066,
+    "discount": "SALUDABLE",
+    "rating": 4.9,
+    "reviews": 65,
+    "badge": "FIBRA",
+    "badgeColor": "bg-amber-600 text-white",
+    "colors": [
+      "#fef3c7"
+    ],
+    "sizes": [
+      "250 g"
+    ],
+    "description": "Avena entera en hojuelas para coladas, batidos nutritivos y desayunos energéticos.",
+    "icon": "package",
+    "stock": 10,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-sal-refisal",
+    "image": "images/prod-sal-refisal.jpg",
+    "code": "ECO-035",
+    "name": "Sal Refisal Marina",
+    "category": "canasta",
+    "categoryName": "Canasta Familiar",
+    "price": 1600,
+    "originalPrice": 2000,
+    "cost": 1300,
+    "discount": "ESENCIAL",
+    "rating": 4.9,
+    "reviews": 84,
+    "badge": "REFISAL",
+    "badgeColor": "bg-blue-600 text-white",
+    "colors": [
+      "#ffffff"
+    ],
+    "sizes": [
+      "1.000 g"
+    ],
+    "description": "Sal pura yodada y fluorurada para sazonar tus comidas con la medida perfecta.",
+    "icon": "package",
+    "stock": 10,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-sal-cristal",
+    "image": "images/prod-sal-cristal.jpg",
+    "code": "ECO-036",
+    "name": "Sal Cristal Económica",
+    "category": "canasta",
+    "categoryName": "Canasta Familiar",
+    "price": 1200,
+    "originalPrice": 1500,
+    "cost": 750,
+    "discount": "AHORRO",
+    "rating": 4.6,
+    "reviews": 28,
+    "badge": "ECONÓMICA",
+    "badgeColor": "bg-slate-600 text-white",
+    "colors": [
+      "#f1f5f9"
+    ],
+    "sizes": [
+      "1.000 g"
+    ],
+    "description": "Sal rendidora para uso culinario y salmueras al precio más bajo del barrio.",
+    "icon": "package",
+    "stock": 10,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-aceite-premier",
+    "image": "images/prod-aceite-premier.jpg",
+    "code": "ECO-037",
+    "name": "Aceite Premier 900ml Puro Vegetal",
+    "category": "canasta",
+    "categoryName": "Canasta Familiar",
+    "price": 8500,
+    "originalPrice": 10500,
+    "cost": 7200,
+    "discount": "-19%",
+    "rating": 4.9,
+    "reviews": 98,
+    "badge": "COCINA",
+    "badgeColor": "bg-amber-500 text-slate-950 font-bold",
+    "colors": [
+      "#eab308"
+    ],
+    "sizes": [
+      "900 ml"
+    ],
+    "description": "Aceite vegetal refinado, ideal para freír y cocinar rico sin olores fuertes.",
+    "icon": "shopping-bag",
+    "stock": 10,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-mayonesa-fruco",
+    "image": "images/prod-mayonesa-fruco.jpg",
+    "code": "ECO-038",
+    "name": "Mayonesa Fruco Doypack",
+    "category": "canasta",
+    "categoryName": "Canasta Familiar",
+    "price": 2500,
+    "originalPrice": 3000,
+    "cost": 2125,
+    "discount": "SALSAS",
+    "rating": 4.8,
+    "reviews": 44,
+    "badge": "FRUCO",
+    "badgeColor": "bg-red-600 text-white",
+    "colors": [
+      "#fef08a"
+    ],
+    "sizes": [
+      "Doypack"
+    ],
+    "description": "Mayonesa cremosa con jugo de limón Fruco para ensaladas, papas y comidas rápidas.",
+    "icon": "package",
+    "stock": 10,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-colcafe",
+    "image": "images/prod-colcafe.jpg",
+    "code": "ECO-039",
+    "name": "Colcafé Clásico Instantáneo",
+    "category": "canasta",
+    "categoryName": "Canasta Familiar",
+    "price": 1500,
+    "originalPrice": 1900,
+    "cost": 1153,
+    "discount": "CAFÉ",
+    "rating": 4.9,
+    "reviews": 79,
+    "badge": "INSTANTÁNEO",
+    "badgeColor": "bg-amber-800 text-white",
+    "colors": [
+      "#451a03"
+    ],
+    "sizes": [
+      "Sobre / Frasco"
+    ],
+    "description": "Café instantáneo granulado 100% colombiano de preparación rápida y aroma delicioso.",
+    "icon": "coffee",
+    "stock": 12,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-cafe-sello-rojo",
+    "image": "images/prod-cafe-sello-rojo.jpg",
+    "code": "ECO-040",
+    "name": "Café Sello Rojo Molido 250g",
+    "category": "canasta",
+    "categoryName": "Canasta Familiar",
+    "price": 8500,
+    "originalPrice": 9800,
+    "cost": 7200,
+    "discount": "-13%",
+    "rating": 5,
+    "reviews": 112,
+    "badge": "SELLO ROJO",
+    "badgeColor": "bg-red-600 text-white",
+    "colors": [
+      "#78350f"
+    ],
+    "sizes": [
+      "250 g"
+    ],
+    "description": "El café colombiano más querido con tueste medio y sabor consistente en cada taza.",
+    "icon": "coffee",
+    "stock": 6,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-vinagre",
+    "image": "images/prod-vinagre.jpg",
+    "code": "ECO-041",
+    "name": "Vinagre Blanco / Frutas de Cocina",
+    "category": "canasta",
+    "categoryName": "Canasta Familiar",
+    "price": 3600,
+    "originalPrice": 4200,
+    "cost": 3076,
+    "discount": "DESPENSA",
+    "rating": 4.6,
+    "reviews": 25,
+    "badge": "DESPENSA",
+    "badgeColor": "bg-emerald-700 text-white",
+    "colors": [
+      "#ffffff"
+    ],
+    "sizes": [
+      "Botella 500ml"
+    ],
+    "description": "Vinagre culinario ideal para adobos, desinfección de verduras y carnes.",
+    "icon": "package",
+    "stock": 10,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-canela-astilla",
+    "image": "images/prod-canela-astilla.jpg",
+    "code": "ECO-042",
+    "name": "Canela en Astilla Aromática",
+    "category": "canasta",
+    "categoryName": "Canasta Familiar",
+    "price": 500,
+    "originalPrice": 700,
+    "cost": 384,
+    "discount": "$500 COP",
+    "rating": 4.9,
+    "reviews": 50,
+    "badge": "ESPECIAS",
+    "badgeColor": "bg-amber-800 text-white",
+    "colors": [
+      "#78350f"
+    ],
+    "sizes": [
+      "Sobre Astillas"
+    ],
+    "description": "Canela pura seleccionada para aromatizar café, coladas, arroz con leche y postres.",
+    "icon": "package",
+    "stock": 13,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-chocorramo",
+    "image": "images/prod-chocorramo.jpg",
+    "code": "ECO-050",
+    "name": "Chocorramo Tradicional Ramo",
+    "category": "snacks",
+    "categoryName": "Snacks & Dulcería",
+    "price": 2500,
+    "originalPrice": 2800,
+    "cost": 2250,
+    "discount": "RAMO",
+    "rating": 5,
+    "reviews": 160,
+    "badge": "FAVORITO",
+    "badgeColor": "bg-amber-500 text-slate-950 font-bold",
+    "colors": [
+      "#451a03"
+    ],
+    "sizes": [
+      "65 g"
+    ],
+    "description": "Ponqué de vainilla con cubierta gruesa de chocolate. El snack colombiano por excelencia.",
+    "icon": "box",
+    "stock": 5,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-ponque-ramo",
+    "image": "images/prod-ponque-ramo.jpg",
+    "code": "ECO-051",
+    "name": "Ponqué Ramo Tradicional",
+    "category": "snacks",
+    "categoryName": "Snacks & Dulcería",
+    "price": 6500,
+    "originalPrice": 7500,
+    "cost": 5833,
+    "discount": "FAMILIAR",
+    "rating": 4.9,
+    "reviews": 70,
+    "badge": "TRADICIÓN",
+    "badgeColor": "bg-red-600 text-white",
+    "colors": [
+      "#d97706"
+    ],
+    "sizes": [
+      "Familiar"
+    ],
+    "description": "El clásico ponqué suave esponjoso con sabor a hogar para compartir en la merienda.",
+    "icon": "box",
+    "stock": 10,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-bimbo-vainilla",
+    "image": "images/prod-bimbo-vainilla.jpg",
+    "code": "ECO-052",
+    "name": "Bimbo Casero Ponqué Vainilla",
+    "category": "snacks",
+    "categoryName": "Snacks & Dulcería",
+    "price": 6200,
+    "originalPrice": 7000,
+    "cost": 5562,
+    "discount": "BIMBO",
+    "rating": 4.8,
+    "reviews": 55,
+    "badge": "CASERO",
+    "badgeColor": "bg-blue-600 text-white",
+    "colors": [
+      "#f59e0b"
+    ],
+    "sizes": [
+      "Paquete Grande"
+    ],
+    "description": "Ponqué de receta casera Bimbo suave, dorado y delicioso para tus onces.",
+    "icon": "box",
+    "stock": 10,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-submarino-arequipe",
+    "image": "images/prod-submarino-arequipe.jpg",
+    "code": "ECO-053",
+    "name": "Submarino Marinela Relleno de Arequipe",
+    "category": "snacks",
+    "categoryName": "Snacks & Dulcería",
+    "price": 1800,
+    "originalPrice": 2200,
+    "cost": 1583,
+    "discount": "DULCE",
+    "rating": 4.8,
+    "reviews": 63,
+    "badge": "AREQUIPE",
+    "badgeColor": "bg-amber-600 text-white",
+    "colors": [
+      "#d97706"
+    ],
+    "sizes": [
+      "Pastel Individual"
+    ],
+    "description": "Pastelito esponjoso relleno de abundante arequipe colombiano suave.",
+    "icon": "box",
+    "stock": 10,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-tostada-integral",
+    "image": "images/prod-tostada-integral.jpg",
+    "code": "ECO-054",
+    "name": "Tostada Integral y Tradicional",
+    "category": "snacks",
+    "categoryName": "Snacks & Dulcería",
+    "price": 1500,
+    "originalPrice": 1900,
+    "cost": 1058,
+    "discount": "CRUJIENTE",
+    "rating": 4.8,
+    "reviews": 50,
+    "badge": "DESAYUNO",
+    "badgeColor": "bg-amber-700 text-white",
+    "colors": [
+      "#b45309"
+    ],
+    "sizes": [
+      "Paquete"
+    ],
+    "description": "Tostadas crujientes integrales o normales para acompañar queso, mermelada y café.",
+    "icon": "box",
+    "stock": 24,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-takis-fuego",
+    "image": "images/prod-takis-fuego.jpg",
+    "code": "ECO-055",
+    "name": "Takis Fuego Morado Chile y Limón",
+    "category": "snacks",
+    "categoryName": "Snacks & Dulcería",
+    "price": 3700,
+    "originalPrice": 4200,
+    "cost": 3140,
+    "discount": "PICANTE",
+    "rating": 4.9,
+    "reviews": 90,
+    "badge": "FUEGO",
+    "badgeColor": "bg-purple-700 text-white",
+    "colors": [
+      "#7e22ce",
+      "#ef4444"
+    ],
+    "sizes": [
+      "Paquete 56g"
+    ],
+    "description": "Tortillas de maíz enrolladas con sabor picante intenso a chile y limón. ¡Una explosión!",
+    "icon": "flame",
+    "stock": 6,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-detodito-bbq",
+    "image": "images/prod-detodito-bbq.jpg",
+    "code": "ECO-056",
+    "name": "DeTodito BBQ Papas, Plátano y Chicharrón",
+    "category": "snacks",
+    "categoryName": "Snacks & Dulcería",
+    "price": 2800,
+    "originalPrice": 3200,
+    "cost": 2413,
+    "discount": "SNACK",
+    "rating": 4.9,
+    "reviews": 82,
+    "badge": "BBQ",
+    "badgeColor": "bg-red-600 text-white",
+    "colors": [
+      "#dc2626"
+    ],
+    "sizes": [
+      "Paquete Mediano"
+    ],
+    "description": "La mezcla perfecta de papas, platanitos y chicharrón con el toque ahumado BBQ.",
+    "icon": "box",
+    "stock": 10,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-detodito-mix",
+    "image": "images/prod-detodito-mix.jpg",
+    "code": "ECO-057",
+    "name": "DeTodito Mix Tradicional",
+    "category": "snacks",
+    "categoryName": "Snacks & Dulcería",
+    "price": 2800,
+    "originalPrice": 3200,
+    "cost": 2413,
+    "discount": "MIX",
+    "rating": 4.8,
+    "reviews": 74,
+    "badge": "VARIEDAD",
+    "badgeColor": "bg-amber-600 text-white",
+    "colors": [
+      "#d97706"
+    ],
+    "sizes": [
+      "Paquete Mediano"
+    ],
+    "description": "Combinación crujiente de pasabocas para compartir con amigos y familia.",
+    "icon": "box",
+    "stock": 10,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-papas-margarita-pollo",
+    "image": "images/prod-papas-margarita-pollo.jpg",
+    "code": "ECO-058",
+    "name": "Papas Margarita Sabor a Pollo",
+    "category": "snacks",
+    "categoryName": "Snacks & Dulcería",
+    "price": 2300,
+    "originalPrice": 2700,
+    "cost": 1982,
+    "discount": "MARGARITA",
+    "rating": 4.9,
+    "reviews": 105,
+    "badge": "POLLO",
+    "badgeColor": "bg-yellow-500 text-slate-950 font-bold",
+    "colors": [
+      "#eab308"
+    ],
+    "sizes": [
+      "Paquete"
+    ],
+    "description": "Papas naturales crujientes con el inconfundible y delicioso sabor a pollo Margarita.",
+    "icon": "box",
+    "stock": 6,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-papas-margarita-tomate",
+    "image": "images/prod-papas-margarita-tomate.jpg",
+    "code": "ECO-059",
+    "name": "Papas Margarita Tomate y Pollo",
+    "category": "snacks",
+    "categoryName": "Snacks & Dulcería",
+    "price": 2300,
+    "originalPrice": 2700,
+    "cost": 1982,
+    "discount": "MARGARITA",
+    "rating": 4.8,
+    "reviews": 68,
+    "badge": "TOMATE",
+    "badgeColor": "bg-red-600 text-white",
+    "colors": [
+      "#dc2626"
+    ],
+    "sizes": [
+      "Paquete"
+    ],
+    "description": "Papas fritas con sabor a tomate dulce y pollo sazonado. Clásicas de toda la vida.",
+    "icon": "box",
+    "stock": 10,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-tostacos-guacamole",
+    "image": "images/prod-tostacos-guacamole.jpg",
+    "code": "ECO-060",
+    "name": "Tostacos Queso y Guacamole",
+    "category": "snacks",
+    "categoryName": "Snacks & Dulcería",
+    "price": 2200,
+    "originalPrice": 2600,
+    "cost": 1834,
+    "discount": "TOSTACOS",
+    "rating": 4.9,
+    "reviews": 77,
+    "badge": "GUACAMOLE",
+    "badgeColor": "bg-emerald-600 text-white",
+    "colors": [
+      "#059669"
+    ],
+    "sizes": [
+      "Paquete"
+    ],
+    "description": "Pasabocas de maíz crujientes con combinación intensa de queso y guacamole cremoso.",
+    "icon": "box",
+    "stock": 10,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-tostacos-carnitas-grande",
+    "image": "images/prod-tostacos-carnitas-grande.jpg",
+    "code": "ECO-061",
+    "name": "Tostacos Carnitas Grande Familiar",
+    "category": "snacks",
+    "categoryName": "Snacks & Dulcería",
+    "price": 7000,
+    "originalPrice": 8000,
+    "cost": 6250,
+    "discount": "FAMILIAR",
+    "rating": 4.9,
+    "reviews": 45,
+    "badge": "FAMILIAR",
+    "badgeColor": "bg-red-700 text-white",
+    "colors": [
+      "#991b1b"
+    ],
+    "sizes": [
+      "Paquete Maxi"
+    ],
+    "description": "Paquete grande de Tostacos sabor a carnitas asadas, ideal para reuniones y películas.",
+    "icon": "box",
+    "stock": 10,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-tostacos-pequeno",
+    "image": "images/prod-tostacos-pequeno.jpg",
+    "code": "ECO-062",
+    "name": "Tostacos Queso y Carnitas Pequeño",
+    "category": "snacks",
+    "categoryName": "Snacks & Dulcería",
+    "price": 2200,
+    "originalPrice": 2600,
+    "cost": 1834,
+    "discount": "SNACK",
+    "rating": 4.7,
+    "reviews": 58,
+    "badge": "CARNITAS",
+    "badgeColor": "bg-amber-600 text-white",
+    "colors": [
+      "#d97706"
+    ],
+    "sizes": [
+      "Paquete Personal"
+    ],
+    "description": "El rico sabor a carnitas en porción personal para calmar el antojo del día.",
+    "icon": "box",
+    "stock": 10,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-cheese-tris",
+    "image": "images/prod-cheese-tris.jpg",
+    "code": "ECO-063",
+    "name": "Cheese Tris Trissitos de Queso",
+    "category": "snacks",
+    "categoryName": "Snacks & Dulcería",
+    "price": 2000,
+    "originalPrice": 2400,
+    "cost": 1724,
+    "discount": "QUESO",
+    "rating": 4.8,
+    "reviews": 69,
+    "badge": "QUESUDO",
+    "badgeColor": "bg-orange-500 text-white",
+    "colors": [
+      "#f97316"
+    ],
+    "sizes": [
+      "Paquete"
+    ],
+    "description": "Chizitos de maíz extrudido con sabor explosivo a queso amarillo.",
+    "icon": "box",
+    "stock": 8,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-choclitos-limon",
+    "image": "images/prod-choclitos-limon.jpg",
+    "code": "ECO-064",
+    "name": "Choclitos Frito-Lay con Sabor a Limón",
+    "category": "snacks",
+    "categoryName": "Snacks & Dulcería",
+    "price": 2000,
+    "originalPrice": 2400,
+    "cost": 1724,
+    "discount": "LIMÓN",
+    "rating": 4.9,
+    "reviews": 86,
+    "badge": "ÁCIDO & RICO",
+    "badgeColor": "bg-lime-600 text-white",
+    "colors": [
+      "#65a30d"
+    ],
+    "sizes": [
+      "Paquete"
+    ],
+    "description": "Palitos de maíz crujientes con el toque justo de sal y limón ácido.",
+    "icon": "box",
+    "stock": 6,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-galletas-ducales",
+    "image": "images/prod-galletas-ducales.jpg",
+    "code": "ECO-065",
+    "name": "Galletas Ducales Noel Tradicional",
+    "category": "snacks",
+    "categoryName": "Snacks & Dulcería",
+    "price": 3000,
+    "originalPrice": 3500,
+    "cost": 2666,
+    "discount": "DUCALES",
+    "rating": 5,
+    "reviews": 130,
+    "badge": "EL TOQUE SECRETO",
+    "badgeColor": "bg-amber-600 text-white",
+    "colors": [
+      "#d97706"
+    ],
+    "sizes": [
+      "Taco x3"
+    ],
+    "description": "Galleta con el toque dulce-salado irrepetible de Noel. Para disfrutar con mantequilla y café.",
+    "icon": "box",
+    "stock": 8,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-galleta-festival",
+    "image": "images/prod-galleta-festival.jpg",
+    "code": "ECO-066",
+    "name": "Galletas Festival x 6 Galletas",
+    "category": "snacks",
+    "categoryName": "Snacks & Dulcería",
+    "price": 1500,
+    "originalPrice": 1800,
+    "cost": 1120,
+    "discount": "RECREO",
+    "rating": 4.8,
+    "reviews": 94,
+    "badge": "FESTIVAL",
+    "badgeColor": "bg-rose-500 text-white",
+    "colors": [
+      "#f43f5e"
+    ],
+    "sizes": [
+      "Taco x6"
+    ],
+    "description": "Galletas sándwich con cremita dulce de vainilla o fresa. La favorita de las loncheras.",
+    "icon": "box",
+    "stock": 12,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-galleta-oreo",
+    "image": "images/prod-galleta-oreo.jpg",
+    "code": "ECO-067",
+    "name": "Galletas Oreo Sándwich de Chocolate",
+    "category": "snacks",
+    "categoryName": "Snacks & Dulcería",
+    "price": 1700,
+    "originalPrice": 2000,
+    "cost": 1316,
+    "discount": "OREO",
+    "rating": 4.9,
+    "reviews": 115,
+    "badge": "CHOCOLATE",
+    "badgeColor": "bg-slate-900 text-white",
+    "colors": [
+      "#0f172a"
+    ],
+    "sizes": [
+      "Paquete 4 galletas"
+    ],
+    "description": "Galletas de cacao oscuro con suave relleno de crema de vainilla. Sumérgelas en leche.",
+    "icon": "box",
+    "stock": 12,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-zucaritas",
+    "image": "images/prod-zucaritas.jpg",
+    "code": "ECO-068",
+    "name": "Cereal Zucaritas Kellogg's",
+    "category": "snacks",
+    "categoryName": "Snacks & Dulcería",
+    "price": 1600,
+    "originalPrice": 2000,
+    "cost": 1300,
+    "discount": "ENERGÍA",
+    "rating": 4.8,
+    "reviews": 49,
+    "badge": "TIGRE TONY",
+    "badgeColor": "bg-blue-600 text-white",
+    "colors": [
+      "#2563eb"
+    ],
+    "sizes": [
+      "Porción Individual"
+    ],
+    "description": "Hojuelas de maíz escarchadas con azúcar para llenarte de energía desde la mañana.",
+    "icon": "box",
+    "stock": 8,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-trident-verde",
+    "image": "images/prod-trident-verde.jpg",
+    "code": "ECO-069",
+    "name": "Chicle Trident Verde Sabor a Menta",
+    "category": "snacks",
+    "categoryName": "Snacks & Dulcería",
+    "price": 300,
+    "originalPrice": 400,
+    "cost": 230,
+    "discount": "$300 c/u",
+    "rating": 4.9,
+    "reviews": 140,
+    "badge": "SIN AZÚCAR",
+    "badgeColor": "bg-emerald-500 text-white",
+    "colors": [
+      "#10b981"
+    ],
+    "sizes": [
+      "Unidad ($300)"
+    ],
+    "description": "Chicle de larga duración sin azúcar. Máximo aliento fresco al instante.",
+    "icon": "sparkles",
+    "stock": 60,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-sparkies",
+    "image": "images/prod-sparkies.jpg",
+    "code": "ECO-070",
+    "name": "Caramelos Masticables Sparkies",
+    "category": "snacks",
+    "categoryName": "Snacks & Dulcería",
+    "price": 300,
+    "originalPrice": 400,
+    "cost": 222,
+    "discount": "$300 c/u",
+    "rating": 4.9,
+    "reviews": 155,
+    "badge": "FRUTAS",
+    "badgeColor": "bg-fuchsia-600 text-white",
+    "colors": [
+      "#c026d3",
+      "#eab308"
+    ],
+    "sizes": [
+      "Unidad ($300)"
+    ],
+    "description": "Caramelos masticables de colores y ricos sabores a frutas surtidas.",
+    "icon": "sparkles",
+    "stock": 70,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-speed-max",
+    "image": "images/prod-speed-max.jpg",
+    "code": "ECO-080",
+    "name": "Bebida Energizante Speed Max",
+    "category": "bebidas",
+    "categoryName": "Bebidas & Refrescos",
+    "price": 2000,
+    "originalPrice": 2500,
+    "cost": 1250,
+    "discount": "ENERGÍA",
+    "rating": 4.8,
+    "reviews": 88,
+    "badge": "SPEED MAX",
+    "badgeColor": "bg-red-600 text-white",
+    "colors": [
+      "#dc2626"
+    ],
+    "sizes": [
+      "Botella 250ml"
+    ],
+    "description": "Bebida energizante refrescante con taurina y cafeína para darte el impulso que necesitas.",
+    "icon": "zap",
+    "stock": 12,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-jugo-del-valle",
+    "image": "images/prod-jugo-del-valle.jpg",
+    "code": "ECO-081",
+    "name": "Jugo Del Valle en Botella",
+    "category": "bebidas",
+    "categoryName": "Bebidas & Refrescos",
+    "price": 4500,
+    "originalPrice": 5200,
+    "cost": 3750,
+    "discount": "FRUTAL",
+    "rating": 4.8,
+    "reviews": 53,
+    "badge": "DEL VALLE",
+    "badgeColor": "bg-orange-500 text-white",
+    "colors": [
+      "#f97316"
+    ],
+    "sizes": [
+      "Botella Grande"
+    ],
+    "description": "Néctar de fruta con pulpa natural refrescante y vitaminas para hidratarte.",
+    "icon": "cup-soda",
+    "stock": 6,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-tutti-frutti",
+    "image": "images/prod-tutti-frutti.jpg",
+    "code": "ECO-082",
+    "name": "Jugo Tutti Frutti Individual",
+    "category": "bebidas",
+    "categoryName": "Bebidas & Refrescos",
+    "price": 1000,
+    "originalPrice": 1300,
+    "cost": 833,
+    "discount": "$1.000 COP",
+    "rating": 4.7,
+    "reviews": 76,
+    "badge": "LONCHERA",
+    "badgeColor": "bg-amber-500 text-slate-950 font-bold",
+    "colors": [
+      "#f59e0b"
+    ],
+    "sizes": [
+      "Cajita con Pitillo"
+    ],
+    "description": "Jugo refrescante ideal para la lonchera o para saciar la sed a cualquier hora.",
+    "icon": "cup-soda",
+    "stock": 12,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-agua-cristal",
+    "image": "images/prod-agua-cristal.jpg",
+    "code": "ECO-083",
+    "name": "Agua Cristal Purificada Pequeña",
+    "category": "bebidas",
+    "categoryName": "Bebidas & Refrescos",
+    "price": 1000,
+    "originalPrice": 1400,
+    "cost": 583,
+    "discount": "$1.000 COP",
+    "rating": 5,
+    "reviews": 120,
+    "badge": "PURIFICADA",
+    "badgeColor": "bg-sky-500 text-white",
+    "colors": [
+      "#0284c7"
+    ],
+    "sizes": [
+      "Botella 300ml"
+    ],
+    "description": "Agua pura sin gas, tratada bajo los más altos estándares de frescura e hidratación.",
+    "icon": "droplet",
+    "stock": 24,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-colgate-grande",
+    "image": "images/prod-colgate-grande.jpg",
+    "code": "ECO-090",
+    "name": "Crema Dental Colgate Triple Acción Grande",
+    "category": "aseo",
+    "categoryName": "Aseo & Limpieza",
+    "price": 2800,
+    "originalPrice": 3400,
+    "cost": 2470,
+    "discount": "COLGATE",
+    "rating": 4.9,
+    "reviews": 92,
+    "badge": "TRIPLE ACCIÓN",
+    "badgeColor": "bg-red-600 text-white",
+    "colors": [
+      "#dc2626",
+      "#ffffff"
+    ],
+    "sizes": [
+      "Tubo Grande"
+    ],
+    "description": "Protección anticaries, blancura y aliento fresco para toda la familia con fluoruro activo.",
+    "icon": "sparkles",
+    "stock": 10,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-colgate-pequena",
+    "image": "images/prod-colgate-pequena.jpg",
+    "code": "ECO-091",
+    "name": "Crema Dental Colgate Pequeña de Bolsillo",
+    "category": "aseo",
+    "categoryName": "Aseo & Limpieza",
+    "price": 200,
+    "originalPrice": 300,
+    "cost": 150,
+    "discount": "$200 COP",
+    "rating": 4.8,
+    "reviews": 80,
+    "badge": "VIAJERA",
+    "badgeColor": "bg-blue-600 text-white",
+    "colors": [
+      "#2563eb"
+    ],
+    "sizes": [
+      "Tubo Viajero"
+    ],
+    "description": "Presentación mini de bolsillo para llevar al trabajo, estudio o de viaje.",
+    "icon": "sparkles",
+    "stock": 50,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-papel-familia",
+    "image": "images/prod-papel-familia.jpg",
+    "code": "ECO-092",
+    "name": "Papel Higiénico Familia Acolchado",
+    "category": "aseo",
+    "categoryName": "Aseo & Limpieza",
+    "price": 2800,
+    "originalPrice": 3300,
+    "cost": 2166,
+    "discount": "FAMILIA",
+    "rating": 4.9,
+    "reviews": 89,
+    "badge": "SUAVIDAD",
+    "badgeColor": "bg-blue-700 text-white",
+    "colors": [
+      "#1d4ed8"
+    ],
+    "sizes": [
+      "Rollo Acolchado"
+    ],
+    "description": "Papel higiénico suave y resistente de doble hoja acolchada para el confort del hogar.",
+    "icon": "package",
+    "stock": 13,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-toallas-higienicas",
+    "image": "images/prod-toallas-higienicas.jpg",
+    "code": "ECO-093",
+    "name": "Toallas Higiénicas Femeninas con Alas",
+    "category": "aseo",
+    "categoryName": "Aseo & Limpieza",
+    "price": 700,
+    "originalPrice": 1000,
+    "cost": 452,
+    "discount": "$700 COP",
+    "rating": 4.8,
+    "reviews": 67,
+    "badge": "PROTECCIÓN",
+    "badgeColor": "bg-pink-600 text-white",
+    "colors": [
+      "#db2777"
+    ],
+    "sizes": [
+      "Unidad con Alas"
+    ],
+    "description": "Toalla femenina con gel de absorción rápida y cubierta suave que protege tu piel.",
+    "icon": "package",
+    "stock": 10,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-jabon-dove",
+    "image": "images/prod-jabon-dove.jpg",
+    "code": "ECO-094",
+    "name": "Jabón en Barra Dove Blanco Crema Humectante",
+    "category": "aseo",
+    "categoryName": "Aseo & Limpieza",
+    "price": 3800,
+    "originalPrice": 4500,
+    "cost": 3279,
+    "discount": "DOVE",
+    "rating": 5,
+    "reviews": 96,
+    "badge": "HUMECTANTE",
+    "badgeColor": "bg-blue-600 text-white",
+    "colors": [
+      "#ffffff",
+      "#0284c7"
+    ],
+    "sizes": [
+      "Barra 90g"
+    ],
+    "description": "Con 1/4 de crema humectante Dove para dejar la piel suave, tersa y perfumada.",
+    "icon": "sparkles",
+    "stock": 10,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-jabon-coco",
+    "image": "images/prod-jabon-coco.jpg",
+    "code": "ECO-095",
+    "name": "Jabón Puro de Coco Tradicional",
+    "category": "aseo",
+    "categoryName": "Aseo & Limpieza",
+    "price": 3300,
+    "originalPrice": 3800,
+    "cost": 2767,
+    "discount": "NATURAL",
+    "rating": 4.9,
+    "reviews": 71,
+    "badge": "COCO PURO",
+    "badgeColor": "bg-amber-700 text-white",
+    "colors": [
+      "#78350f"
+    ],
+    "sizes": [
+      "Barra de Lavar"
+    ],
+    "description": "Jabón natural de aceite de coco, recomendado para lavar ropa delicada de bebé y prendas finas.",
+    "icon": "sparkles",
+    "stock": 10,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-gel-ego",
+    "image": "images/prod-gel-ego.jpg",
+    "code": "ECO-096",
+    "name": "Gel Fijador Ego Black para Caballero",
+    "category": "aseo",
+    "categoryName": "Aseo & Limpieza",
+    "price": 1300,
+    "originalPrice": 1700,
+    "cost": 1000,
+    "discount": "EGO",
+    "rating": 4.8,
+    "reviews": 84,
+    "badge": "FIJACIÓN",
+    "badgeColor": "bg-slate-900 text-white",
+    "colors": [
+      "#0f172a"
+    ],
+    "sizes": [
+      "Sachet / Pote"
+    ],
+    "description": "Fijación extrema de larga duración con fragancia masculina fresca que no deja residuos blancos.",
+    "icon": "sparkles",
+    "stock": 15,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-jabon-3d",
+    "image": "images/prod-jabon-3d.jpg",
+    "code": "ECO-097",
+    "name": "Jabón Líquido 3D Limpieza Multiusos",
+    "category": "aseo",
+    "categoryName": "Aseo & Limpieza",
+    "price": 3000,
+    "originalPrice": 3600,
+    "cost": 2491,
+    "discount": "3D LIMPIEZA",
+    "rating": 4.8,
+    "reviews": 48,
+    "badge": "MULTIUSOS",
+    "badgeColor": "bg-emerald-600 text-white",
+    "colors": [
+      "#059669"
+    ],
+    "sizes": [
+      "Botella 500ml"
+    ],
+    "description": "Poder desengrasante 3D para loza, pisos y superficies del hogar con aroma fresco.",
+    "icon": "droplet",
+    "stock": 10,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-fab-polvo",
+    "image": "images/prod-fab-polvo.jpg",
+    "code": "ECO-098",
+    "name": "Fab Detergente en Polvo Acción Total",
+    "category": "aseo",
+    "categoryName": "Aseo & Limpieza",
+    "price": 2000,
+    "originalPrice": 2500,
+    "cost": 1500,
+    "discount": "FAB",
+    "rating": 4.9,
+    "reviews": 66,
+    "badge": "BLANCURA",
+    "badgeColor": "bg-blue-600 text-white",
+    "colors": [
+      "#1d4ed8"
+    ],
+    "sizes": [
+      "Bolsa 250g"
+    ],
+    "description": "Detergente con partículas blanqueadoras activas que remueven manchas difíciles al instante.",
+    "icon": "package",
+    "stock": 10,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-aromatel",
+    "image": "images/prod-aromatel.jpg",
+    "code": "ECO-099",
+    "name": "Aromatel Suavizante para Ropa",
+    "category": "aseo",
+    "categoryName": "Aseo & Limpieza",
+    "price": 2000,
+    "originalPrice": 2500,
+    "cost": 1350,
+    "discount": "AROMA",
+    "rating": 4.8,
+    "reviews": 58,
+    "badge": "SUAVIZANTE",
+    "badgeColor": "bg-pink-600 text-white",
+    "colors": [
+      "#ec4899"
+    ],
+    "sizes": [
+      "Doypack 200ml"
+    ],
+    "description": "Suavizante textil que deja tu ropa esponjosa y con deliciosa fragancia que perdura días.",
+    "icon": "sparkles",
+    "stock": 5,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-bombillo-led",
+    "image": "images/prod-bombillo-led.jpg",
+    "code": "ECO-110",
+    "name": "Bombillo LED 12W Alta Duración Luz Blanca",
+    "category": "ferreteria",
+    "categoryName": "Ferretería & Variedades",
+    "price": 6500,
+    "originalPrice": 8500,
+    "cost": 4200,
+    "discount": "-23%",
+    "rating": 4.9,
+    "reviews": 95,
+    "badge": "AHORRADOR",
+    "badgeColor": "bg-amber-500 text-slate-950 font-bold",
+    "colors": [
+      "#ffffff"
+    ],
+    "sizes": [
+      "Rosca E27 - 12W"
+    ],
+    "description": "Bombillo LED de alta eficiencia lumínica. Ahorra hasta un 85% de consumo en el recibo de la luz.",
+    "icon": "lightbulb",
+    "stock": 35,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-pegante-instantaneo",
+    "image": "images/prod-pegante-instantaneo.jpg",
+    "code": "ECO-111",
+    "name": "Pegante Instantáneo Extra Fuerte 3g",
+    "category": "ferreteria",
+    "categoryName": "Ferretería & Variedades",
+    "price": 2500,
+    "originalPrice": 3200,
+    "cost": 1400,
+    "discount": "FUERTE",
+    "rating": 4.8,
+    "reviews": 62,
+    "badge": "ESENCIAL",
+    "badgeColor": "bg-red-600 text-white",
+    "colors": [
+      "#dc2626"
+    ],
+    "sizes": [
+      "Tubo 3g"
+    ],
+    "description": "Adhesivo de cianoacrilato para pegar en segundos porcelana, plástico, madera y calzado.",
+    "icon": "wrench",
+    "stock": 30,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-cinta-aislante",
+    "image": "images/prod-cinta-aislante.jpg",
+    "code": "ECO-112",
+    "name": "Cinta Aislante Negra Profesional 10m",
+    "category": "ferreteria",
+    "categoryName": "Ferretería & Variedades",
+    "price": 2500,
+    "originalPrice": 3000,
+    "cost": 1200,
+    "discount": "ELÉCTRICA",
+    "rating": 4.8,
+    "reviews": 43,
+    "badge": "TALLER",
+    "badgeColor": "bg-slate-800 text-white",
+    "colors": [
+      "#0f172a"
+    ],
+    "sizes": [
+      "Rollo 10 metros"
+    ],
+    "description": "Cinta de vinilo resistente para empalmes eléctricos seguros y reparaciones en el hogar.",
+    "icon": "wrench",
+    "stock": 20,
+    "sales": 0,
+    "status": "Activo"
+  },
+  {
+    "id": "prod-cable-tipo-c",
+    "image": "images/prod-cable-tipo-c.jpg",
+    "code": "ECO-113",
+    "name": "Cable Cargador Rápido USB Tipo C / Lightning",
+    "category": "ferreteria",
+    "categoryName": "Ferretería & Variedades",
+    "price": 13500,
+    "originalPrice": 18000,
+    "cost": 8000,
+    "discount": "-25%",
+    "rating": 4.8,
+    "reviews": 73,
+    "badge": "CARGA RÁPIDA",
+    "badgeColor": "bg-purple-600 text-white",
+    "colors": [
+      "#0f172a",
+      "#ffffff"
+    ],
+    "sizes": [
+      "1 metro",
+      "2 metros"
+    ],
+    "description": "Cable reforzado trenzado para celular de carga rápida y transferencia estable de datos.",
+    "icon": "zap",
+    "stock": 20,
+    "sales": 0,
+    "status": "Activo"
+  }
+];
+
+if (typeof window !== 'undefined') {
+  window.ECONOMAX_PRODUCTS = ECONOMAX_PRODUCTS;
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = ECONOMAX_PRODUCTS;
+}

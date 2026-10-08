@@ -1,0 +1,11 @@
+{
+  "storeName": "Tienda ECONOMAX",
+  "currency": "COP",
+  "whatsapp": "+57 300 472 0904",
+  "nequiNumber": "300 472 0904",
+  "nequiHolder": "Luz Angela Valencia Sinza",
+  "address": "Calle 19D # 44B 69 - Barrio Juanoy Bajo, San Juan de Pasto",
+  "minOrder": 5000,
+  "deliveryText": "$3.000 - $5.000 COP (al repartidor)",
+  "email": "tiendaeconomaxpasto@gmail.com"
+}

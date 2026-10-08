@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TIENDA ECONOMAX | Pasto, Nariño - Lo mejor para tu familia</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <!-- Estilos compilados completos de Tailwind y diseño de ECONOMAX -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Estilos defensivos inmediatos para asegurar renderizado correcto en cualquier celular -->
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    img, svg, video { max-width: 100%; height: auto; }
+    .logo-img-main {
+      width: 44px !important;
+      height: 44px !important;
+      min-width: 44px !important;
+      max-width: 44px !important;
+      max-height: 44px !important;
+      object-fit: cover !important;
+      border-radius: 9999px !important;
+    }
+  </style>
+
+  <!-- Lucide Icons local con fallback CDN -->
+  <script src="lucide.min.js"></script>
+  <script>
+    if (typeof lucide === 'undefined') {
+      document.write('<script src="https://unpkg.com/lucide@latest"><\/script>');
+    }
+  </script>
+
+  <!-- Metadatos SEO y Configuración de Sitio Web Oficial -->
+  <meta name="description" content="Página Web Oficial de Tienda ECONOMAX en San Juan de Pasto, Nariño. Compra en línea víveres, utensilios de cocina y remates con domicilios contra entrega y pagos por Nequi.">
+  <meta name="keywords" content="Tienda Economax Pasto, Pasto Nariño, supermercado Pasto, Juanoy Bajo, domicilios Pasto, compras Nequi">
+  <meta name="theme-color" content="#dc2626">
+  <link rel="icon" type="image/jpeg" href="logo.jpg">
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased selection:bg-red-500 selection:text-white">
+
+  <!-- ================= BARRA DE ANUNCIOS SUPERIOR ================= -->
+  <div class="bg-gradient-to-r from-red-900 via-slate-900 to-amber-900 text-white text-xs py-2 px-4 text-center font-medium flex flex-wrap items-center justify-center gap-2 sm:gap-3 border-b border-amber-500/30">
+    <span class="inline-flex items-center gap-1.5 bg-amber-400 text-slate-950 font-bold px-2.5 py-0.5 rounded-full text-[11px] shadow-xs">
+      📍 PASTO, NARIÑO
+    </span>
+    <span class="text-slate-200 text-[11px] sm:text-xs">Barrio Juanoy Bajo • 🛵 Domicilio ($3.000 - $5.000 COP) pagado al repartidor • Pedido mín: <strong>$5.000 COP</strong></span>
+    <span class="text-amber-300 font-bold text-[11px]">🟣 Nequi: 300 472 0904</span>
+  </div>
+
+  <!-- ================= HEADER & NAVEGACIÓN ================= -->
+  <header class="sticky top-0 z-40 glass border-b border-slate-200/80 dark:border-slate-800/80 transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20 gap-4">
+        
+        <!-- Logotipo de la Marca Oficial ECONOMAX -->
+        <div class="flex items-center gap-3 shrink-0">
+          <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+          </button>
+          
+          <a href="#" class="flex items-center gap-3 group">
+            <img src="logo.jpg" alt="Tienda ECONOMAX" class="logo-img-main w-11 h-11 rounded-full object-cover border-2 border-amber-400 shadow-md group-hover:scale-105 transition-transform" width="44" height="44" style="width:44px;height:44px;max-width:44px;max-height:44px;object-fit:cover;" />
+            <div>
+              <div class="flex items-center gap-1">
+                <span class="font-display font-extrabold text-xl sm:text-2xl tracking-tight text-slate-900 dark:text-white">TIENDA <span class="text-red-600 dark:text-red-500">ECONOMAX</span></span>
+              </div>
+              <span class="hidden sm:block text-[10px] font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 -mt-0.5">Lo mejor para tu familia</span>
+            </div>
+          </a>
+        </div>
+
+        <!-- Enlaces Principales de Navegación (Escritorio) -->
+        <nav class="hidden lg:flex items-center gap-7 text-sm font-semibold text-slate-600 dark:text-slate-300">
+          <a href="#inicio" class="text-red-600 dark:text-red-400 hover:text-red-700 transition">Inicio</a>
+          <a href="#catalogo" class="hover:text-red-600 dark:hover:text-red-400 transition">Catálogo & Precios</a>
+          <a href="#categorias" class="hover:text-red-600 dark:hover:text-red-400 transition">Categorías</a>
+          <a href="#servicios" class="hover:text-red-600 dark:hover:text-red-400 transition">Servicios & Pagos</a>
+          <a href="#contacto" class="hover:text-red-600 dark:hover:text-red-400 transition">Contacto</a>
+        </nav>
+
+        <!-- Barra de Búsqueda Dinámica -->
+        <div class="hidden md:flex flex-1 max-w-xs xl:max-w-md relative">
+          <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+          <input 
+            type="text" 
+            id="search-input" 
+            placeholder="Buscar arroz, aceite, caldero, ropa, ferretería..." 
+            class="w-full bg-slate-100/90 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-full pl-10 pr-4 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-red-500 focus:bg-white dark:focus:bg-slate-900 transition-all placeholder:text-slate-400"
+          />
+        </div>
+
+        <!-- Botones de Acción / Selector y Carrito -->
+        <div class="flex items-center gap-2 sm:gap-3">
+          
+          <!-- Selector de Moneda (Fijo en COP) -->
+          <div class="hidden sm:block">
+            <select id="currency-selector" class="bg-transparent text-xs font-semibold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 rounded-xl px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-red-500 cursor-pointer">
+              <option value="COP" selected>COP ($)</option>
+              <option value="USD">USD ($)</option>
+            </select>
+          </div>
+
+          <!-- Botón de Acceso al Panel de Emprendedor -->
+          <a href="admin.html" class="px-2.5 sm:px-3 h-10 rounded-xl border border-amber-300 dark:border-amber-700 bg-amber-50/80 dark:bg-amber-950/40 text-amber-800 dark:text-amber-200 hover:bg-amber-100 dark:hover:bg-amber-900/50 font-semibold text-xs flex items-center gap-1.5 transition" title="Ir al Panel de Emprendedor (Administración)">
+            <i data-lucide="layout-dashboard" class="w-4 h-4 text-red-600 dark:text-red-400"></i>
+            <span class="hidden lg:inline font-bold">Panel Administrador</span>
+          </a>
+
+          <!-- Switch Modo Oscuro / Claro -->
+          <button id="theme-toggle-btn" class="w-10 h-10 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition" title="Cambiar tema">
+            <i data-lucide="moon" class="w-5 h-5"></i>
+          </button>
+
+          <!-- Botón de Lista de Deseos (Favoritos) -->
+          <button onclick="showToast('❤️ Tienes artículos guardados en favoritos')" class="w-10 h-10 rounded-xl border border-slate-200 dark:border-slate-800 relative flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition" title="Favoritos">
+            <i data-lucide="heart" class="w-5 h-5"></i>
+            <span id="wishlist-count" class="absolute -top-1 -right-1 w-5 h-5 bg-red-600 text-white rounded-full text-[10px] font-bold flex items-center justify-center shadow-sm">2</span>
+          </button>
+
+          <!-- Botón de Carrito de Compras -->
+          <button onclick="openCartDrawer()" class="px-3.5 sm:px-4 h-10 rounded-xl bg-red-600 hover:bg-red-700 text-white font-semibold text-xs flex items-center gap-2 shadow-md shadow-red-600/20 transition active:scale-95">
+            <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+            <span class="hidden sm:inline">Pedido</span>
+            <span id="cart-count" class="w-5 h-5 bg-amber-400 text-slate-950 rounded-full text-[10px] font-extrabold flex items-center justify-center ml-0.5">2</span>
+          </button>
+
+        </div>
+      </div>
+
+      <!-- Menú Móvil Desplegable -->
+      <div id="mobile-menu" class="hidden lg:hidden py-4 border-t border-slate-200/80 dark:border-slate-800/80 animate-fade-in">
+        <nav class="flex flex-col space-y-3 text-sm font-semibold text-slate-700 dark:text-slate-300">
+          <a href="admin.html" class="px-3 py-2.5 rounded-xl bg-amber-50 dark:bg-amber-950/60 text-amber-800 dark:text-amber-200 font-bold flex items-center gap-2 border border-amber-200 dark:border-amber-800">
+            <i data-lucide="layout-dashboard" class="w-4 h-4 text-red-600"></i>
+            <span>Ir al Panel de Emprendedor</span>
+          </a>
+          <a href="#inicio" onclick="toggleMobileMenu()" class="px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition">Inicio</a>
+          <a href="#catalogo" onclick="toggleMobileMenu()" class="px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition">Catálogo & Precios</a>
+          <a href="#categorias" onclick="toggleMobileMenu()" class="px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition">Categorías</a>
+          <a href="#servicios" onclick="toggleMobileMenu()" class="px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition">Servicios & Pagos</a>
+          <a href="#contacto" onclick="toggleMobileMenu()" class="px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition flex items-center gap-2">
+            <i data-lucide="map-pin" class="w-4 h-4 text-red-500"></i>
+            <span>Contacto & Ubicación</span>
+          </a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1" id="inicio">
+
+    <!-- ================= HERO SECTION / BANNER PRINCIPAL ================= -->
+    <section class="relative overflow-hidden pt-10 pb-16 lg:pt-16 lg:pb-24 border-b border-slate-200/70 dark:border-slate-800/70">
+      <!-- Luces decorativas difuminadas de fondo -->
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-tr from-amber-500/15 via-red-500/10 to-transparent blur-3xl pointer-events-none -z-10"></div>
+      
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+          
+          <!-- Contenido del Hero -->
+          <div class="lg:col-span-7 text-center lg:text-left">
+            
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800 text-amber-900 dark:text-amber-200 text-xs font-bold mb-6">
+              <span class="w-2 h-2 rounded-full bg-red-600 animate-ping"></span>
+              📍 BARRIO JUANOY BAJO • SAN JUAN DE PASTO
+            </div>
+
+            <h1 class="font-display font-extrabold text-3xl sm:text-5xl lg:text-6xl tracking-tight text-slate-900 dark:text-white leading-[1.15]">
+              Lo mejor para tu familia, <span class="bg-gradient-to-r from-red-600 via-amber-500 to-red-600 bg-clip-text text-transparent">a tu puerta en Pasto</span>.
+            </h1>
+
+            <p class="mt-6 text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+              Pide en línea productos de la <strong>canasta familiar</strong>, <strong>utensilios de cocina</strong>, <strong>prendas de vestir</strong> y <strong>ferretería</strong>. Paga fácil por <strong>Nequi (300 472 0904)</strong> y el valor del domicilio ($3.000 a $5.000 COP) se lo entregas en efectivo al repartidor en tu puerta. Compras mayores a <strong>$5.000 COP</strong>.
+            </p>
+
+            <!-- Botones CTA de acción -->
+            <div class="mt-8 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+              <a href="#catalogo" class="w-full sm:w-auto px-8 py-4 bg-red-600 hover:bg-red-700 active:scale-95 text-white rounded-2xl font-bold text-sm shadow-xl shadow-red-600/25 transition-all flex items-center justify-center gap-2">
+                <span>Explorar Catálogo & Precios</span>
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </a>
+
+              <a href="#promociones" class="w-full sm:w-auto px-6 py-4 rounded-2xl border-2 border-slate-200 dark:border-slate-700 hover:border-red-500 dark:hover:border-red-500 text-slate-800 dark:text-slate-200 font-bold text-sm transition flex items-center justify-center gap-2 active:scale-95 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm">
+                <i data-lucide="sparkles" class="w-4 h-4 text-amber-500"></i>
+                <span>Ver Promociones</span>
+              </a>
+            </div>
+
+            <!-- Métricas de Confianza / Trust Badges -->
+            <div class="mt-10 pt-8 border-t border-slate-200/80 dark:border-slate-800 grid grid-cols-3 gap-4 text-center lg:text-left">
+              <div>
+                <div class="font-display font-extrabold text-lg sm:text-xl text-slate-900 dark:text-white">🛵 $3.000 - $5.000</div>
+                <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Domicilio al repartidor</div>
+              </div>
+              <div>
+                <div class="font-display font-extrabold text-lg sm:text-xl text-purple-600 dark:text-purple-400">🟣 300 472 0904</div>
+                <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Nequi: Luz Angela Valencia</div>
+              </div>
+              <div>
+                <div class="font-display font-extrabold text-lg sm:text-xl text-emerald-600 dark:text-emerald-400">&gt; $5.000 COP</div>
+                <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Pedido mínimo</div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Tarjeta de Presentación Tienda ECONOMAX -->
+          <div class="lg:col-span-5 relative">
+            <div class="relative mx-auto max-w-md bg-gradient-to-b from-white to-amber-50/50 dark:from-slate-800 dark:to-slate-900 p-4 sm:p-6 rounded-3xl border-2 border-amber-400/80 shadow-2xl shadow-amber-500/10 dark:shadow-slate-950/70">
+              
+              <!-- Badge superior -->
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2">
+                  <img src="logo.jpg" alt="Logo ECONOMAX" class="w-7 h-7 rounded-full object-cover border border-amber-400" />
+                  <span class="text-xs font-mono font-bold uppercase tracking-wider text-red-600 dark:text-red-400">Punto Oficial Pasto</span>
+                </div>
+                <span class="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-full">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                  Abierto Hoy
+                </span>
+              </div>
+
+              <!-- Imagen de la Tarjeta Oficial del Negocio -->
+              <div class="rounded-2xl overflow-hidden shadow-md border border-slate-200 dark:border-slate-700 bg-black">
+                <img src="tarjeta.jpg" alt="Servicios y Ubicación Tienda ECONOMAX" class="w-full h-auto object-cover hover:scale-105 transition-transform duration-500" />
+              </div>
+
+              <!-- Tarjeta Flotante Pequeña (Dirección) -->
+              <div class="mt-4 p-3 rounded-2xl bg-white dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 shadow-lg flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-red-600 text-white flex items-center justify-center shrink-0">
+                  <i data-lucide="map-pin" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <div class="text-xs font-bold text-slate-900 dark:text-white">Calle 19D # 44B 69 - Juanoy Bajo</div>
+                  <div class="text-[11px] text-slate-500 dark:text-slate-400">San Juan de Pasto, Nariño</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PILARES / BENEFICIOS ================= -->
+    <section class="py-10 bg-white dark:bg-slate-900/50 border-b border-slate-200/70 dark:border-slate-800/70">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
+          
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-2xl bg-red-50 dark:bg-red-950/60 border border-red-100 dark:border-red-900/50 flex items-center justify-center text-red-600 dark:text-red-400 shrink-0">
+              <i data-lucide="bike" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <h4 class="font-display font-bold text-sm text-slate-900 dark:text-white">Domicilios en Pasto</h4>
+              <p class="text-xs text-slate-500 dark:text-slate-400">$3.000 a $5.000 al repartidor</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-2xl bg-purple-50 dark:bg-purple-950/60 border border-purple-100 dark:border-purple-900/50 flex items-center justify-center text-purple-600 dark:text-purple-400 shrink-0">
+              <i data-lucide="smartphone" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <h4 class="font-display font-bold text-sm text-slate-900 dark:text-white">Pagos por Nequi</h4>
+              <p class="text-xs text-slate-500 dark:text-slate-400">300 472 0904 (Luz Angela)</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-2xl bg-amber-50 dark:bg-amber-950/60 border border-amber-100 dark:border-amber-900/50 flex items-center justify-center text-amber-600 dark:text-amber-400 shrink-0">
+              <i data-lucide="shopping-basket" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <h4 class="font-display font-bold text-sm text-slate-900 dark:text-white">Compras desde $5.000</h4>
+              <p class="text-xs text-slate-500 dark:text-slate-400">Variedad al mejor precio</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-950/60 border border-blue-100 dark:border-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 shrink-0">
+              <i data-lucide="receipt" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <h4 class="font-display font-bold text-sm text-slate-900 dark:text-white">Punto Practisistemas</h4>
+              <p class="text-xs text-slate-500 dark:text-slate-400">Recargas y pago de recibos</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= EXPLORADOR DE CATEGORÍAS (LAYOUT) ================= -->
+    <section class="py-16 sm:py-20" id="categorias">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-10">
+          <div>
+            <span class="text-xs font-mono font-bold tracking-widest text-red-600 dark:text-red-400 uppercase">Secciones de la Tienda</span>
+            <h2 class="font-display font-bold text-2xl sm:text-3xl text-slate-900 dark:text-white mt-1">
+              Categorías Principales
+            </h2>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-2 md:mt-0 max-w-md">
+            Encuentra todo lo que necesitas para tu hogar y tu familia en San Juan de Pasto.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          
+          <!-- Categoría 1: Canasta Familiar -->
+          <div onclick="selectCategoryFilter('canasta', true)" class="group relative rounded-3xl overflow-hidden bg-amber-50/60 dark:bg-slate-800 p-8 flex flex-col justify-between h-72 border-2 border-amber-200/80 dark:border-slate-700 hover:border-red-500 transition-all cursor-pointer shadow-sm hover:shadow-lg">
+            <div class="flex justify-between items-start">
+              <div class="w-12 h-12 rounded-2xl bg-amber-500 text-slate-950 shadow-md flex items-center justify-center group-hover:bg-red-600 group-hover:text-white transition-colors">
+                <i data-lucide="shopping-bag" class="w-6 h-6"></i>
+              </div>
+              <span class="text-xs font-mono font-bold text-amber-700 dark:text-amber-400">01</span>
+            </div>
+            <div>
+              <span class="text-[11px] font-semibold text-red-600 dark:text-red-400">Víveres & Abarrotes</span>
+              <h3 class="font-display font-bold text-xl text-slate-900 dark:text-white mt-0.5">Canasta Familiar</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Arroz, aceite, café, azúcar, panela y despensa</p>
+            </div>
+          </div>
+
+          <!-- Categoría 2: Utensilios de Cocina -->
+          <div onclick="selectCategoryFilter('cocina', true)" class="group relative rounded-3xl overflow-hidden bg-slate-100 dark:bg-slate-800 p-8 flex flex-col justify-between h-72 border border-slate-200/80 dark:border-slate-700 hover:border-red-500 transition-all cursor-pointer shadow-sm hover:shadow-lg">
+            <div class="flex justify-between items-start">
+              <div class="w-12 h-12 rounded-2xl bg-white dark:bg-slate-900 shadow-md flex items-center justify-center text-slate-900 dark:text-white group-hover:bg-red-600 group-hover:text-white transition-colors">
+                <i data-lucide="utensils" class="w-6 h-6"></i>
+              </div>
+              <span class="text-xs font-mono font-bold text-slate-400">02</span>
+            </div>
+            <div>
+              <span class="text-[11px] font-semibold text-red-600 dark:text-red-400">Hogar & Cocina</span>
+              <h3 class="font-display font-bold text-xl text-slate-900 dark:text-white mt-0.5">Utensilios de Cocina</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Calderos de aluminio, sartenes y cuchillos</p>
+            </div>
+          </div>
+
+          <!-- Categoría 3: Prendas de Vestir -->
+          <div onclick="selectCategoryFilter('ropa', true)" class="group relative rounded-3xl overflow-hidden bg-slate-100 dark:bg-slate-800 p-8 flex flex-col justify-between h-72 border border-slate-200/80 dark:border-slate-700 hover:border-red-500 transition-all cursor-pointer shadow-sm hover:shadow-lg">
+            <div class="flex justify-between items-start">
+              <div class="w-12 h-12 rounded-2xl bg-white dark:bg-slate-900 shadow-md flex items-center justify-center text-slate-900 dark:text-white group-hover:bg-red-600 group-hover:text-white transition-colors">
+                <i data-lucide="shirt" class="w-6 h-6"></i>
+              </div>
+              <span class="text-xs font-mono font-bold text-slate-400">03</span>
+            </div>
+            <div>
+              <span class="text-[11px] font-semibold text-red-600 dark:text-red-400">Moda & Calzado</span>
+              <h3 class="font-display font-bold text-xl text-slate-900 dark:text-white mt-0.5">Prendas de Vestir</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Ropa para dama, caballero, niños y medias</p>
+            </div>
+          </div>
+
+          <!-- Categoría 4: Ferretería & Variedades -->
+          <div onclick="selectCategoryFilter('ferreteria', true)" class="group relative rounded-3xl overflow-hidden bg-slate-100 dark:bg-slate-800 p-8 flex flex-col justify-between h-72 border border-slate-200/80 dark:border-slate-700 hover:border-red-500 transition-all cursor-pointer shadow-sm hover:shadow-lg">
+            <div class="flex justify-between items-start">
+              <div class="w-12 h-12 rounded-2xl bg-white dark:bg-slate-900 shadow-md flex items-center justify-center text-slate-900 dark:text-white group-hover:bg-red-600 group-hover:text-white transition-colors">
+                <i data-lucide="wrench" class="w-6 h-6"></i>
+              </div>
+              <span class="text-xs font-mono font-bold text-slate-400">04</span>
+            </div>
+            <div>
+              <span class="text-[11px] font-semibold text-red-600 dark:text-red-400">Hogar & Herramientas</span>
+              <h3 class="font-display font-bold text-xl text-slate-900 dark:text-white mt-0.5">Ferretería & Variedades</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Bombillos LED, herramientas, cables y pegantes</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= CATÁLOGO DE PRODUCTOS & PRECIOS ================= -->
+    <section class="py-16 sm:py-24 bg-white dark:bg-slate-900/40 border-y border-slate-200/70 dark:border-slate-800/70" id="catalogo">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Encabezado de la Sección -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+          <div>
+            <span class="text-xs font-mono font-bold tracking-widest text-red-600 dark:text-red-400 uppercase">Vitrina Online</span>
+            <h2 class="font-display font-bold text-3xl sm:text-4xl text-slate-900 dark:text-white mt-1">
+              Catálogo de Productos & Precios
+            </h2>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mt-2 max-w-xl">
+              Agrega tus productos al pedido. Recuerda que el mínimo de compra es de <strong>$5.000 COP</strong> y el domicilio se cancela en efectivo al repartidor.
+            </p>
+          </div>
+
+          <!-- Selector de Ordenamiento -->
+          <div class="flex items-center gap-3">
+            <span class="text-xs font-medium text-slate-500 shrink-0">Ordenar por:</span>
+            <select id="sort-selector" class="bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-semibold rounded-xl px-3 py-2 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-red-500 cursor-pointer">
+              <option value="popular">Más Populares</option>
+              <option value="price-low">Menor Precio</option>
+              <option value="price-high">Mayor Precio</option>
+              <option value="rating">Mejor Calificación</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Filtros por Categoría (Pestañas Interactivas) -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-4 mb-8 no-scrollbar">
+          <button type="button" onclick="selectCategoryFilter('all')" data-category="all" class="px-5 py-2.5 rounded-full text-xs font-bold bg-red-600 text-white shadow-md transition-all shrink-0 cursor-pointer">
+            Todos los Productos
+          </button>
+          <button type="button" onclick="selectCategoryFilter('canasta')" data-category="canasta" class="px-5 py-2.5 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all shrink-0 cursor-pointer">
+            🥫 Canasta Familiar & Lácteos
+          </button>
+          <button type="button" onclick="selectCategoryFilter('snacks')" data-category="snacks" class="px-5 py-2.5 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all shrink-0 cursor-pointer">
+            🍿 Snacks & Dulces
+          </button>
+          <button type="button" onclick="selectCategoryFilter('bebidas')" data-category="bebidas" class="px-5 py-2.5 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all shrink-0 cursor-pointer">
+            🥤 Bebidas
+          </button>
+          <button type="button" onclick="selectCategoryFilter('aseo')" data-category="aseo" class="px-5 py-2.5 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all shrink-0 cursor-pointer">
+            🧼 Aseo & Limpieza
+          </button>
+          <button type="button" onclick="selectCategoryFilter('cocina')" data-category="cocina" class="px-5 py-2.5 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all shrink-0 cursor-pointer">
+            🍳 Utensilios (Dessini & Swiss Home)
+          </button>
+          <button type="button" onclick="selectCategoryFilter('ropa')" data-category="ropa" class="px-5 py-2.5 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all shrink-0 cursor-pointer">
+            👕 Prendas de Vestir ($2.000 - $5.000)
+          </button>
+          <button type="button" onclick="selectCategoryFilter('ferreteria')" data-category="ferreteria" class="px-5 py-2.5 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all shrink-0 cursor-pointer">
+            🔧 Ferretería & Variedades
+          </button>
+        </div>
+
+        <!-- Grilla de Productos Reactiva (Inyectada desde app.js) -->
+        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+          <!-- Las tarjetas se construyen dinámicamente -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= BANNER DE OFERTA Y COMBO AHORRO ================= -->
+    <section class="py-16 sm:py-20" id="ofertas">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="relative rounded-3xl overflow-hidden bg-gradient-to-br from-red-950 via-slate-900 to-amber-950 p-8 sm:p-12 lg:p-16 text-white border border-amber-500/30 shadow-2xl">
+          
+          <div class="relative z-10 max-w-2xl">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 text-xs font-bold border border-amber-400/30 mb-4">
+              <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-400"></i> COMBO AHORRO SEMANAL
+            </div>
+
+            <h2 class="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl tracking-tight leading-tight">
+              Promociones de la semana en ECONOMAX
+            </h2>
+
+            <p class="mt-4 text-slate-300 text-sm sm:text-base leading-relaxed">
+              Arma tu mercado con combos de despensa y artículos para el hogar a precio preferencial con entrega a domicilio en Pasto.
+            </p>
+
+            <!-- Contador Regresivo -->
+            <div class="mt-8 flex items-center gap-3 sm:gap-4 font-mono font-bold text-center">
+              <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 sm:p-4 min-w-[72px] border border-white/10">
+                <span class="block text-2xl sm:text-3xl text-amber-300" id="timer-hours">05</span>
+                <span class="text-[10px] text-slate-400 uppercase font-sans font-medium">Horas</span>
+              </div>
+              <span class="text-2xl text-slate-500">:</span>
+              <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 sm:p-4 min-w-[72px] border border-white/10">
+                <span class="block text-2xl sm:text-3xl text-amber-300" id="timer-minutes">42</span>
+                <span class="text-[10px] text-slate-400 uppercase font-sans font-medium">Minutos</span>
+              </div>
+              <span class="text-2xl text-slate-500">:</span>
+              <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 sm:p-4 min-w-[72px] border border-white/10">
+                <span class="block text-2xl sm:text-3xl text-amber-300" id="timer-seconds">18</span>
+                <span class="text-[10px] text-slate-400 uppercase font-sans font-medium">Segundos</span>
+              </div>
+            </div>
+
+            <!-- Botón de acción -->
+            <div class="mt-8 flex flex-wrap gap-4">
+              <a href="#catalogo" class="inline-flex items-center gap-2 px-6 py-3.5 bg-amber-400 hover:bg-amber-300 text-slate-950 rounded-xl font-bold text-sm shadow-lg shadow-amber-400/20 transition-all">
+                <span>Ver Productos en Descuento</span>
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </a>
+              <a href="#catalogo" class="inline-flex items-center gap-2 px-6 py-3.5 bg-white/10 hover:bg-white/20 text-white rounded-xl font-bold text-sm border border-white/20 transition-all">
+                <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+                <span>Ver Todo el Catálogo</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Arte decorativo de fondo -->
+          <div class="absolute -right-16 -bottom-16 w-96 h-96 bg-red-600/15 rounded-full blur-3xl pointer-events-none"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SERVICIOS EN NUESTRO PUNTO FÍSICO ================= -->
+    <section class="py-16 sm:py-20 bg-slate-100/70 dark:bg-slate-900/60 border-y border-slate-200/70 dark:border-slate-800/70" id="servicios">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-2xl mx-auto mb-12">
+          <span class="text-xs font-mono font-bold tracking-widest text-red-600 dark:text-red-400 uppercase">Servicios Adicionales</span>
+          <h2 class="font-display font-bold text-2xl sm:text-3xl text-slate-900 dark:text-white mt-1">
+            Punto de Servicios en Juanoy Bajo
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-2">
+            Visítanos en <strong>Calle 19D # 44B 69 - Barrio Juanoy Bajo, Pasto</strong>. Contamos con corresponsal y servicios presenciales para la comunidad:
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          
+          <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md transition">
+            <div class="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-4">
+              <i data-lucide="receipt" class="w-6 h-6"></i>
+            </div>
+            <h3 class="font-display font-bold text-base text-slate-900 dark:text-white">Punto Practisistemas</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">
+              Pago de servicios públicos en Pasto: facturas de agua (Empopasto), energía (Cedenar), gas natural (Alcanos), televisión e internet.
+            </p>
+          </div>
+
+          <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md transition">
+            <div class="w-12 h-12 rounded-2xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center mb-4">
+              <i data-lucide="smartphone" class="w-6 h-6"></i>
+            </div>
+            <h3 class="font-display font-bold text-base text-slate-900 dark:text-white">Recargas a Todo Operador</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">
+              Recargas y paquetes de minutos y datos para Claro, Movistar, Tigo, Wom, Virgin Mobile y Éxito de forma instantánea.
+            </p>
+          </div>
+
+          <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md transition">
+            <div class="w-12 h-12 rounded-2xl bg-red-50 dark:bg-red-950/60 text-red-600 dark:text-red-400 flex items-center justify-center mb-4">
+              <i data-lucide="printer" class="w-6 h-6"></i>
+            </div>
+            <h3 class="font-display font-bold text-base text-slate-900 dark:text-white">Fotocopias e Impresiones</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">
+              Servicio de copias blanco y negro y color, impresiones de documentos, escaneo y artículos de papelería y variedades.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= BOLETÍN DE NOVEDADES ================= -->
+    <section class="py-16 sm:py-20 bg-white dark:bg-slate-900">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div class="w-14 h-14 rounded-2xl bg-amber-50 dark:bg-amber-950/80 text-amber-600 dark:text-amber-400 flex items-center justify-center mx-auto mb-4 border border-amber-200 dark:border-amber-800">
+          <i data-lucide="bell-ring" class="w-7 h-7"></i>
+        </div>
+        <h2 class="font-display font-bold text-2xl sm:text-3xl text-slate-900 dark:text-white">
+          Recibe promociones y ofertas de ECONOMAX
+        </h2>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mt-2 max-w-md mx-auto">
+          Entérate primero de la llegada de nuevos víveres, rebajas en utensilios de cocina y descuentos especiales para Pasto.
+        </p>
+
+        <form id="newsletter-form" class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto">
+          <input 
+            type="email" 
+            id="newsletter-email" 
+            required 
+            placeholder="tu.correo@ejemplo.com" 
+            class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl px-4 py-3 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-red-500 transition"
+          />
+          <button type="submit" class="w-full sm:w-auto px-6 py-3 bg-red-600 hover:bg-red-700 active:scale-95 text-white font-bold text-xs sm:text-sm rounded-2xl shrink-0 transition shadow-md shadow-red-600/20">
+            Suscribirme
+          </button>
+        </form>
+        <p class="text-[11px] text-slate-400 mt-3">Sin spam. Solo promociones reales para tu familia.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= PIE DE PÁGINA (FOOTER) ================= -->
+  <footer class="bg-slate-900 text-slate-300 border-t border-slate-800 pt-16 pb-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-8 mb-12">
+        
+        <!-- Identidad de Marca Oficial -->
+        <div class="col-span-2">
+          <div class="flex items-center gap-3 mb-4">
+            <img src="logo.jpg" alt="Tienda ECONOMAX" class="w-12 h-12 rounded-full object-cover border-2 border-amber-400 shadow-md" />
+            <div>
+              <span class="font-display font-extrabold text-xl text-white tracking-tight">TIENDA <span class="text-red-500">ECONOMAX</span></span>
+              <p class="text-xs text-amber-400 font-bold uppercase tracking-wider">Lo mejor para tu familia</p>
+            </div>
+          </div>
+          <p class="text-xs text-slate-400 leading-relaxed max-w-sm">
+            Tu tienda de confianza en San Juan de Pasto. Canasta familiar, utensilios de cocina, ropa, ferretería y variedades. Domicilios directos a tu puerta.
+          </p>
+
+          <div class="mt-4 space-y-1.5 text-xs text-slate-300">
+            <p class="flex items-center gap-2">
+              <i data-lucide="map-pin" class="w-4 h-4 text-red-500 shrink-0"></i>
+              <span>Calle 19D # 44B 69 - Barrio Juanoy Bajo, San Juan de Pasto</span>
+            </p>
+            <p class="flex items-center gap-2">
+              <i data-lucide="phone" class="w-4 h-4 text-amber-400 shrink-0"></i>
+              <span>WhatsApp / Pedidos: <strong>+57 300 472 0904</strong></span>
+            </p>
+            <p class="flex items-center gap-2">
+              <i data-lucide="credit-card" class="w-4 h-4 text-purple-400 shrink-0"></i>
+              <span>Nequi: <strong>300 472 0904</strong> (Luz Angela Valencia Sinza)</span>
+            </p>
+          </div>
+
+          <!-- Redes Sociales Oficiales (Facebook y WhatsApp) -->
+          <div class="flex items-center gap-3 mt-6">
+            <a href="https://facebook.com" target="_blank" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-blue-600 text-slate-400 hover:text-white flex items-center justify-center transition" title="Síguenos en Facebook">
+              <i data-lucide="facebook" class="w-4 h-4"></i>
+            </a>
+            <a href="https://wa.me/573004720904?text=Hola%20Tienda%20ECONOMAX" target="_blank" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-emerald-600 text-slate-400 hover:text-white flex items-center justify-center transition" title="Escríbenos a WhatsApp">
+              <i data-lucide="message-circle" class="w-4 h-4"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Columna Tienda -->
+        <div>
+          <h4 class="text-xs font-bold font-mono uppercase tracking-wider text-amber-400 mb-4">Catálogo</h4>
+          <ul class="space-y-2.5 text-xs text-slate-400">
+            <li><a href="#catalogo" class="hover:text-white transition">Canasta Familiar</a></li>
+            <li><a href="#catalogo" class="hover:text-white transition">Utensilios de Cocina</a></li>
+            <li><a href="#catalogo" class="hover:text-white transition">Prendas de Vestir</a></li>
+            <li><a href="#catalogo" class="hover:text-white transition">Ferretería & Variedades</a></li>
+            <li><a href="#ofertas" class="hover:text-white transition">Combos de Ahorro</a></li>
+          </ul>
+        </div>
+
+        <!-- Columna Domicilios & Pagos -->
+        <div>
+          <h4 class="text-xs font-bold font-mono uppercase tracking-wider text-amber-400 mb-4">Condiciones</h4>
+          <ul class="space-y-2.5 text-xs text-slate-400">
+            <li><span class="text-slate-200 font-semibold">Pedido Mínimo:</span> $5.000 COP</li>
+            <li><span class="text-slate-200 font-semibold">Domicilio:</span> $3.000 - $5.000 COP</li>
+            <li><span class="text-slate-200 font-semibold">Pago Domicilio:</span> Al repartidor en efectivo</li>
+            <li><span class="text-slate-200 font-semibold">Pago Productos:</span> Por Nequi al 300 472 0904</li>
+            <li><span class="text-slate-200 font-semibold">Cobertura:</span> Todo Pasto urbano</li>
+          </ul>
+        </div>
+
+        <!-- Columna Punto Físico -->
+        <div>
+          <h4 class="text-xs font-bold font-mono uppercase tracking-wider text-amber-400 mb-4">Servicios Físicos</h4>
+          <ul class="space-y-2.5 text-xs text-slate-400">
+            <li><a href="#servicios" class="hover:text-white transition">Punto Practisistemas</a></li>
+            <li><a href="#servicios" class="hover:text-white transition">Pago de Servicios Públicos</a></li>
+            <li><a href="#servicios" class="hover:text-white transition">Recargas a Todo Operador</a></li>
+            <li><a href="#servicios" class="hover:text-white transition">Fotocopias e Impresiones</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Métodos de pago y Copyright -->
+      <div class="pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+        <p>© 2026 Tienda ECONOMAX Pasto. "Lo mejor para tu familia". Todos los derechos reservados.</p>
+        
+        <!-- Badges de Métodos Oficiales -->
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-1 bg-purple-950/80 border border-purple-800 rounded-md text-[11px] font-bold text-purple-300">🟣 NEQUI</span>
+          <span class="px-2.5 py-1 bg-amber-950/80 border border-amber-800 rounded-md text-[11px] font-bold text-amber-300">💵 EFECTIVO AL REPARTIDOR</span>
+          <span class="px-2.5 py-1 bg-blue-950/80 border border-blue-800 rounded-md text-[11px] font-bold text-blue-300">⚡ PRACTISISTEMAS</span>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ================= CARRITO DESLIZANTE (CART DRAWER) ================= -->
+  <div id="cart-drawer" class="fixed inset-0 z-50 pointer-events-none transition-all duration-300">
+    <!-- Backdrop oscuro -->
+    <div class="drawer-backdrop absolute inset-0 bg-slate-900/60 backdrop-blur-sm opacity-0" onclick="closeCartDrawer()"></div>
+
+    <!-- Panel deslizante lateral derecho -->
+    <div class="drawer-panel absolute top-0 right-0 bottom-0 w-full max-w-md bg-white dark:bg-slate-900 shadow-2xl flex flex-col translate-x-full border-l border-slate-200 dark:border-slate-800">
+      
+      <!-- Header del Carrito -->
+      <div class="p-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-amber-50/50 dark:bg-slate-900">
+        <div class="flex items-center gap-2.5">
+          <img src="logo.jpg" alt="ECONOMAX" class="w-7 h-7 rounded-full object-cover border border-amber-400" />
+          <h3 class="font-display font-bold text-base text-slate-900 dark:text-white">Tu Pedido ECONOMAX</h3>
+        </div>
+        <button onclick="closeCartDrawer()" class="p-2 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Barra Informativa del Domicilio en Pasto -->
+      <div class="px-5 py-2.5 bg-amber-100/70 dark:bg-amber-950/40 border-b border-amber-200 dark:border-amber-900/50 text-[11px] text-amber-900 dark:text-amber-200 flex items-center justify-between">
+        <span class="flex items-center gap-1.5">
+          <i data-lucide="bike" class="w-4 h-4 text-red-600"></i>
+          <span>Domicilio: <strong>$3.000 - $5.000 COP</strong> (al repartidor)</span>
+        </span>
+        <span class="font-bold text-emerald-600 dark:text-emerald-400">Mín: $5.000</span>
+      </div>
+
+      <!-- Lista de Ítems del Carrito (Scrollable) -->
+      <div class="flex-1 overflow-y-auto p-5 space-y-3" id="cart-items-container">
+        <!-- Generado dinámicamente con JavaScript -->
+      </div>
+
+      <!-- Estado Vacío -->
+      <div id="cart-empty-state" class="hidden flex-1 flex flex-col items-center justify-center p-8 text-center">
+        <div class="w-16 h-16 rounded-3xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400 mb-3">
+          <i data-lucide="shopping-basket" class="w-8 h-8 opacity-40 text-red-500"></i>
+        </div>
+        <h4 class="font-display font-bold text-slate-800 dark:text-slate-200">Tu canasta está vacía</h4>
+        <p class="text-xs text-slate-400 mt-1 max-w-xs">Agrega víveres, utensilios o prendas desde el catálogo.</p>
+        <button onclick="closeCartDrawer()" class="mt-4 px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-xl">
+          Ver Catálogo
+        </button>
+      </div>
+
+      <!-- Footer del Carrito con Resumen y Checkout -->
+      <div class="p-5 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/80">
+        
+        <!-- Input de Cupón -->
+        <div class="flex gap-2 mb-4">
+          <input 
+            type="text" 
+            id="coupon-input" 
+            placeholder="Cupón (ej: ECONOMAX)" 
+            class="flex-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs uppercase focus:outline-none focus:ring-2 focus:ring-red-500"
+          />
+          <button id="apply-coupon-btn" onclick="applyCoupon()" class="px-3.5 py-2 bg-slate-800 dark:bg-slate-700 hover:bg-slate-900 text-white rounded-xl text-xs font-semibold shrink-0 transition">
+            Aplicar
+          </button>
+        </div>
+
+        <!-- Desglose de Precios -->
+        <div class="space-y-1.5 text-xs text-slate-500 dark:text-slate-400 mb-4">
+          <div class="flex justify-between">
+            <span>Subtotal Productos</span>
+            <span class="font-semibold text-slate-800 dark:text-slate-200" id="cart-subtotal">$0 COP</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Domicilio estimado</span>
+            <span class="font-semibold text-amber-600 dark:text-amber-400" id="cart-shipping">$3.000 - $5.000 (al repartidor)</span>
+          </div>
+          <div class="flex justify-between text-emerald-600 dark:text-emerald-400 hidden">
+            <span>Descuento Cupón</span>
+            <span class="font-bold" id="cart-discount">-$0 COP</span>
+          </div>
+          <div class="flex justify-between text-sm font-bold text-slate-900 dark:text-white pt-2 border-t border-slate-200 dark:border-slate-800">
+            <span>Total a pagar por Nequi</span>
+            <span class="font-display text-base text-red-600 dark:text-red-400" id="cart-total">$0 COP</span>
+          </div>
+        </div>
+
+        <!-- Botón Checkout -->
+        <button onclick="openCheckoutModal()" class="w-full py-3.5 bg-red-600 hover:bg-red-700 active:scale-95 text-white rounded-2xl font-bold text-sm shadow-xl shadow-red-600/25 transition-all flex items-center justify-center gap-2">
+          <span>Continuar al Pedido & Pago</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= MODAL VISTA RÁPIDA (QUICK VIEW) ================= -->
+  <div id="quick-view-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+    <!-- Backdrop -->
+    <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeQuickView()"></div>
+
+    <!-- Contenido del Modal -->
+    <div class="relative w-full max-w-2xl bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden z-10 animate-fade-in">
+      <button onclick="closeQuickView()" class="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:text-slate-800 dark:hover:text-white transition">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+
+      <div class="grid grid-cols-1 md:grid-cols-2">
+        <!-- Visual Mockup / Foto Real -->
+        <div class="bg-gradient-to-b from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 p-8 flex flex-col items-center justify-center relative min-h-[300px]">
+          <div id="qv-image-box" class="w-full flex items-center justify-center">
+            <div class="w-44 h-44 rounded-3xl bg-white/80 dark:bg-slate-800/80 shadow-inner flex flex-col items-center justify-center text-center p-4 border border-white/60 dark:border-slate-700">
+              <i data-lucide="image" class="w-10 h-10 text-red-500 mb-2 opacity-70"></i>
+              <span class="text-xs font-bold text-slate-700 dark:text-slate-300">Foto del Producto</span>
+            </div>
+          </div>
+          <span id="qv-discount" class="absolute top-4 left-4 text-xs font-bold bg-rose-500 text-white px-2.5 py-1 rounded-full shadow-sm">-20%</span>
+        </div>
+
+        <!-- Detalles del Producto -->
+        <div class="p-6 sm:p-8 flex flex-col justify-between">
+          <div>
+            <span id="qv-category" class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Minimal Essentials</span>
+            <h3 id="qv-title" class="font-display font-bold text-xl text-slate-900 dark:text-white mt-1">Diseño Prototipo Alpha</h3>
+            
+            <div class="flex items-center gap-2 mt-2 text-xs">
+              <div class="flex text-amber-400">
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400"></i>
+              </div>
+              <span id="qv-rating" class="text-slate-500 font-medium">4.9 (142 valoraciones)</span>
+            </div>
+
+            <!-- Precio -->
+            <div class="flex items-baseline gap-2.5 mt-4">
+              <span id="qv-price" class="font-display font-extrabold text-2xl text-slate-900 dark:text-white">$120.00</span>
+              <span id="qv-original-price" class="text-sm line-through text-slate-400">$150.00</span>
+            </div>
+
+            <p id="qv-description" class="text-xs text-slate-600 dark:text-slate-400 mt-3 leading-relaxed">
+              Estructura visual con proporción áurea de tarjeta de producto.
+            </p>
+
+            <!-- Selector de Variantes (Colores) -->
+            <div class="mt-4">
+              <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Color / Acabado</label>
+              <div id="qv-colors" class="flex items-center gap-2"></div>
+            </div>
+
+            <!-- Selector de Tamaños / Tallas -->
+            <div class="mt-4">
+              <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Talla / Especificación</label>
+              <div id="qv-sizes" class="flex flex-wrap gap-1.5"></div>
+            </div>
+          </div>
+
+          <!-- Botón Agregar desde modal -->
+          <div class="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800">
+            <button onclick="addQuickViewToCart()" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white rounded-xl font-bold text-xs shadow-lg shadow-indigo-600/20 transition flex items-center justify-center gap-2">
+              <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+              <span>Agregar a la Bolsa</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= SIMULADOR DE CHECKOUT (3 PASOS) ================= -->
+  <div id="checkout-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+    <!-- Backdrop -->
+    <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeCheckoutModal()"></div>
+
+    <!-- Modal Box -->
+    <div class="relative w-full max-w-xl bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden z-10 animate-fade-in">
+      
+      <!-- Barra superior con indicador de pasos -->
+      <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-amber-50/50 dark:bg-slate-900">
+        <div class="flex items-center gap-2.5">
+          <img src="logo.jpg" alt="ECONOMAX" class="w-6 h-6 rounded-full object-cover border border-amber-400" />
+          <span class="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">Checkout Seguro • Tienda ECONOMAX</span>
+        </div>
+        <button onclick="closeCheckoutModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Indicador visual de los 3 pasos -->
+      <div class="px-6 pt-4 pb-2 flex items-center justify-between border-b border-slate-100 dark:border-slate-800/60 bg-slate-50/50 dark:bg-slate-800/30">
+        <div class="flex items-center gap-2">
+          <span class="checkout-step-dot w-6 h-6 rounded-full bg-red-600 text-white text-[11px] font-bold flex items-center justify-center">1</span>
+          <span class="text-xs font-semibold text-slate-700 dark:text-slate-300">Entrega</span>
+        </div>
+        <div class="h-0.5 w-12 bg-slate-200 dark:bg-slate-700"></div>
+        <div class="flex items-center gap-2">
+          <span class="checkout-step-dot w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-400 text-[11px] font-bold flex items-center justify-center">2</span>
+          <span class="text-xs font-semibold text-slate-700 dark:text-slate-300">Pago Seguro</span>
+        </div>
+        <div class="h-0.5 w-12 bg-slate-200 dark:bg-slate-700"></div>
+        <div class="flex items-center gap-2">
+          <span class="checkout-step-dot w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-400 text-[11px] font-bold flex items-center justify-center">3</span>
+          <span class="text-xs font-semibold text-slate-700 dark:text-slate-300">Confirmación & Tracking</span>
+        </div>
+      </div>
+
+      <!-- Paso 1: Datos de Envío en Pasto -->
+      <div id="checkout-step-1" class="p-6">
+        <h4 class="font-display font-bold text-base text-slate-900 dark:text-white mb-1">Datos de Entrega en Pasto</h4>
+        <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-4">Ingresa tu dirección para coordinar el despacho con el repartidor.</p>
+        
+        <div class="space-y-3 text-xs">
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Nombre Completo *</label>
+              <input type="text" id="checkout-name" placeholder="Tu nombre y apellido" class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-red-500 focus:outline-none" />
+            </div>
+            <div>
+              <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Celular / WhatsApp *</label>
+              <input type="tel" id="checkout-phone" placeholder="Ej: 315 123 4567" class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-red-500 focus:outline-none" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Dirección en Pasto *</label>
+              <input type="text" id="checkout-address" placeholder="Calle, Carrera, Manzana, Casa" class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-red-500 focus:outline-none" />
+            </div>
+            <div>
+              <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Barrio / Sector en Pasto *</label>
+              <input type="text" id="checkout-barrio" placeholder="Ej: Juanoy, Pandiaco, Maridíaz, Centro..." list="barrios-list" class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-red-500 focus:outline-none" />
+              <datalist id="barrios-list">
+                <option value="Juanoy Bajo">
+                <option value="Juanoy Alto">
+                <option value="Pandiaco">
+                <option value="Maridíaz">
+                <option value="Centro">
+                <option value="Morasurco">
+                <option value="Palermo">
+                <option value="Bomboná">
+                <option value="San Juan">
+                <option value="Chapal">
+                <option value="Catambuco">
+                <option value="Obonuco">
+                <option value="Jongovito">
+                <option value="Tamasagra">
+                <option value="Torobajo">
+                <option value="Lorenzo de Aldana">
+                <option value="Las Lajas">
+                <option value="Santiago">
+                <option value="Anganoy">
+                <option value="Santa Bárbara">
+                <option value="Corazón de Jesús">
+                <option value="El Rosario">
+                <option value="Miraflores">
+                <option value="Santa Mónica">
+                <option value="Panamericana">
+                <option value="Mijitayo">
+                <option value="San Ignacio">
+                <option value="La Colina">
+                <option value="Fátima">
+                <option value="Navarrete">
+                <option value="Aranda">
+                <option value="El Pilar">
+              </datalist>
+            </div>
+          </div>
+
+          <div>
+            <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Indicaciones para el Domiciliario (Opcional)</label>
+            <input type="text" id="checkout-notes" placeholder="Ej: Casa esquinera, timbre blanco, portón negro..." class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-red-500 focus:outline-none" />
+          </div>
+
+          <div class="p-3 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-900/60 text-[11px] text-amber-900 dark:text-amber-200 flex items-center gap-2.5">
+            <i data-lucide="info" class="w-5 h-5 text-amber-600 shrink-0"></i>
+            <span><strong>Regla de Domicilio en Pasto:</strong> El valor del envío ($3.000 a $5.000 COP según el barrio) se le cancela directamente al repartidor en tu puerta.</span>
+          </div>
+        </div>
+
+        <div class="mt-6 flex justify-end">
+          <button onclick="setCheckoutStep(2)" class="px-6 py-3 bg-red-600 hover:bg-red-700 active:scale-95 text-white font-bold text-xs rounded-xl flex items-center gap-2 transition shadow-md shadow-red-600/20">
+            <span>Continuar a Pago</span>
+            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Paso 2: Pasarela de Pagos Dinámica (Estilo Temu & Tipti) -->
+      <div id="checkout-step-2" class="p-6 hidden">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h4 class="font-display font-bold text-base text-slate-900 dark:text-white">Método de Pago Seguro (Colombia)</h4>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400">Selecciona cómo deseas pagar tu compra en Pasto</p>
+          </div>
+          <div class="text-right">
+            <span class="text-[10px] text-slate-400 block uppercase font-mono">Total a Pagar</span>
+            <span id="checkout-pay-total" class="font-display font-extrabold text-lg text-red-600 dark:text-red-400">$0 COP</span>
+          </div>
+        </div>
+
+        <!-- Opciones de Pago Interactivas -->
+        <div class="space-y-3">
+          
+          <!-- Opción 1: Tarjeta de Crédito / Débito -->
+          <div class="rounded-2xl border-2 border-red-600 dark:border-red-500 transition-all overflow-hidden payment-card-option" id="card-option-box">
+            <label class="flex items-center justify-between p-3.5 cursor-pointer bg-red-50/30 dark:bg-slate-800/60">
+              <div class="flex items-center gap-3">
+                <input type="radio" name="payment-method-type" value="card" checked onchange="togglePaymentMethodUI('card')" class="text-red-600 focus:ring-red-500" />
+                <div>
+                  <span class="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                    💳 Tarjeta de Crédito / Débito (Bancos Colombia)
+                    <span class="text-[9px] bg-emerald-100 text-emerald-700 font-bold px-1.5 py-0.5 rounded">Inmediato</span>
+                  </span>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400">Visa, Mastercard (Bancolombia, Davivienda, etc.)</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-1.5 opacity-90">
+                <span class="text-[10px] font-mono font-bold bg-blue-600 text-white px-2 py-0.5 rounded">VISA</span>
+                <span class="text-[10px] font-mono font-bold bg-amber-600 text-white px-2 py-0.5 rounded">MC</span>
+              </div>
+            </label>
+
+            <!-- Formulario de Tarjeta Interactivo -->
+            <div id="payment-form-card" class="p-4 pt-2 bg-slate-50/70 dark:bg-slate-800/40 border-t border-slate-200 dark:border-slate-700 space-y-3">
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">Número de Tarjeta</label>
+                <div class="relative">
+                  <input type="text" id="card-number" placeholder="4000 1234 5678 9010" maxlength="19" oninput="formatCardNumber(this)" class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl pl-3 pr-10 py-2 text-xs focus:ring-2 focus:ring-red-500 focus:outline-none font-mono" />
+                  <span id="card-brand-icon" class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400 font-mono">💳</span>
+                </div>
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">Nombre del Titular</label>
+                <input type="text" id="card-holder" placeholder="Como figura en la tarjeta" class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-red-500 focus:outline-none" />
+              </div>
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">Vencimiento (MM/AA)</label>
+                  <input type="text" id="card-expiry" placeholder="12/28" maxlength="5" oninput="formatExpiry(this)" class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-red-500 focus:outline-none font-mono" />
+                </div>
+                <div>
+                  <label class="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">Código de Seguridad (CVV)</label>
+                  <input type="password" id="card-cvv" placeholder="123" maxlength="4" class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-red-500 focus:outline-none font-mono" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Opción 2: Nequi / PSE Pago En Línea -->
+          <div class="rounded-2xl border-2 border-slate-200 dark:border-slate-800 transition-all overflow-hidden payment-card-option" id="nequi-option-box">
+            <label class="flex items-center justify-between p-3.5 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50">
+              <div class="flex items-center gap-3">
+                <input type="radio" name="payment-method-type" value="nequi" onchange="togglePaymentMethodUI('nequi')" class="text-purple-600 focus:ring-purple-500" />
+                <div>
+                  <span class="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                    🟣 Nequi / PSE Débito Directo (Colombia)
+                    <span class="text-[9px] bg-purple-100 text-purple-700 font-bold px-1.5 py-0.5 rounded">En Línea</span>
+                  </span>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400">Notificación instantánea a tu app Nequi Colombia</span>
+                </div>
+              </div>
+              <span class="text-xs font-mono font-bold text-purple-600">300 472 0904</span>
+            </label>
+
+            <!-- Formulario Nequi Interactivo -->
+            <div id="payment-form-nequi" class="hidden p-4 pt-2 bg-purple-50/40 dark:bg-purple-950/20 border-t border-purple-200 dark:border-purple-900/50 space-y-3">
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">Número de Celular de tu Cuenta Nequi Colombia</label>
+                <input type="tel" id="nequi-phone-input" placeholder="Ej: 300 123 4567" class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-purple-500 focus:outline-none font-mono" />
+                <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-1">Recibirás la solicitud de aprobación de pago directamente en tu app Nequi en Colombia.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Opción 3: Pago Contra Entrega en Efectivo (Estilo Tipti) -->
+          <div class="rounded-2xl border-2 border-slate-200 dark:border-slate-800 transition-all overflow-hidden payment-card-option" id="cash-option-box">
+            <label class="flex items-center justify-between p-3.5 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50">
+              <div class="flex items-center gap-3">
+                <input type="radio" name="payment-method-type" value="cash" onchange="togglePaymentMethodUI('cash')" class="text-amber-600 focus:ring-amber-500" />
+                <div>
+                  <span class="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                    💵 Pago Contra Entrega en Efectivo (Pasto)
+                    <span class="text-[9px] bg-amber-100 text-amber-800 font-bold px-1.5 py-0.5 rounded">En tu puerta</span>
+                  </span>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400">Pagas en efectivo en pesos colombianos al repartidor al recibir</span>
+                </div>
+              </div>
+              <span class="text-sm">🛵</span>
+            </label>
+
+            <!-- Formulario Efectivo Interactivo -->
+            <div id="payment-form-cash" class="hidden p-4 pt-2 bg-amber-50/40 dark:bg-amber-950/20 border-t border-amber-200 dark:border-amber-900/50 space-y-3">
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">¿Con qué billete vas a pagar? (Para llevarte cambio exacto)</label>
+                <select id="cash-change-amount" class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-amber-500 focus:outline-none cursor-pointer">
+                  <option value="exacto">Pago exacto (sin cambio)</option>
+                  <option value="10000">Billete de $10.000 COP</option>
+                  <option value="20000">Billete de $20.000 COP</option>
+                  <option value="50000" selected>Billete de $50.000 COP</option>
+                  <option value="100000">Billete de $100.000 COP</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Badges de Seguridad estilo Temu / Tipti -->
+        <div class="mt-4 p-3 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-[11px] text-slate-600 dark:text-slate-300 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600 shrink-0"></i>
+            <span><strong>Protección al Comprador:</strong> Garantía de entrega o reembolso</span>
+          </div>
+          <div class="flex items-center gap-1 text-[10px] font-mono text-slate-400">
+            <i data-lucide="lock" class="w-3 h-3 text-slate-400"></i>
+            <span>SSL 256-bit</span>
+          </div>
+        </div>
+
+        <!-- Botones de Acción -->
+        <div class="mt-6 flex justify-between items-center">
+          <button onclick="setCheckoutStep(1)" class="text-xs text-slate-500 hover:text-slate-800 dark:hover:text-white font-medium">
+            ← Volver a Dirección
+          </button>
+          <button id="pay-now-btn" onclick="processPaymentAndConfirm()" class="px-8 py-3.5 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 active:scale-95 text-white font-bold text-xs rounded-xl flex items-center gap-2 transition shadow-lg shadow-red-600/30 cursor-pointer">
+            <i data-lucide="lock" class="w-4 h-4"></i>
+            <span id="pay-now-btn-text">🔒 Pagar Ahora</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Modal Overlay: Procesando Pago Seguro (Animación Estilo Temu / Tipti) -->
+      <div id="payment-processing-overlay" class="absolute inset-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md z-20 hidden flex flex-col items-center justify-center p-6 text-center animate-fade-in">
+        <div class="relative w-20 h-20 mb-4 flex items-center justify-center">
+          <div class="absolute inset-0 rounded-full border-4 border-slate-200 dark:border-slate-800"></div>
+          <div class="absolute inset-0 rounded-full border-4 border-red-600 border-t-transparent animate-spin"></div>
+          <i data-lucide="shield-check" class="w-8 h-8 text-red-600"></i>
+        </div>
+        <h4 class="font-display font-bold text-lg text-slate-900 dark:text-white">Procesando Pago Seguro...</h4>
+        <p id="processing-status-text" class="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-xs">
+          Validando pasarela de pago y encriptación de seguridad bancaria...
+        </p>
+        <div class="mt-4 flex items-center gap-2 text-[11px] font-mono text-slate-400">
+          <i data-lucide="lock" class="w-3.5 h-3.5 text-emerald-500"></i>
+          <span>Conexión cifrada PCI-DSS</span>
+        </div>
+      </div>
+
+      <!-- Paso 3: Confirmación Exitosa del Pedido & Tracking en Vivo (Estilo Temu / Tipti) -->
+      <div id="checkout-step-3" class="p-6 text-center hidden">
+        <div class="w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto mb-3 animate-bounce">
+          <i data-lucide="check-circle-2" class="w-9 h-9"></i>
+        </div>
+
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 text-[11px] font-bold mb-2">
+          <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
+          <span id="confirmed-badge-text">¡PAGO APROBADO CON ÉXITO!</span>
+        </div>
+
+        <h3 class="font-display font-bold text-2xl text-slate-900 dark:text-white">¡Gracias por tu Compra!</h3>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-md mx-auto">
+          Tu pedido ha sido confirmado y registrado en el sistema de <strong>Tienda ECONOMAX Pasto</strong>.
+        </p>
+
+        <!-- Códigos de Transacción & Pedido -->
+        <div class="mt-4 p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 max-w-sm mx-auto grid grid-cols-2 gap-3 text-left">
+          <div>
+            <span class="text-[9px] font-mono text-slate-400 block uppercase">Nº de Pedido</span>
+            <span id="confirmed-order-number" class="text-sm font-mono font-bold text-red-600 dark:text-red-400">ORD-1024</span>
+          </div>
+          <div>
+            <span class="text-[9px] font-mono text-slate-400 block uppercase">Nº Autorización</span>
+            <span id="confirmed-auth-code" class="text-sm font-mono font-bold text-emerald-600">AUTH-94285</span>
+          </div>
+        </div>
+
+        <!-- Línea de Tiempo de Seguimiento en Vivo (Live Tracking estilo Temu / Tipti) -->
+        <div class="mt-5 p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 max-w-md mx-auto text-left shadow-xs">
+          <div class="flex items-center justify-between mb-3 border-b border-slate-100 dark:border-slate-700 pb-2">
+            <span class="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+              <i data-lucide="truck" class="w-4 h-4 text-red-600"></i>
+              Seguimiento del Envío en Pasto
+            </span>
+            <span class="text-[10px] font-bold text-amber-600 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 rounded-md">En Preparación</span>
+          </div>
+
+          <div class="space-y-3 text-xs">
+            <div class="flex items-start gap-3">
+              <div class="w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 mt-0.5 text-[10px] font-bold">✓</div>
+              <div>
+                <span class="font-bold text-slate-800 dark:text-slate-200 block">1. Pago Aprobado y Confirmado</span>
+                <span class="text-[11px] text-slate-400" id="tracking-payment-label">Transacción verificada exitosamente</span>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="w-5 h-5 rounded-full bg-amber-500 text-white flex items-center justify-center shrink-0 mt-0.5 text-[10px] animate-pulse font-bold">●</div>
+              <div>
+                <span class="font-bold text-slate-800 dark:text-slate-200 block">2. Empacando en Tienda ECONOMAX</span>
+                <span class="text-[11px] text-slate-400">Luz Angela preparando tus productos en Juanoy Bajo</span>
+              </div>
+            </div>
+            <div class="flex items-start gap-3 opacity-50">
+              <div class="w-5 h-5 rounded-full bg-slate-300 dark:bg-slate-700 text-slate-600 flex items-center justify-center shrink-0 mt-0.5 text-[10px] font-bold">3</div>
+              <div>
+                <span class="font-bold text-slate-800 dark:text-slate-200 block">3. Repartidor Asignado</span>
+                <span class="text-[11px] text-slate-400">En camino a tu dirección en Pasto</span>
+              </div>
+            </div>
+            <div class="flex items-start gap-3 opacity-50">
+              <div class="w-5 h-5 rounded-full bg-slate-300 dark:bg-slate-700 text-slate-600 flex items-center justify-center shrink-0 mt-0.5 text-[10px] font-bold">4</div>
+              <div>
+                <span class="font-bold text-slate-800 dark:text-slate-200 block">4. Entrega en Puerta</span>
+                <span class="text-[11px] text-slate-400">Domicilio entregado con éxito</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-5 flex flex-col sm:flex-row items-center justify-center gap-3">
+          <button onclick="window.print()" class="w-full sm:w-auto px-5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition flex items-center justify-center gap-2">
+            <i data-lucide="printer" class="w-4 h-4"></i>
+            <span>Descargar / Imprimir Recibo</span>
+          </button>
+          <button onclick="closeCheckoutModal()" class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-red-600 text-white text-xs font-bold hover:bg-red-700 transition shadow-md shadow-red-600/20">
+            Seguir Explorando la Tienda
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= CONTENEDOR DE NOTIFICACIONES (TOASTS) ================= -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none max-w-sm"></div>
+
+  <!-- Catálogo de datos oficiales de productos (Planilla & Audios) -->
+  <script src="products-data.js?v=2.3"></script>
+  <!-- Script principal de interactividad -->
+  <script src="app.js?v=2.3"></script>
+</body>
+</html>
