@@ -1,8 +1,8 @@
 {
   "name": "tienda-online",
   "version": "1.0.0",
-  "description": "Diseño moderno, limpio y de alta gama para tienda de comercio electrónico (E-Commerce). Desarrollado con enfoque en maquetación visual de primer nivel, micro-interacciones fluidas y cero dependencias de compilación.",
-  "main": "admin.js",
+  "description": "Tienda ECONOMAX Pasto",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
