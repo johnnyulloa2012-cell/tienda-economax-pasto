@@ -65,17 +65,17 @@
         Gestión Comercial
       </div>
 
-      <a href="#dashboard" data-tab="dashboard" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold bg-red-600 text-white shadow-md transition">
+      <a href="#dashboard" data-tab="dashboard" onclick="switchTab('dashboard'); return false;" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold bg-red-600 text-white shadow-md transition cursor-pointer">
         <i data-lucide="pie-chart" class="w-4 h-4"></i>
         <span>Resumen General</span>
       </a>
 
-      <a href="#inventory" data-tab="inventory" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+      <a href="#inventory" data-tab="inventory" onclick="switchTab('inventory'); return false;" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer">
         <i data-lucide="box" class="w-4 h-4"></i>
         <span>Inventario & Productos</span>
       </a>
 
-      <a href="#orders" data-tab="orders" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+      <a href="#orders" data-tab="orders" onclick="switchTab('orders'); return false;" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer">
         <i data-lucide="shopping-cart" class="w-4 h-4"></i>
         <span>Pedidos & Ventas</span>
         <span class="ml-auto w-5 h-5 rounded-full bg-amber-500 text-white text-[10px] font-bold flex items-center justify-center">2</span>
@@ -85,12 +85,12 @@
         Crecimiento & Ajustes
       </div>
 
-      <a href="#coupons" data-tab="coupons" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+      <a href="#coupons" data-tab="coupons" onclick="switchTab('coupons'); return false;" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer">
         <i data-lucide="tag" class="w-4 h-4"></i>
         <span>Cupones de Descuento</span>
       </a>
 
-      <a href="#settings" data-tab="settings" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+      <a href="#settings" data-tab="settings" onclick="switchTab('settings'); return false;" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer">
         <i data-lucide="sliders" class="w-4 h-4"></i>
         <span>Configuración Tienda</span>
       </a>

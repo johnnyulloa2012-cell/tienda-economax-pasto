@@ -4,12 +4,6 @@
  * Tel / WhatsApp: +57 300 472 0904 | Nequi: 300 472 0904 (Luz Angela Valencia Sinza)
  */
 
-// Si Node.js intenta ejecutar este archivo como punto de entrada, delegar al servidor
-if (typeof window === 'undefined') {
-  module.exports = require('./server.js');
-  return;
-}
-
 // Estado del Panel de Administración
 const adminState = {
   theme: localStorage.getItem('theme') || 'light',
@@ -961,6 +955,16 @@ async function handleImageFileUpload(event, targetInputId, previewImgId, spinner
 }
 
 // Asignaciones globales para onclick
+window.switchTab = switchTab;
+window.toggleSidebar = toggleSidebar;
+window.openAddProductModal = openAddProductModal;
+window.closeAddProductModal = closeAddProductModal;
+window.openEditProductModal = openEditProductModal;
+window.closeEditProductModal = closeEditProductModal;
+window.deleteProduct = deleteProduct;
+window.deleteCoupon = deleteCoupon;
+window.updateOrderStatus = updateOrderStatus;
 window.triggerFileInput = triggerFileInput;
 window.handleImageFileUpload = handleImageFileUpload;
+window.toggleTheme = toggleTheme;
 
