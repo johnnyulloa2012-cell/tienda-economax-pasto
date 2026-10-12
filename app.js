@@ -55,29 +55,19 @@ const state = {
 
 // Catálogo Oficial de Productos - TIENDA ECONOMAX PASTO (Cargado desde planilla oficial y audios)
 function getCatalogProducts() {
+  const savedData = localStorage.getItem('economax_admin_products');
+  if (savedData) {
+    try {
+      const parsed = JSON.parse(savedData);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed;
+      }
+    } catch (e) {}
+  }
+
   const base = (typeof window !== 'undefined' && window.ECONOMAX_PRODUCTS)
     ? window.ECONOMAX_PRODUCTS
     : [];
-
-  const adminProducts = JSON.parse(localStorage.getItem('economax_admin_products') || 'null');
-  if (adminProducts && Array.isArray(adminProducts)) {
-    return base.map(bp => {
-      const match = adminProducts.find(ap => ap.id === bp.code || ap.id === bp.id || (ap.name && ap.name.toLowerCase() === bp.name.toLowerCase()));
-      if (match) {
-        return {
-          ...bp,
-          name: match.name || bp.name,
-          price: Number(match.price) || bp.price,
-          originalPrice: match.originalPrice ? Number(match.originalPrice) : bp.originalPrice,
-          stock: match.stock !== undefined ? Number(match.stock) : bp.stock,
-          badge: match.badge || bp.badge,
-          description: match.description || bp.description,
-          image: match.image || bp.image
-        };
-      }
-      return bp;
-    });
-  }
   return base;
 }
 

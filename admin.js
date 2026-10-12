@@ -13,45 +13,41 @@ const adminState = {
   
   // Inventario de Productos Oficial de Tienda ECONOMAX Pasto (Cargado desde planilla oficial y audios)
   products: (() => {
-    const OFFICIAL_VERSION = 'v5_real_google_commercial_images';
+    const savedData = localStorage.getItem('economax_admin_products');
+    if (savedData) {
+      try {
+        const parsed = JSON.parse(savedData);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed;
+        }
+      } catch (e) {}
+    }
+
     const base = (typeof window !== 'undefined' && window.ECONOMAX_PRODUCTS) 
       ? window.ECONOMAX_PRODUCTS 
       : [];
 
-    const savedVersion = localStorage.getItem('economax_catalog_version');
-    const savedData = localStorage.getItem('economax_admin_products');
-    
-    let savedList = [];
-    if (savedData) {
-      try {
-        savedList = JSON.parse(savedData);
-      } catch (e) {}
-    }
-
-    const list = base.map(p => {
-      const match = Array.isArray(savedList) ? savedList.find(s => s.id === p.code || s.id === p.id || s.name === p.name) : null;
-      return {
-        id: p.code || p.id,
-        name: (match && match.name) ? match.name : p.name,
-        category: (match && match.category) ? match.category : p.categoryName,
-        price: (match && match.price) ? Number(match.price) : p.price,
-        originalPrice: (match && match.originalPrice) ? Number(match.originalPrice) : (p.originalPrice || 0),
-        cost: (match && match.cost) ? Number(match.cost) : (p.cost || Math.round(p.price * 0.75)),
-        stock: (match && match.stock !== undefined) ? Number(match.stock) : (p.stock !== undefined ? p.stock : 10),
-        sales: (match && match.sales) ? Number(match.sales) : (p.sales || 0),
-        status: (match && match.status) ? match.status : ((p.stock !== undefined && p.stock <= 2) ? 'Bajo Stock' : 'Activo'),
-        badge: (match && match.badge) ? match.badge : (p.badge || 'ECONOMAX'),
-        description: (match && match.description) ? match.description : (p.description || ''),
-        image: (match && match.image) ? match.image : p.image
-      };
-    });
-
-    if (list.length > 0) {
-      localStorage.setItem('economax_catalog_version', OFFICIAL_VERSION);
-      localStorage.setItem('economax_admin_products', JSON.stringify(list));
-      return list;
-    }
-    return [];
+    return base.map(p => ({
+      id: p.code || p.id,
+      name: p.name,
+      category: p.categoryName || p.category,
+      categoryName: p.categoryName || p.category,
+      price: Number(p.price) || 0,
+      originalPrice: Number(p.originalPrice) || 0,
+      cost: Number(p.cost) || Math.round((Number(p.price) || 0) * 0.75),
+      stock: p.stock !== undefined ? Number(p.stock) : 10,
+      sales: Number(p.sales) || 0,
+      status: (p.stock !== undefined && p.stock <= 2) ? 'Bajo Stock' : 'Activo',
+      badge: p.badge || 'ECONOMAX',
+      badgeColor: p.badgeColor || 'bg-red-600 text-white',
+      discount: p.discount || '-10%',
+      rating: p.rating || 5,
+      reviews: p.reviews || 10,
+      colors: p.colors || ['#dc2626'],
+      sizes: p.sizes || ['Estándar'],
+      description: p.description || '',
+      image: p.image || ''
+    }));
   })(),
 
   // Registro de Pedidos de Clientes (Sincronizado con vitrina y Nequi)
@@ -161,26 +157,35 @@ async function persistData() {
 
   try {
     // Sincronizar catálogo con el servidor para que se actualice en todos los celulares y computadores
-    fetch('/api/products', {
+    const resProducts = await fetch('/api/products', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(adminState.products)
-    }).catch(() => {});
+    }).catch(err => {
+      console.warn('Error sincronizando productos con servidor:', err);
+      return null;
+    });
+
+    if (resProducts && resProducts.ok) {
+      console.log('✅ Catálogo sincronizado exitosamente con el servidor.');
+    }
 
     // Sincronizar parámetros del negocio
-    fetch('/api/settings', {
+    await fetch('/api/settings', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(adminState.settings)
     }).catch(() => {});
 
     // Sincronizar órdenes
-    fetch('/api/orders', {
+    await fetch('/api/orders', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(adminState.orders)
     }).catch(() => {});
-  } catch (e) {}
+  } catch (e) {
+    console.error('Error en persistData:', e);
+  }
 }
 
 // Control del Tema (Modo Oscuro / Claro)
@@ -602,7 +607,7 @@ function closeAddProductModal() {
 }
 
 // Guardar nuevo producto desde el formulario
-function handleSaveProduct(e) {
+async function handleSaveProduct(e) {
   e.preventDefault();
 
   const name = document.getElementById('new-product-name').value.trim();
@@ -618,7 +623,7 @@ function handleSaveProduct(e) {
   }
 
   const nextId = 'PROD-' + Math.floor(100 + Math.random() * 900);
-  const image = document.getElementById('new-product-image')?.value.trim() || 'logo.jpg';
+  const image = document.getElementById('new-product-image')?.value.trim() || '';
 
   let status = 'Activo';
   if (stock === 0) status = 'Agotado';
@@ -646,7 +651,7 @@ function handleSaveProduct(e) {
   };
 
   adminState.products.unshift(newProd);
-  persistData();
+  await persistData();
 
   renderProductsTable();
   renderDashboard();
@@ -655,6 +660,15 @@ function handleSaveProduct(e) {
   document.getElementById('new-product-image').value = '';
   document.getElementById('new-product-image-preview').src = 'logo.jpg';
   showToast(`✨ Producto "${name}" añadido al catálogo`);
+}
+
+// Limpiar / Quitar Foto del Modal Nuevo Producto
+function clearNewProductPhoto() {
+  const imgInput = document.getElementById('new-product-image');
+  const imgPreview = document.getElementById('new-product-image-preview');
+  if (imgInput) imgInput.value = '';
+  if (imgPreview) imgPreview.src = 'logo.jpg';
+  showToast('Foto quitada');
 }
 
 // Modal Editar Producto Completo
@@ -699,7 +713,16 @@ function closeEditProductModal() {
   }
 }
 
-function handleUpdateProduct(e) {
+// Limpiar / Quitar Foto del Modal Editar Producto
+function clearEditProductPhoto() {
+  const imgInput = document.getElementById('edit-product-image');
+  const imgPreview = document.getElementById('edit-product-image-preview');
+  if (imgInput) imgInput.value = '';
+  if (imgPreview) imgPreview.src = 'logo.jpg';
+  showToast('Foto quitada. Presiona "Guardar Cambios" para confirmar.');
+}
+
+async function handleUpdateProduct(e) {
   e.preventDefault();
   const id = document.getElementById('edit-product-id').value;
   const p = adminState.products.find(item => item.id === id);
@@ -716,7 +739,8 @@ function handleUpdateProduct(e) {
   const discount = document.getElementById('edit-product-discount').value.trim() || '-10%';
   const icon = document.getElementById('edit-product-icon').value;
   const description = document.getElementById('edit-product-description').value.trim();
-  const image = document.getElementById('edit-product-image') ? document.getElementById('edit-product-image').value.trim() : (p.image || '');
+  const imageInput = document.getElementById('edit-product-image');
+  const image = imageInput ? imageInput.value.trim() : '';
 
   if (!name || price <= 0) {
     showToast('⚠️ Ingresa un nombre y precio de venta válidos');
@@ -737,7 +761,7 @@ function handleUpdateProduct(e) {
   p.description = description;
   p.image = image;
 
-  persistData();
+  await persistData();
   renderProductsTable();
   renderDashboard();
   closeEditProductModal();
@@ -745,10 +769,10 @@ function handleUpdateProduct(e) {
 }
 
 // Eliminar producto
-function deleteProduct(id) {
+async function deleteProduct(id) {
   if (confirm('¿Estás seguro de eliminar este producto del inventario?')) {
     adminState.products = adminState.products.filter(p => p.id !== id);
-    persistData();
+    await persistData();
     renderProductsTable();
     renderDashboard();
     showToast('Producto eliminado del inventario');
@@ -967,4 +991,7 @@ window.updateOrderStatus = updateOrderStatus;
 window.triggerFileInput = triggerFileInput;
 window.handleImageFileUpload = handleImageFileUpload;
 window.toggleTheme = toggleTheme;
-
+window.clearEditProductPhoto = clearEditProductPhoto;
+window.clearNewProductPhoto = clearNewProductPhoto;
+window.handleUpdateProduct = handleUpdateProduct;
+window.handleSaveProduct = handleSaveProduct;

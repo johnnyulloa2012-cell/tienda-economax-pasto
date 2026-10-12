@@ -584,6 +584,15 @@
                   <i data-lucide="camera" class="w-4 h-4"></i>
                   <span>Subir Foto / Tomar con Celular</span>
                 </button>
+                <button 
+                  type="button" 
+                  onclick="clearNewProductPhoto()" 
+                  class="py-2.5 px-3 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 active:scale-95 text-slate-700 dark:text-slate-200 font-semibold rounded-xl shadow-xs transition flex items-center justify-center gap-1.5 text-xs"
+                  title="Quitar foto seleccionada"
+                >
+                  <i data-lucide="trash-2" class="w-4 h-4 text-red-500"></i>
+                  <span>Quitar Foto</span>
+                </button>
               </div>
               <p class="text-[10px] text-slate-400">Toma una foto con tu cámara o elígela de tu galería. Se comprime y optimiza automáticamente.</p>
             </div>
@@ -734,6 +743,15 @@
               >
                 <i data-lucide="camera" class="w-4 h-4"></i>
                 <span>Tomar Foto / Subir desde Celular</span>
+              </button>
+              <button 
+                type="button" 
+                onclick="clearEditProductPhoto()" 
+                class="py-2 px-3 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 active:scale-95 text-slate-700 dark:text-slate-200 font-semibold rounded-xl shadow-xs transition flex items-center justify-center gap-1.5 text-xs"
+                title="Quitar foto del producto"
+              >
+                <i data-lucide="trash-2" class="w-4 h-4 text-red-500"></i>
+                <span>Quitar Foto</span>
               </button>
             </div>
             <div class="relative">
@@ -909,8 +927,8 @@
   <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none max-w-sm"></div>
 
   <!-- Catálogo de datos oficiales de productos (Planilla & Audios) -->
-  <script src="products-data.js?v=4.0"></script>
+  <script src="products-data.js?v=5.0"></script>
   <!-- Script del Panel de Emprendedor -->
-  <script src="admin.js?v=4.0"></script>
+  <script src="admin.js?v=5.0"></script>
 </body>
 </html>
