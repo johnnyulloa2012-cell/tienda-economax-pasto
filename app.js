@@ -73,17 +73,29 @@ function getCatalogProducts() {
 
 let designMockups = getCatalogProducts();
 
-// Sincronización en tiempo real con la API del servidor (multidispositivo)
+// Sincronización en tiempo real con la API del servidor (multidispositivo) y respaldo permanente
+const GIST_BACKUP_RAW = 'https://gist.githubusercontent.com/johnnyulloa2012-cell/f2f04c1385ee96b43658513c438ab939/raw/products.json';
+
 async function syncStorefrontWithServer() {
   try {
-    const res = await fetch('/api/products?t=' + Date.now());
-    if (res.ok) {
-      const serverProducts = await res.json();
-      if (Array.isArray(serverProducts) && serverProducts.length > 0) {
-        designMockups = serverProducts;
-        localStorage.setItem('economax_admin_products', JSON.stringify(serverProducts));
-        renderProducts();
+    let serverProducts = null;
+    const res = await fetch('/api/products?t=' + Date.now()).catch(() => null);
+    if (res && res.ok) {
+      serverProducts = await res.json();
+    }
+
+    // Si el servidor de Render está suspendido o frío, consultar backup permanente en Gist
+    if (!serverProducts || !Array.isArray(serverProducts) || serverProducts.length === 0) {
+      const gistRes = await fetch(GIST_BACKUP_RAW + '?t=' + Date.now()).catch(() => null);
+      if (gistRes && gistRes.ok) {
+        serverProducts = await gistRes.json();
       }
+    }
+
+    if (Array.isArray(serverProducts) && serverProducts.length > 0) {
+      designMockups = serverProducts;
+      localStorage.setItem('economax_admin_products', JSON.stringify(serverProducts));
+      renderProducts();
     }
 
     const resSettings = await fetch('/api/settings?t=' + Date.now());

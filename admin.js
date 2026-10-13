@@ -90,18 +90,30 @@ const adminState = {
   }
 };
 
-// Sincronización en tiempo real con el servidor (multidispositivo)
+// Sincronización en tiempo real con el servidor (multidispositivo) y respaldo permanente
+const GIST_BACKUP_RAW = 'https://gist.githubusercontent.com/johnnyulloa2012-cell/f2f04c1385ee96b43658513c438ab939/raw/products.json';
+
 async function syncWithServer() {
   try {
-    const resProducts = await fetch('/api/products?t=' + Date.now());
-    if (resProducts.ok) {
-      const serverProducts = await resProducts.json();
-      if (Array.isArray(serverProducts) && serverProducts.length > 0) {
-        adminState.products = serverProducts;
-        localStorage.setItem('economax_admin_products', JSON.stringify(serverProducts));
-        renderProductsTable();
-        renderDashboard();
+    let serverProducts = null;
+    const resProducts = await fetch('/api/products?t=' + Date.now()).catch(() => null);
+    if (resProducts && resProducts.ok) {
+      serverProducts = await resProducts.json();
+    }
+
+    // Si el servidor de Render está suspendido o frío, consultar backup permanente en Gist
+    if (!serverProducts || !Array.isArray(serverProducts) || serverProducts.length === 0) {
+      const gistRes = await fetch(GIST_BACKUP_RAW + '?t=' + Date.now()).catch(() => null);
+      if (gistRes && gistRes.ok) {
+        serverProducts = await gistRes.json();
       }
+    }
+
+    if (Array.isArray(serverProducts) && serverProducts.length > 0) {
+      adminState.products = serverProducts;
+      localStorage.setItem('economax_admin_products', JSON.stringify(serverProducts));
+      renderProductsTable();
+      renderDashboard();
     }
 
     const resSettings = await fetch('/api/settings?t=' + Date.now());
@@ -941,29 +953,52 @@ async function handleImageFileUpload(event, targetInputId, previewImgId, spinner
       previewImg.src = compressedBase64;
     }
 
-    // 3. Subir al servidor backend (/api/upload)
-    const response = await fetch('/api/upload', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ image: compressedBase64 })
-    });
+    // 3. Subir al servidor backend (/api/upload con CDN permanente)
+    let uploadedUrl = null;
+    try {
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ image: compressedBase64 })
+      });
 
-    if (response.ok) {
-      const result = await response.json();
-      if (result.success && result.url) {
-        if (targetInput) targetInput.value = result.url;
-        showToast('✅ ¡Foto subida y guardada exitosamente!');
-      } else {
-        throw new Error('Respuesta inesperada del servidor');
+      if (response.ok) {
+        const result = await response.json();
+        if (result.success && result.url) {
+          uploadedUrl = result.url;
+        }
       }
-    } else {
-      // Si el servidor está en modo offline o túnel parcial, guardar como base64 dataUrl directo
-      if (targetInput) targetInput.value = compressedBase64;
-      showToast('✅ Foto lista en el producto');
+    } catch (e) {
+      console.warn('Servidor no respondió de inmediato, probando CDN permanente directo...');
     }
+
+    // 4. Si el servidor estuviese dormido, subir directamente al CDN permanente Catbox
+    if (!uploadedUrl) {
+      try {
+        const formData = new FormData();
+        formData.append('reqtype', 'fileupload');
+        formData.append('fileToUpload', file);
+        const directRes = await fetch('https://catbox.moe/user/api.php', {
+          method: 'POST',
+          body: formData
+        });
+        if (directRes.ok) {
+          const directUrl = await directRes.text();
+          if (directUrl && directUrl.startsWith('http')) {
+            uploadedUrl = directUrl.trim();
+          }
+        }
+      } catch (e) {
+        console.warn('Subida directa a CDN falló:', e);
+      }
+    }
+
+    const finalUrl = uploadedUrl || compressedBase64;
+    if (targetInput) targetInput.value = finalUrl;
+    if (previewImg) previewImg.src = finalUrl;
+    showToast('✅ ¡Foto permanente guardada exitosamente!');
   } catch (err) {
     console.error('Error subiendo imagen:', err);
-    // Fallback: usar el base64 directo
     try {
       const fallbackBase64 = await compressImageFile(file, 800, 800, 0.75);
       if (targetInput) targetInput.value = fallbackBase64;

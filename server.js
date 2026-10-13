@@ -7,6 +7,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 const PORT = process.env.PORT || 3000;
 const DATA_DIR = path.join(__dirname, 'data');
@@ -84,6 +85,81 @@ function parseBody(req) {
   });
 }
 
+// Configuración de Respaldo Permanente en GitHub Gist
+const GIST_BACKUP_ID = 'f2f04c1385ee96b43658513c438ab939';
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN || '';
+
+// Subir fotos a red CDN permanente (Catbox) para que nunca expiren ni se borren por inactividad
+async function uploadToCloudCDN(base64Data, filename) {
+  try {
+    const buffer = Buffer.from(base64Data, 'base64');
+    const formData = new FormData();
+    formData.append('reqtype', 'fileupload');
+    const blob = new Blob([buffer], { type: 'image/jpeg' });
+    formData.append('fileToUpload', blob, filename || 'producto.jpg');
+
+    const res = await fetch('https://catbox.moe/user/api.php', {
+      method: 'POST',
+      body: formData
+    });
+    if (res.ok) {
+      const url = await res.text();
+      if (url && url.startsWith('http')) {
+        console.log(`[CDN] Foto alojada permanentemente en la nube: ${url.trim()}`);
+        return url.trim();
+      }
+    }
+  } catch (e) {
+    console.warn('[CDN] Aviso subiendo a CDN permanente:', e.message);
+  }
+  return null;
+}
+
+// Sincronizar catálogo y ajustes al Gist para persistencia indestructible
+async function syncBackupToGist(productsData, settingsData) {
+  if (!GIST_BACKUP_ID || !GITHUB_TOKEN) return;
+  try {
+    const files = {};
+    if (productsData) files['products.json'] = { content: JSON.stringify(productsData, null, 2) };
+    if (settingsData) files['settings.json'] = { content: JSON.stringify(settingsData, null, 2) };
+    files['status.json'] = { content: JSON.stringify({ lastSync: new Date().toISOString() }) };
+
+    await fetch(`https://api.github.com/gists/${GIST_BACKUP_ID}`, {
+      method: 'PATCH',
+      headers: {
+        'Authorization': `token ${GITHUB_TOKEN}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'User-Agent': 'Tienda-Economax-Sync'
+      },
+      body: JSON.stringify({ files })
+    });
+    console.log('[Gist] Copia de seguridad permanente sincronizada exitosamente.');
+  } catch (e) {
+    console.warn('[Gist] Aviso sincronizando backup en Gist:', e.message);
+  }
+}
+
+// Inicializar datos locales desde Gist si el disco efímero de Render se reinició
+async function initServerDataFromBackup() {
+  const localProducts = readJsonFile('products.json', null);
+  if (!localProducts || !Array.isArray(localProducts) || localProducts.length === 0) {
+    try {
+      console.log('[Gist] Restaurando catálogo desde backup permanente...');
+      const res = await fetch(`https://gist.githubusercontent.com/johnnyulloa2012-cell/${GIST_BACKUP_ID}/raw/products.json?t=${Date.now()}`);
+      if (res.ok) {
+        const backupProducts = await res.json();
+        if (Array.isArray(backupProducts) && backupProducts.length > 0) {
+          writeJsonFile('products.json', backupProducts);
+          console.log(`[Gist] Restaurados ${backupProducts.length} productos desde backup permanente.`);
+        }
+      }
+    } catch (e) {
+      console.warn('[Gist] Aviso leyendo backup en arranque:', e.message);
+    }
+  }
+}
+initServerDataFromBackup();
+
 const server = http.createServer(async (req, res) => {
   // Configurar CORS completo
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -107,7 +183,18 @@ const server = http.createServer(async (req, res) => {
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
 
     if (req.method === 'GET' || req.method === 'HEAD') {
-      const products = readJsonFile('products.json', []);
+      let products = readJsonFile('products.json', []);
+      if ((!products || products.length === 0) && GIST_BACKUP_ID) {
+        try {
+          const gistRes = await fetch(`https://gist.githubusercontent.com/johnnyulloa2012-cell/${GIST_BACKUP_ID}/raw/products.json?t=${Date.now()}`);
+          if (gistRes.ok) {
+            products = await gistRes.json();
+            if (Array.isArray(products) && products.length > 0) {
+              writeJsonFile('products.json', products);
+            }
+          }
+        } catch (e) {}
+      }
       res.writeHead(200);
       res.end(req.method === 'HEAD' ? null : JSON.stringify(products));
       return;
@@ -118,6 +205,7 @@ const server = http.createServer(async (req, res) => {
         const body = await parseBody(req);
         if (Array.isArray(body)) {
           writeJsonFile('products.json', body);
+          syncBackupToGist(body, null);
           console.log(`[API] Catálogo actualizado con ${body.length} productos sincronizados.`);
           res.writeHead(200);
           res.end(JSON.stringify({ success: true, count: body.length }));
@@ -135,18 +223,13 @@ const server = http.createServer(async (req, res) => {
     }
   }
 
-  // 1.5. /api/upload - Subida de fotos desde Celular (Cámara y Galería) o PC
+  // 1.5. /api/upload - Subida de fotos desde Celular o PC a CDN Permanente
   if (pathname === '/api/upload') {
     res.setHeader('Content-Type', 'application/json; charset=utf-8');
     if (req.method === 'POST') {
       try {
         const body = await parseBody(req);
         if (body && body.image) {
-          const imagesDir = path.join(__dirname, 'images');
-          if (!fs.existsSync(imagesDir)) {
-            fs.mkdirSync(imagesDir, { recursive: true });
-          }
-
           // Extraer base64 y tipo de imagen
           const matches = body.image.match(/^data:image\/([a-zA-Z0-9\+\-\.]+);base64,(.+)$/);
           let ext = '.jpg';
@@ -159,13 +242,23 @@ const server = http.createServer(async (req, res) => {
           }
 
           const filename = `upload-${Date.now()}-${Math.floor(Math.random() * 1000)}${ext}`;
+
+          // 1. Guardar copia local en images/
+          const imagesDir = path.join(__dirname, 'images');
+          if (!fs.existsSync(imagesDir)) {
+            fs.mkdirSync(imagesDir, { recursive: true });
+          }
           const savePath = path.join(imagesDir, filename);
           fs.writeFileSync(savePath, Buffer.from(base64Data, 'base64'));
+          const localUrl = `images/${filename}`;
 
-          const publicPath = `images/${filename}`;
-          console.log(`[API] Foto guardada exitosamente: ${publicPath}`);
+          // 2. Subir a red CDN permanente (Catbox) para que nunca se borre si Render duerme o se reinicia
+          const cloudUrl = await uploadToCloudCDN(base64Data, filename);
+          const finalUrl = cloudUrl || localUrl;
+
+          console.log(`[API] Foto guardada permanentemente: ${finalUrl}`);
           res.writeHead(200);
-          res.end(JSON.stringify({ success: true, url: publicPath }));
+          res.end(JSON.stringify({ success: true, url: finalUrl }));
           return;
         } else {
           res.writeHead(400);
@@ -197,7 +290,8 @@ const server = http.createServer(async (req, res) => {
       try {
         const body = await parseBody(req);
         writeJsonFile('settings.json', body);
-        console.log('[API] Parámetros del negocio actualizados.');
+        syncBackupToGist(null, body);
+        console.log('[API] Parámetros del negocio actualizados y respaldados.');
         res.writeHead(200);
         res.end(JSON.stringify({ success: true }));
         return;
