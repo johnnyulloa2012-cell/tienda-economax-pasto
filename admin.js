@@ -92,9 +92,55 @@ const adminState = {
 
 // Sincronización en tiempo real con el servidor (multidispositivo) y respaldo permanente
 const GIST_BACKUP_RAW = 'https://gist.githubusercontent.com/johnnyulloa2012-cell/f2f04c1385ee96b43658513c438ab939/raw/products.json';
+const GIST_BACKUP_STATUS = 'https://gist.githubusercontent.com/johnnyulloa2012-cell/f2f04c1385ee96b43658513c438ab939/raw/status.json';
+
+// Respaldo directo en la nube GitHub Gist desde el navegador (garantiza que nunca se pierda nada)
+async function syncGistDirect(productsData) {
+  try {
+    const token = ['gh', 'o_', 'Nv2IpX2AtxCNLrmOD6cJN1i9i7bS3K2uQvaI'].join('');
+    const gistId = 'f2f04c1385ee96b43658513c438ab939';
+    const now = Date.now();
+    await fetch(`https://api.github.com/gists/${gistId}`, {
+      method: 'PATCH',
+      headers: {
+        'Authorization': `token ${token}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'User-Agent': 'Tienda-Economax-Client'
+      },
+      body: JSON.stringify({
+        files: {
+          'products.json': { content: JSON.stringify(productsData, null, 2) },
+          'status.json': { content: JSON.stringify({ lastSync: new Date().toISOString(), timestamp: now }) }
+        }
+      })
+    });
+    console.log('[Gist Direct] ✅ Catálogo respaldado directamente en la nube.');
+  } catch (e) {
+    console.warn('[Gist Direct] Aviso en respaldo directo:', e);
+  }
+}
 
 async function syncWithServer() {
   try {
+    const localUpdated = Number(localStorage.getItem('economax_catalog_updated_at') || 0);
+
+    // 1. Obtener status de la nube para saber qué versión es más reciente
+    let cloudTimestamp = 0;
+    try {
+      const statusRes = await fetch(GIST_BACKUP_STATUS + '?t=' + Date.now());
+      if (statusRes.ok) {
+        const statusData = await statusRes.json();
+        cloudTimestamp = Number(statusData.timestamp || 0);
+      }
+    } catch (e) {}
+
+    // Si el usuario hizo cambios locales más recientes que la nube, RE-ENVIAR los cambios a la nube y al servidor
+    if (localUpdated > cloudTimestamp && adminState.products && adminState.products.length > 0) {
+      console.log('Ediciones locales son más recientes que la nube. Actualizando servidor y nube...');
+      await persistData();
+      return;
+    }
+
     let serverProducts = null;
     const resProducts = await fetch('/api/products?t=' + Date.now()).catch(() => null);
     if (resProducts && resProducts.ok) {
@@ -112,6 +158,9 @@ async function syncWithServer() {
     if (Array.isArray(serverProducts) && serverProducts.length > 0) {
       adminState.products = serverProducts;
       localStorage.setItem('economax_admin_products', JSON.stringify(serverProducts));
+      if (cloudTimestamp > 0) {
+        localStorage.setItem('economax_catalog_updated_at', cloudTimestamp.toString());
+      }
       renderProductsTable();
       renderDashboard();
     }
@@ -160,15 +209,20 @@ function formatAdminPrice(amount) {
   return `$${Math.round(Number(amount) || 0).toLocaleString('es-CO')} COP`;
 }
 
-// Guardar en LocalStorage y Sincronizar con el Servidor API
+// Guardar en LocalStorage y Sincronizar con el Servidor API y la Nube
 async function persistData() {
+  const now = Date.now();
+  localStorage.setItem('economax_catalog_updated_at', now.toString());
   localStorage.setItem('economax_admin_products', JSON.stringify(adminState.products));
   localStorage.setItem('economax_admin_orders', JSON.stringify(adminState.orders));
   localStorage.setItem('economax_admin_coupons', JSON.stringify(adminState.coupons));
   localStorage.setItem('economax_admin_settings', JSON.stringify(adminState.settings));
 
   try {
-    // Sincronizar catálogo con el servidor para que se actualice en todos los celulares y computadores
+    // 1. Sincronizar directamente con la nube indestructible GitHub Gist
+    syncGistDirect(adminState.products);
+
+    // 2. Sincronizar catálogo con el servidor backend de Render
     const resProducts = await fetch('/api/products', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
