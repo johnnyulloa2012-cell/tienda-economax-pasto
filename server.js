@@ -7,7 +7,6 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 const PORT = process.env.PORT || 3000;
 const DATA_DIR = path.join(__dirname, 'data');
@@ -89,39 +88,53 @@ function parseBody(req) {
 const GIST_BACKUP_ID = 'f2f04c1385ee96b43658513c438ab939';
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN || ['gh', 'o_', 'Nv2IpX2AtxCNLrmOD6cJN1i9i7bS3K2uQvaI'].join('');
 
-// Subir fotos a red CDN permanente (Catbox) para que nunca expiren ni se borren por inactividad
+// Subir fotos a GitHub en images/uploads/ para almacenamiento PERMANENTE indestructible
 async function uploadToCloudCDN(base64Data, filename) {
   try {
-    const buffer = Buffer.from(base64Data, 'base64');
-    const formData = new FormData();
-    formData.append('reqtype', 'fileupload');
-    const blob = new Blob([buffer], { type: 'image/jpeg' });
-    formData.append('fileToUpload', blob, filename || 'producto.jpg');
+    const cleanExt = (path.extname(filename || 'foto.jpg') || '.jpg').toLowerCase();
+    const cleanFilename = `upload-${Date.now()}-${Math.floor(Math.random() * 10000)}${cleanExt}`;
+    const repoPath = `images/uploads/${cleanFilename}`;
 
-    const res = await fetch('https://catbox.moe/user/api.php', {
-      method: 'POST',
-      body: formData
+    const res = await fetch(`https://api.github.com/repos/johnnyulloa2012-cell/tienda-economax-pasto/contents/${repoPath}`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `token ${GITHUB_TOKEN}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'User-Agent': 'Tienda-Economax-Uploader',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        message: `Guardar foto de producto permanente: ${cleanFilename}`,
+        content: base64Data,
+        branch: 'main'
+      })
     });
+
     if (res.ok) {
-      const url = await res.text();
-      if (url && url.startsWith('http')) {
-        console.log(`[CDN] Foto alojada permanentemente en la nube: ${url.trim()}`);
-        return url.trim();
-      }
+      const data = await res.json();
+      const rawUrl = data.content && data.content.download_url
+        ? data.content.download_url
+        : `https://raw.githubusercontent.com/johnnyulloa2012-cell/tienda-economax-pasto/main/${repoPath}`;
+      console.log(`[GitHub CDN] Foto alojada permanentemente en el repositorio: ${rawUrl}`);
+      return rawUrl;
+    } else {
+      const errText = await res.text();
+      console.warn('[GitHub CDN] Aviso subiendo a GitHub:', res.status, errText);
     }
   } catch (e) {
-    console.warn('[CDN] Aviso subiendo a CDN permanente:', e.message);
+    console.warn('[GitHub CDN] Error subiendo foto a GitHub:', e.message);
   }
   return null;
 }
 
 // Sincronizar catálogo y ajustes al Gist para persistencia indestructible
-async function syncBackupToGist(productsData, settingsData) {
+async function syncBackupToGist(productsData, settingsData, ordersData) {
   if (!GIST_BACKUP_ID || !GITHUB_TOKEN) return;
   try {
     const files = {};
     if (productsData) files['products.json'] = { content: JSON.stringify(productsData, null, 2) };
     if (settingsData) files['settings.json'] = { content: JSON.stringify(settingsData, null, 2) };
+    if (ordersData) files['orders.json'] = { content: JSON.stringify(ordersData, null, 2) };
     files['status.json'] = { content: JSON.stringify({ lastSync: new Date().toISOString(), timestamp: Date.now() }) };
 
     const res = await fetch(`https://api.github.com/gists/${GIST_BACKUP_ID}`, {
@@ -161,6 +174,14 @@ async function initServerDataFromBackup() {
       if (backupSettings && backupSettings.storeName) {
         writeJsonFile('settings.json', backupSettings);
         console.log('[Gist] ✅ Ajustes de negocio sincronizados desde backup permanente.');
+      }
+    }
+    const resOrders = await fetch(`https://gist.githubusercontent.com/johnnyulloa2012-cell/${GIST_BACKUP_ID}/raw/orders.json?t=${Date.now()}`);
+    if (resOrders.ok) {
+      const backupOrders = await resOrders.json();
+      if (Array.isArray(backupOrders)) {
+        writeJsonFile('orders.json', backupOrders);
+        console.log(`[Gist] ✅ Sincronizados ${backupOrders.length} pedidos desde backup permanente.`);
       }
     }
   } catch (e) {
@@ -327,18 +348,19 @@ const server = http.createServer(async (req, res) => {
     if (req.method === 'POST') {
       try {
         const body = await parseBody(req);
+        let currentOrders = readJsonFile('orders.json', []);
         if (Array.isArray(body)) {
-          writeJsonFile('orders.json', body);
+          currentOrders = body;
         } else if (body && body.id) {
-          const current = readJsonFile('orders.json', []);
-          const existingIdx = current.findIndex(o => o.id === body.id);
+          const existingIdx = currentOrders.findIndex(o => o.id === body.id);
           if (existingIdx >= 0) {
-            current[existingIdx] = body;
+            currentOrders[existingIdx] = body;
           } else {
-            current.unshift(body);
+            currentOrders.unshift(body);
           }
-          writeJsonFile('orders.json', current);
         }
+        writeJsonFile('orders.json', currentOrders);
+        syncBackupToGist(null, null, currentOrders);
         res.writeHead(200);
         res.end(JSON.stringify({ success: true }));
         return;

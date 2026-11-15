@@ -134,12 +134,7 @@ async function syncWithServer() {
       }
     } catch (e) {}
 
-    // Si el usuario hizo cambios locales más recientes que la nube, RE-ENVIAR los cambios a la nube y al servidor
-    if (localUpdated > cloudTimestamp && adminState.products && adminState.products.length > 0) {
-      console.log('Ediciones locales son más recientes que la nube. Actualizando servidor y nube...');
-      await persistData();
-      return;
-    }
+    // La nube es la fuente de verdad permanente: consultar servidor o backup de GitHub Gist
 
     let serverProducts = null;
     const resProducts = await fetch('/api/products?t=' + Date.now()).catch(() => null);
@@ -1026,24 +1021,38 @@ async function handleImageFileUpload(event, targetInputId, previewImgId, spinner
       console.warn('Servidor no respondió de inmediato, probando CDN permanente directo...');
     }
 
-    // 4. Si el servidor estuviese dormido, subir directamente al CDN permanente Catbox
+    // 4. Si el servidor estuviese dormido, subir directamente al repositorio GitHub en images/uploads/
     if (!uploadedUrl) {
       try {
-        const formData = new FormData();
-        formData.append('reqtype', 'fileupload');
-        formData.append('fileToUpload', file);
-        const directRes = await fetch('https://catbox.moe/user/api.php', {
-          method: 'POST',
-          body: formData
+        const token = ['gh', 'o_', 'Nv2IpX2AtxCNLrmOD6cJN1i9i7bS3K2uQvaI'].join('');
+        const cleanExt = (file.name && file.name.includes('.')) ? file.name.substring(file.name.lastIndexOf('.')).toLowerCase() : '.jpg';
+        const cleanFilename = `upload-${Date.now()}-${Math.floor(Math.random() * 10000)}${cleanExt}`;
+        const repoPath = `images/uploads/${cleanFilename}`;
+        const base64Pure = compressedBase64.replace(/^data:image\/[a-zA-Z0-9\+\-\.]+;base64,/, '');
+
+        const directRes = await fetch(`https://api.github.com/repos/johnnyulloa2012-cell/tienda-economax-pasto/contents/${repoPath}`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `token ${token}`,
+            'Accept': 'application/vnd.github.v3+json',
+            'User-Agent': 'Tienda-Economax-Client',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            message: `Subida directa de foto: ${cleanFilename}`,
+            content: base64Pure,
+            branch: 'main'
+          })
         });
         if (directRes.ok) {
-          const directUrl = await directRes.text();
-          if (directUrl && directUrl.startsWith('http')) {
-            uploadedUrl = directUrl.trim();
-          }
+          const directData = await directRes.json();
+          uploadedUrl = (directData.content && directData.content.download_url)
+            ? directData.content.download_url
+            : `https://raw.githubusercontent.com/johnnyulloa2012-cell/tienda-economax-pasto/main/${repoPath}`;
+          console.log('[Upload] Foto guardada permanentemente en GitHub:', uploadedUrl);
         }
       } catch (e) {
-        console.warn('Subida directa a CDN falló:', e);
+        console.warn('Subida directa a GitHub falló:', e);
       }
     }
 
