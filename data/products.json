@@ -29,18 +29,18 @@
   },
   {
     "id": "prod-swiss-home",
-    "image": "images/prod-swiss-home.jpg",
+    "image": "",
     "code": "ECO-002",
     "name": "Juego de Ollas Swiss Home 12 Piezas Acero Inox",
-    "category": "cocina",
-    "categoryName": "Utensilios de Cocina",
+    "category": "",
+    "categoryName": "",
     "price": 400000,
     "originalPrice": 480000,
     "cost": 290000,
     "discount": "-17%",
     "rating": 5,
     "reviews": 29,
-    "badge": "SWISS HOME 12 PCS",
+    "badge": "",
     "badgeColor": "bg-amber-600 text-white",
     "colors": [
       "#94a3b8",
@@ -50,7 +50,7 @@
       "Set Completo 12 Piezas"
     ],
     "description": "Batería de cocina premium de 12 piezas en acero inoxidable quirúrgico de alta durabilidad. Fondos de difusión térmica de múltiples capas y tapas de vidrio templado con termostato.",
-    "icon": "package",
+    "icon": "",
     "stock": 10,
     "sales": 0,
     "status": "Activo"
