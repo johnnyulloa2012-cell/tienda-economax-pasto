@@ -536,6 +536,8 @@ function renderProductsTable() {
 }
 
 // Renderizado de Pedidos
+let currentlyViewingOrderId = null;
+
 function renderOrdersTable() {
   const tbody = document.getElementById('orders-table-body');
   if (!tbody) return;
@@ -546,7 +548,7 @@ function renderOrdersTable() {
         <td colspan="7" class="py-14 text-center text-slate-400 dark:text-slate-500">
           <i data-lucide="inbox" class="w-10 h-10 mx-auto mb-2.5 opacity-30 text-red-500"></i>
           <p class="font-bold text-sm text-slate-700 dark:text-slate-300">No hay pedidos registrados todavía</p>
-          <p class="text-xs text-slate-400 mt-1 max-w-sm mx-auto">Cuando los clientes hagan compras desde la tienda web, sus pedidos aparecerán aquí con su estado, cliente y valor.</p>
+          <p class="text-xs text-slate-400 mt-1 max-w-sm mx-auto">Cuando los clientes hagan compras desde la tienda web, sus pedidos aparecerán aquí con su comprobante de Nequi.</p>
         </td>
       </tr>
     `;
@@ -554,28 +556,50 @@ function renderOrdersTable() {
     return;
   }
 
-  tbody.innerHTML = adminState.orders.map(order => `
+  tbody.innerHTML = adminState.orders.map(order => {
+    const isPendingVerification = (order.status || '').toLowerCase().includes('verificar') || (order.status || '').toLowerCase().includes('pendiente');
+    return `
     <tr class="border-b border-slate-100 dark:border-slate-800/80 hover:bg-slate-50/60 dark:hover:bg-slate-800/40 transition">
       <td class="py-3.5 px-4 font-mono font-bold text-xs text-red-600 dark:text-red-400">${order.id}</td>
-      <td class="py-3.5 px-4 text-xs text-slate-500">${order.date}</td>
+      <td class="py-3.5 px-4 text-xs text-slate-500 whitespace-nowrap">${order.date}</td>
       <td class="py-3.5 px-4">
         <div class="font-bold text-xs text-slate-900 dark:text-white">${order.customer}</div>
-        <div class="text-[11px] text-slate-400">${order.email}</div>
+        <div class="text-[11px] text-slate-400">${order.phone || order.email}</div>
+        <div class="text-[10px] text-slate-500 dark:text-slate-400 truncate max-w-xs">${order.address}</div>
       </td>
       <td class="py-3.5 px-4 text-xs text-slate-600 dark:text-slate-300 max-w-xs truncate">${order.items}</td>
-      <td class="py-3.5 px-4 font-display font-bold text-sm text-slate-900 dark:text-white">${formatAdminPrice(order.total)}</td>
-      <td class="py-3.5 px-4 text-xs text-slate-500">${order.payment}</td>
+      <td class="py-3.5 px-4 font-display font-bold text-sm text-slate-900 dark:text-white whitespace-nowrap">${formatAdminPrice(order.total)}</td>
+      <td class="py-3.5 px-4 text-xs">
+        <div class="font-semibold text-slate-800 dark:text-slate-200">${order.payment}</div>
+        ${order.receiptRef ? `<div class="text-[10px] font-mono text-purple-600 dark:text-purple-400 mt-0.5">Ref: ${order.receiptRef}</div>` : ''}
+        ${order.receiptUrl ? `
+          <button type="button" onclick="viewOrderReceipt('${order.id}')" class="mt-1.5 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-purple-100 hover:bg-purple-200 dark:bg-purple-900/60 dark:hover:bg-purple-800 text-purple-800 dark:text-purple-200 text-[10px] font-bold shadow-xs transition cursor-pointer">
+            <i data-lucide="eye" class="w-3.5 h-3.5"></i>
+            <span>Ver Comprobante</span>
+          </button>
+        ` : ''}
+      </td>
       <td class="py-3.5 px-4">
-        <!-- Selector interactivo de estado de orden -->
-        <select onchange="updateOrderStatus('${order.id}', this.value)" class="text-[11px] font-bold rounded-lg px-2.5 py-1 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-red-500 cursor-pointer">
-          <option value="Pendiente" ${order.status === 'Pendiente' ? 'selected' : ''}>🟡 Pendiente</option>
-          <option value="Preparando" ${order.status === 'Preparando' ? 'selected' : ''}>🔵 Preparando</option>
-          <option value="Enviado" ${order.status === 'Enviado' ? 'selected' : ''}>🟣 Enviado</option>
-          <option value="Entregado" ${order.status === 'Entregado' ? 'selected' : ''}>🟢 Entregado</option>
-        </select>
+        <div class="flex items-center gap-1.5">
+          <select onchange="updateOrderStatus('${order.id}', this.value)" class="text-[11px] font-bold rounded-lg px-2.5 py-1 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-red-500 cursor-pointer">
+            <option value="Pendiente por verificar comprobante" ${order.status.includes('verificar') ? 'selected' : ''}>🟡 Por verificar Nequi</option>
+            <option value="Pendiente (Contra Entrega)" ${order.status.includes('Contra Entrega') ? 'selected' : ''}>🟠 Contra Entrega</option>
+            <option value="Preparando" ${order.status === 'Preparando' || order.status.includes('Preparación') ? 'selected' : ''}>🔵 Pagado / Preparando</option>
+            <option value="Enviado" ${order.status === 'Enviado' ? 'selected' : ''}>🟣 Despachado</option>
+            <option value="Entregado" ${order.status === 'Entregado' ? 'selected' : ''}>🟢 Entregado</option>
+          </select>
+          ${isPendingVerification ? `
+            <button type="button" onclick="approveOrderDirectly('${order.id}')" class="px-2 py-1 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-bold text-[10px] rounded-lg shadow-sm flex items-center gap-1 transition cursor-pointer" title="Aprobar pago y despachar">
+              <i data-lucide="check" class="w-3 h-3"></i>
+              <span>Aprobar</span>
+            </button>
+          ` : ''}
+        </div>
       </td>
     </tr>
-  `).join('');
+  `;
+  }).join('');
+  lucide.createIcons();
 }
 
 // Actualizar estado de una orden
@@ -1093,3 +1117,49 @@ window.clearEditProductPhoto = clearEditProductPhoto;
 window.clearNewProductPhoto = clearNewProductPhoto;
 window.handleUpdateProduct = handleUpdateProduct;
 window.handleSaveProduct = handleSaveProduct;
+
+
+// Visualizador de comprobante Nequi para Doña Angela
+function viewOrderReceipt(orderId) {
+  const order = adminState.orders.find(o => o.id === orderId);
+  if (!order || !order.receiptUrl) {
+    showToast('⚠️ Este pedido no adjuntó imagen de comprobante');
+    return;
+  }
+  currentlyViewingOrderId = orderId;
+  const modal = document.getElementById('view-receipt-modal');
+  const img = document.getElementById('view-receipt-modal-img');
+  const title = document.getElementById('view-receipt-modal-title');
+  const amount = document.getElementById('view-receipt-modal-amount');
+  const ref = document.getElementById('view-receipt-modal-ref');
+
+  if (img) img.src = order.receiptUrl;
+  if (title) title.textContent = `Comprobante Nequi - ${order.customer} (${order.id})`;
+  if (amount) amount.textContent = formatAdminPrice(order.total);
+  if (ref) ref.textContent = order.receiptRef ? `Referencia: ${order.receiptRef}` : '';
+  if (modal) modal.classList.remove('hidden');
+  lucide.createIcons();
+}
+
+function closeReceiptModal() {
+  const modal = document.getElementById('view-receipt-modal');
+  if (modal) modal.classList.add('hidden');
+  currentlyViewingOrderId = null;
+}
+
+function approveCurrentOpenReceipt() {
+  if (currentlyViewingOrderId) {
+    approveOrderDirectly(currentlyViewingOrderId);
+  }
+}
+
+function approveOrderDirectly(orderId) {
+  updateOrderStatus(orderId, 'Preparando');
+  closeReceiptModal();
+  showToast(`✅ ¡Pago del pedido ${orderId} verificado y aprobado! Preparar despacho.`);
+}
+
+window.viewOrderReceipt = viewOrderReceipt;
+window.closeReceiptModal = closeReceiptModal;
+window.approveCurrentOpenReceipt = approveCurrentOpenReceipt;
+window.approveOrderDirectly = approveOrderDirectly;

@@ -690,6 +690,8 @@ function openCheckoutModal() {
   if (modal) {
     const payTotalEl = document.getElementById('checkout-pay-total');
     if (payTotalEl) payTotalEl.textContent = formatPrice(subtotal);
+    const nequiAmountEl = document.getElementById('nequi-amount-display');
+    if (nequiAmountEl) nequiAmountEl.textContent = formatPrice(subtotal);
 
     setCheckoutStep(1);
     modal.classList.remove('hidden');
@@ -746,13 +748,102 @@ function setCheckoutStep(step) {
   lucide.createIcons();
 }
 
-// Selector y conmutador visual de métodos de pago (Tarjeta, Nequi, Contra Entrega)
+
+// ==================== CAMINO 2: NEQUI DIRECTO CON COMPROBANTE ====================
+let currentReceiptBase64 = null;
+let currentReceiptFileName = '';
+
+function copyNequiNumber() {
+  const number = '3004720904';
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(number).then(() => {
+      showToast('📋 ¡Número Nequi copiado: 300 472 0904!');
+    }).catch(() => {
+      prompt('Copia el número Nequi:', '3004720904');
+    });
+  } else {
+    prompt('Copia el número Nequi:', '3004720904');
+  }
+}
+
+function compressReceiptImage(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        let w = img.width;
+        let h = img.height;
+        const maxDim = 1200;
+        if (w > maxDim || h > maxDim) {
+          if (w > h) {
+            h = Math.round((h * maxDim) / w);
+            w = maxDim;
+          } else {
+            w = Math.round((w * maxDim) / h);
+            h = maxDim;
+          }
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, w, h);
+        resolve(canvas.toDataURL('image/jpeg', 0.82));
+      };
+      img.onerror = reject;
+      img.src = e.target.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+async function handleReceiptFileSelect(event) {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+
+  showToast('📸 Procesando comprobante...');
+  try {
+    const compressed = await compressReceiptImage(file);
+    currentReceiptBase64 = compressed;
+    currentReceiptFileName = file.name || 'comprobante.jpg';
+
+    const emptyBox = document.getElementById('receipt-empty-state');
+    const previewBox = document.getElementById('receipt-preview-state');
+    const previewImg = document.getElementById('receipt-preview-img');
+    const filenameEl = document.getElementById('receipt-filename');
+
+    if (previewImg) previewImg.src = compressed;
+    if (filenameEl) filenameEl.textContent = currentReceiptFileName;
+    if (emptyBox) emptyBox.classList.add('hidden');
+    if (previewBox) previewBox.classList.remove('hidden');
+
+    showToast('✅ Comprobante adjuntado');
+    lucide.createIcons();
+  } catch (e) {
+    console.error('Error con comprobante:', e);
+    showToast('⚠️ No se pudo procesar la imagen');
+  }
+}
+
+function clearReceiptFile() {
+  currentReceiptBase64 = null;
+  currentReceiptFileName = '';
+  const input = document.getElementById('nequi-receipt-input');
+  if (input) input.value = '';
+  const emptyBox = document.getElementById('receipt-empty-state');
+  const previewBox = document.getElementById('receipt-preview-state');
+  if (emptyBox) emptyBox.classList.remove('hidden');
+  if (previewBox) previewBox.classList.add('hidden');
+  lucide.createIcons();
+}
+
+// Selector y conmutador visual de métodos de pago (Nequi Directo y Contra Entrega)
 function togglePaymentMethodUI(method) {
-  const cardBox = document.getElementById('card-option-box');
   const nequiBox = document.getElementById('nequi-option-box');
   const cashBox = document.getElementById('cash-option-box');
 
-  const formCard = document.getElementById('payment-form-card');
   const formNequi = document.getElementById('payment-form-nequi');
   const formCash = document.getElementById('payment-form-cash');
 
@@ -764,41 +855,34 @@ function togglePaymentMethodUI(method) {
   const radio = document.querySelector(`input[name="payment-method-type"][value="${method}"]`);
   if (radio) radio.checked = true;
 
-  [cardBox, nequiBox, cashBox].forEach(b => {
+  [nequiBox, cashBox].forEach(b => {
     if (b) {
-      b.classList.remove('border-red-600', 'border-purple-600', 'border-amber-600', 'dark:border-red-500', 'dark:border-purple-500', 'dark:border-amber-500');
+      b.classList.remove('border-purple-600', 'border-amber-600', 'dark:border-purple-500', 'dark:border-amber-500', 'shadow-sm');
       b.classList.add('border-slate-200', 'dark:border-slate-800');
     }
   });
 
-  if (formCard) formCard.classList.add('hidden');
   if (formNequi) formNequi.classList.add('hidden');
   if (formCash) formCash.classList.add('hidden');
 
-  if (method === 'card') {
-    if (cardBox) {
-      cardBox.classList.remove('border-slate-200', 'dark:border-slate-800');
-      cardBox.classList.add('border-red-600', 'dark:border-red-500');
-    }
-    if (formCard) formCard.classList.remove('hidden');
-    if (payBtn) {
-      payBtn.className = 'px-8 py-3.5 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 active:scale-95 text-white font-bold text-xs rounded-xl flex items-center gap-2 transition shadow-lg shadow-red-600/30 cursor-pointer';
-    }
-    if (payBtnText) payBtnText.textContent = `🔒 Pagar Ahora ${totalFormatted}`;
-  } else if (method === 'nequi') {
+  if (method === 'nequi') {
     if (nequiBox) {
       nequiBox.classList.remove('border-slate-200', 'dark:border-slate-800');
-      nequiBox.classList.add('border-purple-600', 'dark:border-purple-500');
+      nequiBox.classList.add('border-purple-600', 'dark:border-purple-500', 'shadow-sm');
     }
     if (formNequi) formNequi.classList.remove('hidden');
     if (payBtn) {
-      payBtn.className = 'px-8 py-3.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 active:scale-95 text-white font-bold text-xs rounded-xl flex items-center gap-2 transition shadow-lg shadow-purple-600/30 cursor-pointer';
+      payBtn.className = 'px-8 py-3.5 bg-gradient-to-r from-purple-700 to-indigo-700 hover:from-purple-600 hover:to-indigo-600 active:scale-95 text-white font-bold text-xs rounded-xl flex items-center gap-2 transition shadow-lg shadow-purple-700/30 cursor-pointer';
     }
-    if (payBtnText) payBtnText.textContent = `🟣 Solicitar Débito Nequi (${totalFormatted})`;
+    if (payBtnText) payBtnText.textContent = `📱 Confirmar Pedido con Nequi (${totalFormatted})`;
+    
+    // Actualizar valor exacto a transferir en la tarjeta de Nequi
+    const amountEl = document.getElementById('nequi-amount-display');
+    if (amountEl) amountEl.textContent = totalFormatted;
   } else if (method === 'cash') {
     if (cashBox) {
       cashBox.classList.remove('border-slate-200', 'dark:border-slate-800');
-      cashBox.classList.add('border-amber-600', 'dark:border-amber-500');
+      cashBox.classList.add('border-amber-600', 'dark:border-amber-500', 'shadow-sm');
     }
     if (formCash) formCash.classList.remove('hidden');
     if (payBtn) {
@@ -839,78 +923,61 @@ function formatExpiry(input) {
   }
 }
 
-// Procesamiento interactivo del pago seguro (Animación estilo Temu & Tipti)
+// Procesamiento de pedidos Camino 2: Nequi Directo con Comprobante y Contra Entrega
 async function processPaymentAndConfirm() {
   const methodRadio = document.querySelector('input[name="payment-method-type"]:checked');
-  const method = methodRadio ? methodRadio.value : 'card';
+  const method = methodRadio ? methodRadio.value : 'nequi';
 
-  // Validaciones del cliente según método seleccionado
-  if (method === 'card') {
-    const cardNum = document.getElementById('card-number')?.value.replace(/\s+/g, '') || '';
-    const cardHolder = document.getElementById('card-holder')?.value.trim() || '';
-    const cardExpiry = document.getElementById('card-expiry')?.value.trim() || '';
-    const cardCvv = document.getElementById('card-cvv')?.value.trim() || '';
+  const nequiRef = document.getElementById('nequi-ref-input')?.value.trim() || '';
 
-    if (cardNum.length < 13) {
-      showToast('⚠️ Ingresa un número de tarjeta válido (16 dígitos)');
-      document.getElementById('card-number')?.focus();
-      return;
+  // Validación: Si es Nequi, exigir comprobante o referencia para que Doña Angela pueda verificar
+  if (method === 'nequi' && !currentReceiptBase64 && !nequiRef) {
+    showToast('⚠️ Por favor adjunta la foto de tu comprobante o escribe la referencia de tu transferencia');
+    const box = document.getElementById('receipt-upload-box');
+    if (box) {
+      box.classList.add('ring-2', 'ring-purple-500', 'animate-pulse');
+      setTimeout(() => box.classList.remove('ring-2', 'ring-purple-500', 'animate-pulse'), 2000);
     }
-    if (!cardHolder) {
-      showToast('⚠️ Ingresa el nombre del titular como figura en la tarjeta');
-      document.getElementById('card-holder')?.focus();
-      return;
-    }
-    if (!cardExpiry || cardExpiry.length < 4) {
-      showToast('⚠️ Ingresa una fecha de expiración válida (MM/AA)');
-      document.getElementById('card-expiry')?.focus();
-      return;
-    }
-    if (cardCvv.length < 3) {
-      showToast('⚠️ Ingresa el código CVV de seguridad (3 o 4 dígitos)');
-      document.getElementById('card-cvv')?.focus();
-      return;
-    }
-  } else if (method === 'nequi') {
-    const nequiPhone = document.getElementById('nequi-phone-input')?.value.replace(/\D/g, '') || '';
-    if (nequiPhone.length < 10) {
-      showToast('⚠️ Ingresa un número de celular Nequi válido (10 dígitos)');
-      document.getElementById('nequi-phone-input')?.focus();
-      return;
-    }
+    return;
   }
 
-  // Activar pantalla de procesamiento segura con animación estilo Temu / Tipti
+  // Activar pantalla de procesamiento rápida
   const overlay = document.getElementById('payment-processing-overlay');
   const statusText = document.getElementById('processing-status-text');
   if (overlay) overlay.classList.remove('hidden');
 
   if (statusText) {
-    statusText.textContent = 'Validando pasarela segura y encriptación SSL 256-bit...';
+    statusText.textContent = method === 'nequi' 
+      ? 'Registrando comprobante y enviando datos a Tienda ECONOMAX...' 
+      : 'Programando despacho contra entrega con el repartidor...';
   }
 
-  await new Promise(r => setTimeout(r, 600));
-  if (statusText) {
-    if (method === 'card') {
-      statusText.textContent = 'Verificando con la red bancaria y autorizando fondos...';
-    } else if (method === 'nequi') {
-      statusText.textContent = 'Enviando solicitud de débito instantáneo a tu App Nequi...';
-    } else {
-      statusText.textContent = 'Programando despacho contra entrega y asignando repartidor...';
+  // Si hay foto de comprobante, intentar subirla a la nube permanente (/api/upload)
+  let uploadedReceiptUrl = null;
+  if (currentReceiptBase64) {
+    try {
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ image: currentReceiptBase64 })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && data.url) {
+          uploadedReceiptUrl = data.url;
+        }
+      }
+    } catch (e) {
+      console.warn('Subiendo comprobante localmente:', e);
     }
   }
 
-  await new Promise(r => setTimeout(r, 700));
-  if (statusText) {
-    statusText.textContent = '¡Pago procesado con éxito! Generando comprobante fiscal...';
-  }
-  await new Promise(r => setTimeout(r, 500));
-
+  await new Promise(r => setTimeout(r, 600));
   if (overlay) overlay.classList.add('hidden');
 
-  // Generación de códigos únicos de orden y autorización
+  // Generación de códigos únicos de orden
   const orderNumber = 'ORD-ECONOMAX-' + Math.floor(1000 + Math.random() * 9000);
-  const authCode = 'AUTH-' + Math.floor(100000 + Math.random() * 900000);
+  const authCode = nequiRef || ('NEQUI-' + Math.floor(100000 + Math.random() * 900000));
   const subtotal = state.cart.reduce((sum, i) => sum + (i.price * i.quantity), 0);
   const totalFormatted = formatPrice(subtotal);
 
@@ -920,7 +987,7 @@ async function processPaymentAndConfirm() {
   const barrio = document.getElementById('checkout-barrio')?.value || 'Juanoy Bajo';
   const notes = document.getElementById('checkout-notes')?.value || '';
 
-  // Actualizar UI del paso 3 (Confirmación y Live Tracking)
+  // Actualizar UI del paso 3 (Confirmación)
   const orderNumEl = document.getElementById('confirmed-order-number');
   const authCodeEl = document.getElementById('confirmed-auth-code');
   const badgeTextEl = document.getElementById('confirmed-badge-text');
@@ -929,27 +996,24 @@ async function processPaymentAndConfirm() {
   if (orderNumEl) orderNumEl.textContent = orderNumber;
   if (authCodeEl) authCodeEl.textContent = authCode;
 
-  let paymentMethodLabel = 'Tarjeta Crédito/Débito';
-  let paymentStatus = 'Pagado / En Preparación';
+  let paymentMethodLabel = 'Transferencia Nequi Directa';
+  let paymentStatus = 'Pendiente por verificar comprobante';
 
-  if (method === 'card') {
-    paymentMethodLabel = 'Tarjeta Bancaria';
-    if (badgeTextEl) badgeTextEl.textContent = '¡PAGO APROBADO CON ÉXITO!';
-    if (trackingLabelEl) trackingLabelEl.textContent = `Aprobado por franquicia (${authCode})`;
-  } else if (method === 'nequi') {
-    paymentMethodLabel = 'Nequi en Línea';
-    if (badgeTextEl) badgeTextEl.textContent = '¡DÉBITO NEQUI CONFIRMADO!';
-    if (trackingLabelEl) trackingLabelEl.textContent = `Transferencia Nequi exitosa (${authCode})`;
+  if (method === 'nequi') {
+    paymentMethodLabel = 'Nequi Directo (300 472 0904)';
+    paymentStatus = 'Pendiente por verificar comprobante';
+    if (badgeTextEl) badgeTextEl.textContent = '🟡 COMPROBANTE ENVIADO - POR VERIFICAR';
+    if (trackingLabelEl) trackingLabelEl.textContent = 'Doña Angela verificará tu comprobante en su app Nequi y despachará';
   } else if (method === 'cash') {
     const changeVal = document.getElementById('cash-change-amount')?.value || 'exacto';
-    const changeText = changeVal === 'exacto' ? 'Pago exacto' : `Paga con $${Number(changeVal).toLocaleString('es-CO')} COP`;
+    const changeText = changeVal === 'exacto' ? 'Pago exacto' : `Paga con ${Number(changeVal).toLocaleString('es-CO')} COP`;
     paymentMethodLabel = `Contra Entrega Efectivo (${changeText})`;
     paymentStatus = 'Pendiente (Contra Entrega)';
-    if (badgeTextEl) badgeTextEl.textContent = '¡PEDIDO REGISTRADO (CONTRA ENTREGA)!';
+    if (badgeTextEl) badgeTextEl.textContent = '🟢 PEDIDO REGISTRADO (CONTRA ENTREGA)';
     if (trackingLabelEl) trackingLabelEl.textContent = `Se pagará al repartidor en tu puerta (${changeText})`;
   }
 
-  // Registrar pedido en el backend y en localStorage para admin.html
+  // Registrar pedido en el backend y en localStorage para admin.html con foto del comprobante
   const orderData = {
     id: orderNumber,
     authCode: authCode,
@@ -961,7 +1025,9 @@ async function processPaymentAndConfirm() {
     items: state.cart.map(i => `${i.quantity}x ${i.name}`).join(', '),
     total: subtotal,
     payment: paymentMethodLabel,
-    status: paymentStatus
+    status: paymentStatus,
+    receiptUrl: uploadedReceiptUrl || currentReceiptBase64 || null,
+    receiptRef: nequiRef || null
   };
 
   try {
@@ -991,11 +1057,13 @@ async function processPaymentAndConfirm() {
     dot.classList.remove('bg-slate-200', 'text-slate-600', 'dark:bg-slate-700', 'dark:text-slate-400');
   });
 
-  // Vaciar carrito
+  // Limpiar carrito y comprobante temporal
   state.cart = [];
+  currentReceiptBase64 = null;
+  currentReceiptFileName = '';
   updateCartUI();
 
-  showToast(`🎉 ¡Pedido ${orderNumber} confirmado con éxito!`);
+  showToast(`🎉 ¡Pedido ${orderNumber} registrado con éxito!`);
   lucide.createIcons();
 }
 
@@ -1006,6 +1074,9 @@ window.setCheckoutStep = setCheckoutStep;
 window.togglePaymentMethodUI = togglePaymentMethodUI;
 window.formatCardNumber = formatCardNumber;
 window.formatExpiry = formatExpiry;
+window.copyNequiNumber = copyNequiNumber;
+window.handleReceiptFileSelect = handleReceiptFileSelect;
+window.clearReceiptFile = clearReceiptFile;
 window.processPaymentAndConfirm = processPaymentAndConfirm;
 
 // Toast Notifications

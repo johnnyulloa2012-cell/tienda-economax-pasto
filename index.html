@@ -975,100 +975,135 @@
           </div>
         </div>
 
-        <!-- Opciones de Pago Interactivas -->
+        <!-- Opciones de Pago Interactivas (Camino 2: Nequi Directo + Contra Entrega) -->
         <div class="space-y-3">
           
-          <!-- Opción 1: Tarjeta de Crédito / Débito -->
-          <div class="rounded-2xl border-2 border-red-600 dark:border-red-500 transition-all overflow-hidden payment-card-option" id="card-option-box">
-            <label class="flex items-center justify-between p-3.5 cursor-pointer bg-red-50/30 dark:bg-slate-800/60">
+          <!-- Opción 1: Nequi Directo con Comprobante (Por Defecto) -->
+          <div class="rounded-2xl border-2 border-purple-600 dark:border-purple-500 transition-all overflow-hidden payment-card-option shadow-sm" id="nequi-option-box">
+            <label class="flex items-center justify-between p-3.5 cursor-pointer bg-purple-50/40 dark:bg-purple-950/30">
               <div class="flex items-center gap-3">
-                <input type="radio" name="payment-method-type" value="card" checked onchange="togglePaymentMethodUI('card')" class="text-red-600 focus:ring-red-500" />
+                <input type="radio" name="payment-method-type" value="nequi" checked onchange="togglePaymentMethodUI('nequi')" class="text-purple-600 focus:ring-purple-500 w-4 h-4" />
                 <div>
                   <span class="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-                    💳 Tarjeta de Crédito / Débito (Bancos Colombia)
-                    <span class="text-[9px] bg-emerald-100 text-emerald-700 font-bold px-1.5 py-0.5 rounded">Inmediato</span>
+                    📱 Transferencia a Nequi Oficial
+                    <span class="text-[9px] bg-purple-600 text-white font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Recomendado</span>
                   </span>
-                  <span class="text-[11px] text-slate-500 dark:text-slate-400">Visa, Mastercard (Bancolombia, Davivienda, etc.)</span>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400">Pagas desde tu app Nequi y adjuntas el comprobante aquí</span>
                 </div>
               </div>
-              <div class="flex items-center gap-1.5 opacity-90">
-                <span class="text-[10px] font-mono font-bold bg-blue-600 text-white px-2 py-0.5 rounded">VISA</span>
-                <span class="text-[10px] font-mono font-bold bg-amber-600 text-white px-2 py-0.5 rounded">MC</span>
-              </div>
+              <span class="text-xs font-mono font-extrabold text-purple-700 dark:text-purple-300 bg-purple-100 dark:bg-purple-900/60 px-2.5 py-1 rounded-lg">300 472 0904</span>
             </label>
 
-            <!-- Formulario de Tarjeta Interactivo -->
-            <div id="payment-form-card" class="p-4 pt-2 bg-slate-50/70 dark:bg-slate-800/40 border-t border-slate-200 dark:border-slate-700 space-y-3">
+            <!-- Formulario y Datos de Pago Nequi -->
+            <div id="payment-form-nequi" class="p-4 pt-3 bg-purple-50/30 dark:bg-slate-800/50 border-t border-purple-200 dark:border-purple-900/50 space-y-3.5">
+              
+              <!-- Tarjeta destacada con datos de Nequi de Doña Angela -->
+              <div class="p-3.5 rounded-2xl bg-gradient-to-br from-purple-700 to-indigo-900 text-white shadow-md relative overflow-hidden">
+                <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
+                
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-[10px] font-bold uppercase tracking-wider bg-white/20 px-2 py-0.5 rounded text-purple-100">Cuenta Oficial de la Tienda</span>
+                  <span class="text-[10px] text-purple-200">Nequi Colombia</span>
+                </div>
+
+                <div class="flex items-center justify-between my-1">
+                  <div>
+                    <span class="text-[10px] text-purple-200 block uppercase font-mono">Número Nequi:</span>
+                    <span class="font-mono text-xl font-extrabold tracking-wider select-all" id="nequi-number-target">300 472 0904</span>
+                  </div>
+                  <button type="button" onclick="copyNequiNumber()" class="px-3 py-1.5 bg-white text-purple-900 hover:bg-purple-50 active:scale-95 rounded-xl font-bold text-xs flex items-center gap-1.5 shadow transition">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                    <span>Copiar</span>
+                  </button>
+                </div>
+
+                <div class="mt-2 pt-2 border-t border-white/15 flex items-center justify-between text-[11px]">
+                  <div>
+                    <span class="text-purple-200 block text-[9px] uppercase">Titular:</span>
+                    <strong class="text-white">Luz Angela Valencia Sinza</strong>
+                  </div>
+                  <div class="text-right">
+                    <span class="text-purple-200 block text-[9px] uppercase">Valor a Transferir:</span>
+                    <strong id="nequi-amount-display" class="text-amber-300 font-mono text-sm">$0 COP</strong>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Pasos rápidos para el cliente -->
+              <div class="text-[11px] text-slate-600 dark:text-slate-300 space-y-1 bg-white dark:bg-slate-900 p-3 rounded-xl border border-purple-100 dark:border-purple-900/40">
+                <p class="font-bold text-purple-900 dark:text-purple-300 flex items-center gap-1.5">
+                  <i data-lucide="check-circle" class="w-3.5 h-3.5 text-purple-600"></i>
+                  ¿Cómo confirmar tu pago?
+                </p>
+                <ol class="list-decimal list-inside space-y-0.5 text-slate-500 dark:text-slate-400 text-[10px]">
+                  <li>Abre tu app Nequi y transfiere el valor exacto al <strong>300 472 0904</strong>.</li>
+                  <li>Tómale una foto o captura de pantalla al comprobante.</li>
+                  <li>Adjúntala aquí abajo para que Doña Angela prepare tu entrega.</li>
+                </ol>
+              </div>
+
+              <!-- Adjuntar Foto del Comprobante -->
               <div>
-                <label class="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">Número de Tarjeta</label>
-                <div class="relative">
-                  <input type="text" id="card-number" placeholder="4000 1234 5678 9010" maxlength="19" oninput="formatCardNumber(this)" class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl pl-3 pr-10 py-2 text-xs focus:ring-2 focus:ring-red-500 focus:outline-none font-mono" />
-                  <span id="card-brand-icon" class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400 font-mono">💳</span>
+                <label class="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                  Foto o Captura del Comprobante Nequi *
+                </label>
+                <input type="file" id="nequi-receipt-input" accept="image/*" onchange="handleReceiptFileSelect(event)" class="hidden" />
+                
+                <div id="receipt-upload-box" class="border-2 border-dashed border-purple-300 dark:border-purple-800 rounded-xl p-3 text-center bg-white dark:bg-slate-900 hover:bg-purple-50/50 dark:hover:bg-purple-950/30 transition cursor-pointer" onclick="document.getElementById('nequi-receipt-input').click()">
+                  <div id="receipt-empty-state">
+                    <i data-lucide="camera" class="w-6 h-6 mx-auto text-purple-600 mb-1"></i>
+                    <span class="text-xs font-bold text-purple-900 dark:text-purple-300 block">Toca aquí para adjuntar comprobante</span>
+                    <span class="text-[10px] text-slate-400">Sube la captura de pantalla de tu transferencia Nequi</span>
+                  </div>
+                  
+                  <div id="receipt-preview-state" class="hidden flex items-center justify-between gap-3 text-left">
+                    <div class="flex items-center gap-2.5">
+                      <img id="receipt-preview-img" src="" alt="Comprobante" class="w-12 h-12 rounded-lg object-cover border border-purple-300" />
+                      <div>
+                        <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                          <i data-lucide="check" class="w-3.5 h-3.5"></i> Comprobante adjuntado
+                        </span>
+                        <span id="receipt-filename" class="text-[10px] text-slate-400 block truncate max-w-[180px]">comprobante.jpg</span>
+                      </div>
+                    </div>
+                    <button type="button" onclick="event.stopPropagation(); clearReceiptFile();" class="p-1.5 text-slate-400 hover:text-red-600 rounded-lg" title="Cambiar foto">
+                      <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </button>
+                  </div>
                 </div>
               </div>
+
+              <!-- Referencia o número de aprobación opcional -->
               <div>
-                <label class="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">Nombre del Titular</label>
-                <input type="text" id="card-holder" placeholder="Como figura en la tarjeta" class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-red-500 focus:outline-none" />
+                <label class="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  Número de Aprobación / Referencia Nequi (Opcional)
+                </label>
+                <input type="text" id="nequi-ref-input" placeholder="Ej: M1849204 o número de cel que transfirió" class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-purple-500 focus:outline-none font-mono" />
               </div>
-              <div class="grid grid-cols-2 gap-3">
-                <div>
-                  <label class="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">Vencimiento (MM/AA)</label>
-                  <input type="text" id="card-expiry" placeholder="12/28" maxlength="5" oninput="formatExpiry(this)" class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-red-500 focus:outline-none font-mono" />
-                </div>
-                <div>
-                  <label class="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">Código de Seguridad (CVV)</label>
-                  <input type="password" id="card-cvv" placeholder="123" maxlength="4" class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-red-500 focus:outline-none font-mono" />
-                </div>
-              </div>
+
             </div>
           </div>
 
-          <!-- Opción 2: Nequi / PSE Pago En Línea -->
-          <div class="rounded-2xl border-2 border-slate-200 dark:border-slate-800 transition-all overflow-hidden payment-card-option" id="nequi-option-box">
-            <label class="flex items-center justify-between p-3.5 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50">
-              <div class="flex items-center gap-3">
-                <input type="radio" name="payment-method-type" value="nequi" onchange="togglePaymentMethodUI('nequi')" class="text-purple-600 focus:ring-purple-500" />
-                <div>
-                  <span class="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-                    🟣 Nequi / PSE Débito Directo (Colombia)
-                    <span class="text-[9px] bg-purple-100 text-purple-700 font-bold px-1.5 py-0.5 rounded">En Línea</span>
-                  </span>
-                  <span class="text-[11px] text-slate-500 dark:text-slate-400">Notificación instantánea a tu app Nequi Colombia</span>
-                </div>
-              </div>
-              <span class="text-xs font-mono font-bold text-purple-600">300 472 0904</span>
-            </label>
-
-            <!-- Formulario Nequi Interactivo -->
-            <div id="payment-form-nequi" class="hidden p-4 pt-2 bg-purple-50/40 dark:bg-purple-950/20 border-t border-purple-200 dark:border-purple-900/50 space-y-3">
-              <div>
-                <label class="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">Número de Celular de tu Cuenta Nequi Colombia</label>
-                <input type="tel" id="nequi-phone-input" placeholder="Ej: 300 123 4567" class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-purple-500 focus:outline-none font-mono" />
-                <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-1">Recibirás la solicitud de aprobación de pago directamente en tu app Nequi en Colombia.</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Opción 3: Pago Contra Entrega en Efectivo (Estilo Tipti) -->
+          <!-- Opción 2: Pago Contra Entrega en Efectivo (Pasto) -->
           <div class="rounded-2xl border-2 border-slate-200 dark:border-slate-800 transition-all overflow-hidden payment-card-option" id="cash-option-box">
             <label class="flex items-center justify-between p-3.5 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50">
               <div class="flex items-center gap-3">
-                <input type="radio" name="payment-method-type" value="cash" onchange="togglePaymentMethodUI('cash')" class="text-amber-600 focus:ring-amber-500" />
+                <input type="radio" name="payment-method-type" value="cash" onchange="togglePaymentMethodUI('cash')" class="text-amber-600 focus:ring-amber-500 w-4 h-4" />
                 <div>
                   <span class="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
                     💵 Pago Contra Entrega en Efectivo (Pasto)
                     <span class="text-[9px] bg-amber-100 text-amber-800 font-bold px-1.5 py-0.5 rounded">En tu puerta</span>
                   </span>
-                  <span class="text-[11px] text-slate-500 dark:text-slate-400">Pagas en efectivo en pesos colombianos al repartidor al recibir</span>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400">Pagas en efectivo al repartidor cuando recibas tu pedido</span>
                 </div>
               </div>
-              <span class="text-sm">🛵</span>
+              <span class="text-xs font-bold text-amber-600 bg-amber-50 dark:bg-amber-950/60 px-2 py-1 rounded">Efectivo</span>
             </label>
 
             <!-- Formulario Efectivo Interactivo -->
             <div id="payment-form-cash" class="hidden p-4 pt-2 bg-amber-50/40 dark:bg-amber-950/20 border-t border-amber-200 dark:border-amber-900/50 space-y-3">
               <div>
-                <label class="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">¿Con qué billete vas a pagar? (Para llevarte cambio exacto)</label>
+                <label class="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">¿Con qué billete vas a pagar? (Para que el repartidor lleve cambio exacto)</label>
                 <select id="cash-change-amount" class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-amber-500 focus:outline-none cursor-pointer">
                   <option value="exacto">Pago exacto (sin cambio)</option>
                   <option value="10000">Billete de $10.000 COP</option>
