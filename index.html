@@ -846,24 +846,24 @@
 
   <!-- ================= SIMULADOR DE CHECKOUT (3 PASOS) ================= -->
   <div id="checkout-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-2 sm:p-4 overflow-y-auto">
-    <!-- Backdrop -->
+    <!-- Backdrop oscuro con blur -->
     <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeCheckoutModal()"></div>
 
-    <!-- Modal Box con altura controlada y scroll interno flexible -->
-    <div class="relative w-full max-w-lg bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden z-10 animate-fade-in flex flex-col my-auto max-h-[92vh]" style="max-height: 92vh; display: flex; flex-direction: column;">
+    <!-- Modal Box con Altura Acotada y Estructura Flex: Header Fijo + Scroll Central + Footer Fijo Abajo -->
+    <div class="relative w-full max-w-lg bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden z-10 animate-fade-in flex flex-col my-auto max-h-[90vh] sm:max-h-[88vh]" style="max-height: 90vh; display: flex; flex-direction: column;">
       
-      <!-- Barra superior con indicador de pasos -->
+      <!-- 1. Header Fijo Superior (shrink-0) -->
       <div class="px-5 py-3.5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-amber-50/50 dark:bg-slate-900 shrink-0">
         <div class="flex items-center gap-2.5">
           <img src="logo.jpg" alt="ECONOMAX" class="w-6 h-6 rounded-full object-cover border border-amber-400" />
           <span class="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">Checkout Seguro • Tienda ECONOMAX</span>
         </div>
-        <button onclick="closeCheckoutModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-white p-1 rounded-lg transition" title="Cerrar">
+        <button onclick="closeCheckoutModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-white p-1 rounded-lg transition cursor-pointer" title="Cerrar">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
 
-      <!-- Indicador visual de los 3 pasos -->
+      <!-- 2. Indicador visual de los 3 pasos Fijo (shrink-0) -->
       <div class="px-5 pt-3 pb-2 flex items-center justify-between border-b border-slate-100 dark:border-slate-800/60 bg-slate-50/50 dark:bg-slate-800/30 shrink-0">
         <div class="flex items-center gap-1.5">
           <span class="checkout-step-dot w-5 h-5 rounded-full bg-red-600 text-white text-[10px] font-bold flex items-center justify-center">1</span>
@@ -881,353 +881,365 @@
         </div>
       </div>
 
-      <!-- Paso 1: Datos de Envío en Pasto -->
-      <div id="checkout-step-1" class="p-4 sm:p-5 overflow-y-auto flex-1 min-h-0" style="overflow-y: auto; -webkit-overflow-scrolling: touch; min-height: 0;">
-        <h4 class="font-display font-bold text-base text-slate-900 dark:text-white mb-1">Datos de Entrega en Pasto</h4>
-        <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-3">Ingresa tu dirección para coordinar el despacho con el repartidor.</p>
+      <!-- 3. ÁREA DE CONTENIDO CENTRAL CON SCROLL VERTICAL FLUIDO (flex-1 overflow-y-auto) -->
+      <div class="flex-1 overflow-y-auto min-h-0" id="checkout-steps-scroll-area" style="overflow-y: auto; -webkit-overflow-scrolling: touch; min-height: 0;">
         
-        <div class="space-y-3 text-xs">
-          <div class="grid grid-cols-2 gap-3">
-            <div>
-              <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Nombre Completo *</label>
-              <input type="text" id="checkout-name" placeholder="Tu nombre y apellido" class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-red-500 focus:outline-none" />
+        <!-- PASO 1: Datos de Envío en Pasto -->
+        <div id="checkout-step-1" class="p-4 sm:p-5">
+          <h4 class="font-display font-bold text-base text-slate-900 dark:text-white mb-1">Datos de Entrega en Pasto</h4>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-3">Ingresa tu dirección para coordinar el despacho con el repartidor.</p>
+          
+          <div class="space-y-3 text-xs">
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Nombre Completo *</label>
+                <input type="text" id="checkout-name" placeholder="Tu nombre y apellido" class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-red-500 focus:outline-none" />
+              </div>
+              <div>
+                <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Celular / WhatsApp *</label>
+                <input type="tel" id="checkout-phone" placeholder="Ej: 315 123 4567" class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-red-500 focus:outline-none" />
+              </div>
             </div>
-            <div>
-              <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Celular / WhatsApp *</label>
-              <input type="tel" id="checkout-phone" placeholder="Ej: 315 123 4567" class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-red-500 focus:outline-none" />
-            </div>
-          </div>
 
-          <div class="grid grid-cols-2 gap-3">
-            <div>
-              <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Dirección en Pasto *</label>
-              <input type="text" id="checkout-address" placeholder="Calle, Carrera, Manzana, Casa" class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-red-500 focus:outline-none" />
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Dirección en Pasto *</label>
+                <input type="text" id="checkout-address" placeholder="Calle, Carrera, Manzana, Casa" class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-red-500 focus:outline-none" />
+              </div>
+              <div>
+                <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Barrio / Sector en Pasto *</label>
+                <input type="text" id="checkout-barrio" placeholder="Ej: Juanoy, Pandiaco, Maridíaz..." list="barrios-list" class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-red-500 focus:outline-none" />
+                <datalist id="barrios-list">
+                  <option value="Juanoy Bajo">
+                  <option value="Juanoy Alto">
+                  <option value="Pandiaco">
+                  <option value="Maridíaz">
+                  <option value="Centro">
+                  <option value="Morasurco">
+                  <option value="Palermo">
+                  <option value="Bomboná">
+                  <option value="San Juan">
+                  <option value="Chapal">
+                  <option value="Catambuco">
+                  <option value="Obonuco">
+                  <option value="Jongovito">
+                  <option value="Tamasagra">
+                  <option value="Torobajo">
+                  <option value="Lorenzo de Aldana">
+                  <option value="Las Lajas">
+                  <option value="Santiago">
+                  <option value="Anganoy">
+                  <option value="Santa Bárbara">
+                  <option value="Corazón de Jesús">
+                  <option value="El Rosario">
+                  <option value="Miraflores">
+                  <option value="Santa Mónica">
+                  <option value="Panamericana">
+                  <option value="Mijitayo">
+                  <option value="San Ignacio">
+                  <option value="La Colina">
+                  <option value="Fátima">
+                  <option value="Navarrete">
+                  <option value="Aranda">
+                  <option value="El Pilar">
+                </datalist>
+              </div>
             </div>
+
             <div>
-              <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Barrio / Sector en Pasto *</label>
-              <input type="text" id="checkout-barrio" placeholder="Ej: Juanoy, Pandiaco, Maridíaz..." list="barrios-list" class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-red-500 focus:outline-none" />
-              <datalist id="barrios-list">
-                <option value="Juanoy Bajo">
-                <option value="Juanoy Alto">
-                <option value="Pandiaco">
-                <option value="Maridíaz">
-                <option value="Centro">
-                <option value="Morasurco">
-                <option value="Palermo">
-                <option value="Bomboná">
-                <option value="San Juan">
-                <option value="Chapal">
-                <option value="Catambuco">
-                <option value="Obonuco">
-                <option value="Jongovito">
-                <option value="Tamasagra">
-                <option value="Torobajo">
-                <option value="Lorenzo de Aldana">
-                <option value="Las Lajas">
-                <option value="Santiago">
-                <option value="Anganoy">
-                <option value="Santa Bárbara">
-                <option value="Corazón de Jesús">
-                <option value="El Rosario">
-                <option value="Miraflores">
-                <option value="Santa Mónica">
-                <option value="Panamericana">
-                <option value="Mijitayo">
-                <option value="San Ignacio">
-                <option value="La Colina">
-                <option value="Fátima">
-                <option value="Navarrete">
-                <option value="Aranda">
-                <option value="El Pilar">
-              </datalist>
+              <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Indicaciones para el Domiciliario (Opcional)</label>
+              <input type="text" id="checkout-notes" placeholder="Ej: Casa esquinera, timbre blanco..." class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-red-500 focus:outline-none" />
             </div>
-          </div>
 
-          <div>
-            <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Indicaciones para el Domiciliario (Opcional)</label>
-            <input type="text" id="checkout-notes" placeholder="Ej: Casa esquinera, timbre blanco..." class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-red-500 focus:outline-none" />
-          </div>
-
-          <div class="p-3 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-900/60 text-[11px] text-amber-900 dark:text-amber-200 flex items-center gap-2">
-            <i data-lucide="info" class="w-4 h-4 text-amber-600 shrink-0"></i>
-            <span><strong>Domicilio en Pasto:</strong> El valor del envío ($3.000 a $5.000 COP) se cancela en efectivo al repartidor en tu puerta.</span>
+            <div class="p-3 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-900/60 text-[11px] text-amber-900 dark:text-amber-200 flex items-center gap-2">
+              <i data-lucide="info" class="w-4 h-4 text-amber-600 shrink-0"></i>
+              <span><strong>Domicilio en Pasto:</strong> El valor del envío ($3.000 a $5.000 COP) se cancela en efectivo al repartidor en tu puerta.</span>
+            </div>
           </div>
         </div>
 
-        <!-- Botón Continuar Sticky al pie del paso 1 -->
-        <div class="sticky bottom-0 -mx-4 -mb-4 sm:-mx-5 sm:-mb-5 p-3.5 sm:p-4 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 flex justify-end items-center z-30 shadow-md mt-4">
-          <button onclick="setCheckoutStep(2)" class="px-6 py-2.5 bg-red-600 hover:bg-red-700 active:scale-95 text-white font-bold text-xs rounded-xl flex items-center gap-2 transition shadow-md shadow-red-600/20 cursor-pointer">
+        <!-- PASO 2: Pasarela de Pagos Dinámica (Nequi Directo + Contra Entrega) -->
+        <div id="checkout-step-2" class="p-4 sm:p-5 hidden space-y-3">
+          <div class="flex items-center justify-between mb-1">
+            <div>
+              <h4 class="font-display font-bold text-base text-slate-900 dark:text-white">Método de Pago</h4>
+              <p class="text-[11px] text-slate-500 dark:text-slate-400">Selecciona cómo deseas pagar tu compra</p>
+            </div>
+            <div class="text-right">
+              <span class="text-[10px] text-slate-400 block uppercase font-mono">Total a Pagar</span>
+              <span id="checkout-pay-total" class="font-display font-extrabold text-base sm:text-lg text-red-600 dark:text-red-400">$0 COP</span>
+            </div>
+          </div>
+
+          <!-- Opciones de Pago Interactivas -->
+          <div class="space-y-3">
+            
+            <!-- Opción 1: Nequi Directo Oficial con Comprobante -->
+            <div class="rounded-2xl border-2 border-purple-600 dark:border-purple-500 transition-all overflow-hidden payment-card-option shadow-sm" id="nequi-option-box">
+              <label class="flex items-center justify-between p-3 cursor-pointer bg-purple-50/40 dark:bg-purple-950/30">
+                <div class="flex items-center gap-2.5">
+                  <input type="radio" name="payment-method-type" value="nequi" checked onchange="togglePaymentMethodUI('nequi')" class="text-purple-600 focus:ring-purple-500 w-4 h-4 cursor-pointer" />
+                  <div>
+                    <span class="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                      📱 Transferencia a Nequi Oficial
+                      <span class="text-[9px] bg-purple-600 text-white font-bold px-1.5 py-0.2 rounded-full uppercase tracking-wider">Recomendado</span>
+                    </span>
+                    <span class="text-[10px] text-slate-500 dark:text-slate-400">Pagas desde tu app Nequi y adjuntas el comprobante</span>
+                  </div>
+                </div>
+                <span class="text-xs font-mono font-extrabold text-purple-700 dark:text-purple-300 bg-purple-100 dark:bg-purple-900/60 px-2 py-0.5 rounded-lg">300 472 0904</span>
+              </label>
+
+              <!-- Formulario y Datos de Pago Nequi (Compacto sin espacios sobrantes) -->
+              <div id="payment-form-nequi" class="p-3 bg-purple-50/40 dark:bg-slate-800/60 border-t border-purple-200 dark:border-purple-900/50 space-y-2.5">
+                
+                <!-- Tarjeta Nequi Oficial con color morado asegurado al 100% -->
+                <div class="p-3 rounded-xl shadow-md relative overflow-hidden text-white" style="background: linear-gradient(135deg, #20002c 0%, #440057 100%) !important; background-color: #20002c !important; color: #ffffff !important;">
+                  
+                  <div class="flex items-center justify-between mb-1.5">
+                    <div class="flex items-center gap-1.5">
+                      <span class="w-5 h-5 rounded-md bg-pink-500 text-white flex items-center justify-center font-bold text-[10px] shadow">N</span>
+                      <span class="text-[11px] font-bold tracking-wide uppercase text-pink-200">Nequi Oficial Tienda</span>
+                      <span class="inline-flex items-center gap-1 text-[9px] bg-emerald-500/20 text-emerald-300 font-bold px-1.5 py-0.2 rounded-full border border-emerald-400/30">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        Activo
+                      </span>
+                    </div>
+                    <span class="text-[10px] bg-white/20 px-2 py-0.5 rounded text-white font-mono">Transferencia</span>
+                  </div>
+
+                  <div class="flex items-center justify-between bg-black/30 p-2 rounded-xl border border-white/10">
+                    <div>
+                      <span class="text-[9px] text-pink-200 block uppercase font-mono">Número Nequi a Transferir:</span>
+                      <span class="font-mono text-base sm:text-lg font-black tracking-wider text-white" id="nequi-number-target">300 472 0904</span>
+                    </div>
+                    <button type="button" onclick="copyNequiNumber()" class="px-3 py-1.5 bg-white text-purple-950 hover:bg-pink-100 active:scale-95 rounded-lg font-bold text-xs flex items-center gap-1 shadow cursor-pointer transition">
+                      <i data-lucide="copy" class="w-3.5 h-3.5 text-purple-700"></i>
+                      <span>Copiar</span>
+                    </button>
+                  </div>
+
+                  <div class="mt-2 pt-1.5 border-t border-white/15 flex items-center justify-between text-[11px]">
+                    <div>
+                      <span class="text-pink-200 text-[9px] block">Titular:</span>
+                      <strong class="text-white text-xs">Luz Angela Valencia Sinza</strong>
+                    </div>
+                    <div class="text-right">
+                      <span class="text-pink-200 text-[9px] block">Total a Transferir:</span>
+                      <strong id="nequi-amount-display" class="text-amber-300 font-mono text-sm font-extrabold">$0 COP</strong>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Adjuntar Foto del Comprobante (Compacto) -->
+                <div>
+                  <input type="file" id="nequi-receipt-input" accept="image/*" onchange="handleReceiptFileSelect(event)" class="hidden" />
+                  
+                  <div id="receipt-upload-box" class="border-2 border-dashed border-purple-300 dark:border-purple-800 rounded-xl p-2 text-center bg-white dark:bg-slate-900 hover:bg-purple-50/50 dark:hover:bg-purple-950/30 transition cursor-pointer" onclick="document.getElementById('nequi-receipt-input').click()">
+                    <div id="receipt-empty-state" class="py-1 flex items-center justify-center gap-2">
+                      <div class="w-7 h-7 rounded-lg bg-purple-100 dark:bg-purple-900/60 text-purple-600 dark:text-purple-300 flex items-center justify-center shrink-0">
+                        <i data-lucide="camera" class="w-4 h-4"></i>
+                      </div>
+                      <div class="text-left">
+                        <span class="text-xs font-bold text-purple-900 dark:text-purple-300 block">Adjuntar comprobante de Nequi *</span>
+                        <span class="text-[10px] text-slate-400">Toca aquí para subir foto o captura de pantalla</span>
+                      </div>
+                    </div>
+                    
+                    <div id="receipt-preview-state" class="hidden flex items-center justify-between gap-2 text-left">
+                      <div class="flex items-center gap-2">
+                        <img id="receipt-preview-img" src="" alt="Comprobante" class="w-9 h-9 rounded-lg object-cover border border-purple-300 shrink-0" />
+                        <div>
+                          <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                            <i data-lucide="check" class="w-3.5 h-3.5"></i> Comprobante adjuntado
+                          </span>
+                          <span id="receipt-filename" class="text-[10px] text-slate-400 block truncate max-w-[150px]">comprobante.jpg</span>
+                        </div>
+                      </div>
+                      <button type="button" onclick="event.stopPropagation(); clearReceiptFile();" class="p-1 text-slate-400 hover:text-red-600 rounded-lg" title="Cambiar foto">
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Referencia Nequi opcional (Una sola línea compacta) -->
+                <div>
+                  <input type="text" id="nequi-ref-input" placeholder="Número de referencia o celular que transfirió (opcional)" class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-purple-500 focus:outline-none font-mono" />
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Opción 2: Pago Contra Entrega en Efectivo (Pasto) -->
+            <div class="rounded-2xl border-2 border-slate-200 dark:border-slate-800 transition-all overflow-hidden payment-card-option" id="cash-option-box">
+              <label class="flex items-center justify-between p-3 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                <div class="flex items-center gap-2.5">
+                  <input type="radio" name="payment-method-type" value="cash" onchange="togglePaymentMethodUI('cash')" class="text-amber-600 focus:ring-amber-500 w-4 h-4 cursor-pointer" />
+                  <div>
+                    <span class="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                      💵 Pago Contra Entrega en Efectivo
+                      <span class="text-[9px] bg-amber-100 text-amber-800 font-bold px-1.5 py-0.2 rounded">En tu puerta</span>
+                    </span>
+                    <span class="text-[10px] text-slate-500 dark:text-slate-400">Pagas en efectivo al repartidor al recibir tu pedido</span>
+                  </div>
+                </div>
+                <span class="text-xs font-bold text-amber-600 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 rounded">Efectivo</span>
+              </label>
+
+              <!-- Formulario Efectivo Interactivo -->
+              <div id="payment-form-cash" class="hidden p-3 bg-amber-50/40 dark:bg-amber-950/20 border-t border-amber-200 dark:border-amber-900/50 space-y-2">
+                <div>
+                  <label class="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">¿Con qué billete vas a pagar? (Para llevar cambio)</label>
+                  <select id="cash-change-amount" class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-amber-500 focus:outline-none cursor-pointer">
+                    <option value="exacto">Pago exacto (sin cambio)</option>
+                    <option value="10000">Billete de $10.000 COP</option>
+                    <option value="20000">Billete de $20.000 COP</option>
+                    <option value="50000" selected>Billete de $50.000 COP</option>
+                    <option value="100000">Billete de $100.000 COP</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Badges de Seguridad estilo Temu / Tipti -->
+          <div class="mt-3 p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-[10px] text-slate-600 dark:text-slate-300 flex items-center justify-between">
+            <div class="flex items-center gap-1.5">
+              <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-600 shrink-0"></i>
+              <span><strong>Protección al Comprador:</strong> Garantía de entrega o reembolso</span>
+            </div>
+            <div class="flex items-center gap-1 font-mono text-slate-400">
+              <i data-lucide="lock" class="w-3 h-3 text-slate-400"></i>
+              <span>SSL 256-bit</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- PASO 3: Confirmación Exitosa del Pedido & Tracking en Vivo -->
+        <div id="checkout-step-3" class="p-5 text-center hidden">
+          <div class="w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto mb-3 animate-bounce">
+            <i data-lucide="check-circle-2" class="w-9 h-9"></i>
+          </div>
+
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 text-[11px] font-bold mb-2">
+            <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
+            <span id="confirmed-badge-text">¡PEDIDO RECIBIDO CON ÉXITO!</span>
+          </div>
+
+          <h3 class="font-display font-bold text-2xl text-slate-900 dark:text-white">¡Gracias por tu Compra!</h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-md mx-auto">
+            Tu pedido ha sido registrado en el sistema de <strong>Tienda ECONOMAX Pasto</strong>.
+          </p>
+
+          <!-- Códigos de Transacción & Pedido -->
+          <div class="mt-4 p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 max-w-sm mx-auto grid grid-cols-2 gap-3 text-left">
+            <div>
+              <span class="text-[9px] font-mono text-slate-400 block uppercase">Nº de Pedido</span>
+              <span id="confirmed-order-number" class="text-sm font-mono font-bold text-red-600 dark:text-red-400">ORD-1024</span>
+            </div>
+            <div>
+              <span class="text-[9px] font-mono text-slate-400 block uppercase">Nº Autorización</span>
+              <span id="confirmed-auth-code" class="text-sm font-mono font-bold text-emerald-600">AUTH-94285</span>
+            </div>
+          </div>
+
+          <!-- Línea de Tiempo de Seguimiento en Vivo -->
+          <div class="mt-5 p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 max-w-md mx-auto text-left shadow-xs">
+            <div class="flex items-center justify-between mb-3 border-b border-slate-100 dark:border-slate-700 pb-2">
+              <span class="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                <i data-lucide="truck" class="w-4 h-4 text-red-600"></i>
+                Seguimiento del Envío en Pasto
+              </span>
+              <span class="text-[10px] font-bold text-amber-600 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 rounded-md">En Preparación</span>
+            </div>
+
+            <div class="space-y-3 text-xs">
+              <div class="flex items-start gap-3">
+                <div class="w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 mt-0.5 text-[10px] font-bold">✓</div>
+                <div>
+                  <span class="font-bold text-slate-800 dark:text-slate-200 block">1. Pedido Registrado</span>
+                  <span class="text-[11px] text-slate-400" id="tracking-payment-label">Transacción verificada exitosamente</span>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <div class="w-5 h-5 rounded-full bg-amber-500 text-white flex items-center justify-center shrink-0 mt-0.5 text-[10px] animate-pulse font-bold">●</div>
+                <div>
+                  <span class="font-bold text-slate-800 dark:text-slate-200 block">2. Empacando en Tienda ECONOMAX</span>
+                  <span class="text-[11px] text-slate-400">Luz Angela preparando tus productos en Juanoy Bajo</span>
+                </div>
+              </div>
+              <div class="flex items-start gap-3 opacity-50">
+                <div class="w-5 h-5 rounded-full bg-slate-300 dark:bg-slate-700 text-slate-600 flex items-center justify-center shrink-0 mt-0.5 text-[10px] font-bold">3</div>
+                <div>
+                  <span class="font-bold text-slate-800 dark:text-slate-200 block">3. Repartidor Asignado</span>
+                  <span class="text-[11px] text-slate-400">En camino a tu dirección en Pasto</span>
+                </div>
+              </div>
+              <div class="flex items-start gap-3 opacity-50">
+                <div class="w-5 h-5 rounded-full bg-slate-300 dark:bg-slate-700 text-slate-600 flex items-center justify-center shrink-0 mt-0.5 text-[10px] font-bold">4</div>
+                <div>
+                  <span class="font-bold text-slate-800 dark:text-slate-200 block">4. Entrega en Puerta</span>
+                  <span class="text-[11px] text-slate-400">Domicilio entregado con éxito</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-5 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <button onclick="window.print()" class="w-full sm:w-auto px-5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition flex items-center justify-center gap-2 cursor-pointer">
+              <i data-lucide="printer" class="w-4 h-4"></i>
+              <span>Descargar / Imprimir Recibo</span>
+            </button>
+            <button onclick="closeCheckoutModal()" class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-red-600 text-white text-xs font-bold hover:bg-red-700 transition shadow-md shadow-red-600/20 cursor-pointer">
+              Seguir Explorando la Tienda
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 4. FOOTER FIJO PERMANENTE DEL MODAL (shrink-0) - SIEMPRE VISIBLE EN PANTALLA -->
+      <div id="checkout-modal-footer" class="p-3.5 sm:p-4 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between shrink-0 z-30">
+        
+        <!-- Acciones Paso 1 (Dirección) -->
+        <div id="footer-actions-step-1" class="w-full flex justify-end">
+          <button type="button" onclick="setCheckoutStep(2)" class="w-full sm:w-auto px-6 py-3 bg-red-600 hover:bg-red-700 active:scale-95 text-white font-bold text-xs sm:text-sm rounded-xl flex items-center justify-center gap-2 transition shadow-md shadow-red-600/25 cursor-pointer">
             <span>Continuar a Pago</span>
             <i data-lucide="chevron-right" class="w-4 h-4"></i>
           </button>
         </div>
-      </div>
 
-      <!-- Paso 2: Pasarela de Pagos Dinámica (Nequi Directo + Contra Entrega) -->
-      <div id="checkout-step-2" class="p-4 sm:p-5 overflow-y-auto flex-1 min-h-0 hidden" style="overflow-y: auto; -webkit-overflow-scrolling: touch; min-height: 0;">
-        <div class="flex items-center justify-between mb-3">
-          <div>
-            <h4 class="font-display font-bold text-base text-slate-900 dark:text-white">Método de Pago</h4>
-            <p class="text-[11px] text-slate-500 dark:text-slate-400">Selecciona cómo deseas pagar tu compra</p>
-          </div>
-          <div class="text-right">
-            <span class="text-[10px] text-slate-400 block uppercase font-mono">Total a Pagar</span>
-            <span id="checkout-pay-total" class="font-display font-extrabold text-base sm:text-lg text-red-600 dark:text-red-400">$0 COP</span>
-          </div>
-        </div>
-
-        <!-- Opciones de Pago Interactivas -->
-        <div class="space-y-3">
-          
-          <!-- Opción 1: Nequi Directo Oficial con Comprobante -->
-          <div class="rounded-2xl border-2 border-purple-600 dark:border-purple-500 transition-all overflow-hidden payment-card-option shadow-sm" id="nequi-option-box">
-            <label class="flex items-center justify-between p-3 cursor-pointer bg-purple-50/40 dark:bg-purple-950/30">
-              <div class="flex items-center gap-2.5">
-                <input type="radio" name="payment-method-type" value="nequi" checked onchange="togglePaymentMethodUI('nequi')" class="text-purple-600 focus:ring-purple-500 w-4 h-4 cursor-pointer" />
-                <div>
-                  <span class="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-                    📱 Transferencia a Nequi Oficial
-                    <span class="text-[9px] bg-purple-600 text-white font-bold px-1.5 py-0.2 rounded-full uppercase tracking-wider">Recomendado</span>
-                  </span>
-                  <span class="text-[10px] text-slate-500 dark:text-slate-400">Pagas desde tu app Nequi y adjuntas el comprobante</span>
-                </div>
-              </div>
-              <span class="text-xs font-mono font-extrabold text-purple-700 dark:text-purple-300 bg-purple-100 dark:bg-purple-900/60 px-2 py-0.5 rounded-lg">300 472 0904</span>
-            </label>
-
-            <!-- Formulario y Datos de Pago Nequi (Compacto sin espacios sobrantes) -->
-            <div id="payment-form-nequi" class="p-3 bg-purple-50/40 dark:bg-slate-800/60 border-t border-purple-200 dark:border-purple-900/50 space-y-2.5">
-              
-              <!-- Tarjeta Nequi Oficial con color morado asegurado al 100% -->
-              <div class="p-3 rounded-xl shadow-md relative overflow-hidden text-white" style="background: linear-gradient(135deg, #20002c 0%, #440057 100%) !important; background-color: #20002c !important; color: #ffffff !important;">
-                
-                <div class="flex items-center justify-between mb-1.5">
-                  <div class="flex items-center gap-1.5">
-                    <span class="w-5 h-5 rounded-md bg-pink-500 text-white flex items-center justify-center font-bold text-[10px] shadow">N</span>
-                    <span class="text-[11px] font-bold tracking-wide uppercase text-pink-200">Nequi Oficial Tienda</span>
-                    <span class="inline-flex items-center gap-1 text-[9px] bg-emerald-500/20 text-emerald-300 font-bold px-1.5 py-0.2 rounded-full border border-emerald-400/30">
-                      <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                      Activo
-                    </span>
-                  </div>
-                  <span class="text-[10px] bg-white/20 px-2 py-0.5 rounded text-white font-mono">Transferencia</span>
-                </div>
-
-                <div class="flex items-center justify-between bg-black/30 p-2 rounded-xl border border-white/10">
-                  <div>
-                    <span class="text-[9px] text-pink-200 block uppercase font-mono">Número Nequi a Transferir:</span>
-                    <span class="font-mono text-base sm:text-lg font-black tracking-wider text-white" id="nequi-number-target">300 472 0904</span>
-                  </div>
-                  <button type="button" onclick="copyNequiNumber()" class="px-3 py-1.5 bg-white text-purple-950 hover:bg-pink-100 active:scale-95 rounded-lg font-bold text-xs flex items-center gap-1 shadow cursor-pointer transition">
-                    <i data-lucide="copy" class="w-3.5 h-3.5 text-purple-700"></i>
-                    <span>Copiar</span>
-                  </button>
-                </div>
-
-                <div class="mt-2 pt-1.5 border-t border-white/15 flex items-center justify-between text-[11px]">
-                  <div>
-                    <span class="text-pink-200 text-[9px] block">Titular:</span>
-                    <strong class="text-white text-xs">Luz Angela Valencia Sinza</strong>
-                  </div>
-                  <div class="text-right">
-                    <span class="text-pink-200 text-[9px] block">Total a Transferir:</span>
-                    <strong id="nequi-amount-display" class="text-amber-300 font-mono text-sm font-extrabold">$0 COP</strong>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Adjuntar Foto del Comprobante (Compacto) -->
-              <div>
-                <input type="file" id="nequi-receipt-input" accept="image/*" onchange="handleReceiptFileSelect(event)" class="hidden" />
-                
-                <div id="receipt-upload-box" class="border-2 border-dashed border-purple-300 dark:border-purple-800 rounded-xl p-2 text-center bg-white dark:bg-slate-900 hover:bg-purple-50/50 dark:hover:bg-purple-950/30 transition cursor-pointer" onclick="document.getElementById('nequi-receipt-input').click()">
-                  <div id="receipt-empty-state" class="py-1 flex items-center justify-center gap-2">
-                    <div class="w-7 h-7 rounded-lg bg-purple-100 dark:bg-purple-900/60 text-purple-600 dark:text-purple-300 flex items-center justify-center shrink-0">
-                      <i data-lucide="camera" class="w-4 h-4"></i>
-                    </div>
-                    <div class="text-left">
-                      <span class="text-xs font-bold text-purple-900 dark:text-purple-300 block">Adjuntar comprobante de Nequi *</span>
-                      <span class="text-[10px] text-slate-400">Toca aquí para subir foto o captura de pantalla</span>
-                    </div>
-                  </div>
-                  
-                  <div id="receipt-preview-state" class="hidden flex items-center justify-between gap-2 text-left">
-                    <div class="flex items-center gap-2">
-                      <img id="receipt-preview-img" src="" alt="Comprobante" class="w-9 h-9 rounded-lg object-cover border border-purple-300 shrink-0" />
-                      <div>
-                        <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
-                          <i data-lucide="check" class="w-3.5 h-3.5"></i> Comprobante adjuntado
-                        </span>
-                        <span id="receipt-filename" class="text-[10px] text-slate-400 block truncate max-w-[150px]">comprobante.jpg</span>
-                      </div>
-                    </div>
-                    <button type="button" onclick="event.stopPropagation(); clearReceiptFile();" class="p-1 text-slate-400 hover:text-red-600 rounded-lg" title="Cambiar foto">
-                      <i data-lucide="trash-2" class="w-4 h-4"></i>
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Referencia Nequi opcional (Una sola línea compacta) -->
-              <div>
-                <input type="text" id="nequi-ref-input" placeholder="Número de referencia o celular que transfirió (opcional)" class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-purple-500 focus:outline-none font-mono" />
-              </div>
-
-            </div>
-          </div>
-
-          <!-- Opción 2: Pago Contra Entrega en Efectivo (Pasto) -->
-          <div class="rounded-2xl border-2 border-slate-200 dark:border-slate-800 transition-all overflow-hidden payment-card-option" id="cash-option-box">
-            <label class="flex items-center justify-between p-3 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50">
-              <div class="flex items-center gap-2.5">
-                <input type="radio" name="payment-method-type" value="cash" onchange="togglePaymentMethodUI('cash')" class="text-amber-600 focus:ring-amber-500 w-4 h-4 cursor-pointer" />
-                <div>
-                  <span class="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-                    💵 Pago Contra Entrega en Efectivo
-                    <span class="text-[9px] bg-amber-100 text-amber-800 font-bold px-1.5 py-0.2 rounded">En tu puerta</span>
-                  </span>
-                  <span class="text-[10px] text-slate-500 dark:text-slate-400">Pagas en efectivo al repartidor al recibir tu pedido</span>
-                </div>
-              </div>
-              <span class="text-xs font-bold text-amber-600 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 rounded">Efectivo</span>
-            </label>
-
-            <!-- Formulario Efectivo Interactivo -->
-            <div id="payment-form-cash" class="hidden p-3 bg-amber-50/40 dark:bg-amber-950/20 border-t border-amber-200 dark:border-amber-900/50 space-y-2">
-              <div>
-                <label class="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">¿Con qué billete vas a pagar? (Para llevar cambio)</label>
-                <select id="cash-change-amount" class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-amber-500 focus:outline-none cursor-pointer">
-                  <option value="exacto">Pago exacto (sin cambio)</option>
-                  <option value="10000">Billete de $10.000 COP</option>
-                  <option value="20000">Billete de $20.000 COP</option>
-                  <option value="50000" selected>Billete de $50.000 COP</option>
-                  <option value="100000">Billete de $100.000 COP</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- Badges de Seguridad estilo Temu / Tipti -->
-        <div class="mt-3 p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-[10px] text-slate-600 dark:text-slate-300 flex items-center justify-between">
-          <div class="flex items-center gap-1.5">
-            <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-600 shrink-0"></i>
-            <span><strong>Protección al Comprador:</strong> Garantía de entrega o reembolso</span>
-          </div>
-          <div class="flex items-center gap-1 font-mono text-slate-400">
-            <i data-lucide="lock" class="w-3 h-3 text-slate-400"></i>
-            <span>SSL 256-bit</span>
-          </div>
-        </div>
-
-        <!-- Barra de Botones Sticky al fondo del modal para que NUNCA se oculte ni se pierda -->
-        <div class="sticky bottom-0 -mx-4 -mb-4 sm:-mx-5 sm:-mb-5 p-3 sm:p-4 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 flex justify-between items-center z-30 shadow-lg mt-4">
-          <button type="button" onclick="setCheckoutStep(1)" class="text-xs text-slate-500 hover:text-slate-800 dark:hover:text-white font-medium flex items-center gap-1 cursor-pointer">
+        <!-- Acciones Paso 2 (Método de Pago) -->
+        <div id="footer-actions-step-2" class="w-full flex items-center justify-between gap-3 hidden">
+          <button type="button" onclick="setCheckoutStep(1)" class="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition flex items-center gap-1.5 cursor-pointer shrink-0">
             ← Volver
           </button>
-          <button id="pay-now-btn" type="button" onclick="processPaymentAndConfirm()" class="px-5 sm:px-6 py-3 bg-gradient-to-r from-purple-700 to-indigo-700 hover:from-purple-600 active:scale-95 text-white font-bold text-xs sm:text-sm rounded-xl flex items-center gap-2 transition shadow-lg shadow-purple-700/30 cursor-pointer">
-            <i data-lucide="lock" class="w-4 h-4"></i>
-            <span id="pay-now-btn-text">📱 Confirmar Pedido con Nequi</span>
+          
+          <!-- Botón de Confirmación Principal con Colores Fuertes y Atractivos -->
+          <button id="pay-now-btn" type="button" onclick="processPaymentAndConfirm()" class="flex-1 sm:flex-none px-6 py-3 rounded-xl font-bold text-xs sm:text-sm text-white flex items-center justify-center gap-2 shadow-lg cursor-pointer transition active:scale-95" style="background-color: #4a005f !important; background: linear-gradient(135deg, #2b0038 0%, #6a0080 100%) !important; color: #ffffff !important; box-shadow: 0 4px 14px 0 rgba(74, 0, 95, 0.4) !important;">
+            <span id="pay-now-btn-icon" class="text-base">📱</span>
+            <span id="pay-now-btn-text">Confirmar Pedido con Nequi</span>
           </button>
         </div>
+
       </div>
 
-      <!-- Modal Overlay: Procesando Pago Seguro -->
+      <!-- 5. Modal Overlay: Procesando Pago Seguro -->
       <div id="payment-processing-overlay" class="absolute inset-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md z-40 hidden flex flex-col items-center justify-center p-6 text-center animate-fade-in">
         <div class="relative w-20 h-20 mb-4 flex items-center justify-center">
           <div class="absolute inset-0 rounded-full border-4 border-slate-200 dark:border-slate-800"></div>
           <div class="absolute inset-0 rounded-full border-4 border-red-600 border-t-transparent animate-spin"></div>
           <i data-lucide="shield-check" class="w-8 h-8 text-red-600"></i>
         </div>
-        <h4 class="font-display font-bold text-lg text-slate-900 dark:text-white">Procesando Pago Seguro...</h4>
+        <h4 class="font-display font-bold text-lg text-slate-900 dark:text-white">Procesando Pedido...</h4>
         <p id="processing-status-text" class="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-xs">
-          Validando pasarela de pago y encriptación de seguridad bancaria...
+          Validando y registrando tu orden en Tienda ECONOMAX Pasto...
         </p>
         <div class="mt-4 flex items-center gap-2 text-[11px] font-mono text-slate-400">
           <i data-lucide="lock" class="w-3.5 h-3.5 text-emerald-500"></i>
-          <span>Conexión cifrada PCI-DSS</span>
-        </div>
-      </div>
-
-      <!-- Paso 3: Confirmación Exitosa del Pedido & Tracking en Vivo (Estilo Temu / Tipti) -->
-      <div id="checkout-step-3" class="p-5 overflow-y-auto flex-1 text-center hidden">
-        <div class="w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto mb-3 animate-bounce">
-          <i data-lucide="check-circle-2" class="w-9 h-9"></i>
-        </div>
-
-        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 text-[11px] font-bold mb-2">
-          <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
-          <span id="confirmed-badge-text">¡PAGO APROBADO CON ÉXITO!</span>
-        </div>
-
-        <h3 class="font-display font-bold text-2xl text-slate-900 dark:text-white">¡Gracias por tu Compra!</h3>
-        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-md mx-auto">
-          Tu pedido ha sido confirmado y registrado en el sistema de <strong>Tienda ECONOMAX Pasto</strong>.
-        </p>
-
-        <!-- Códigos de Transacción & Pedido -->
-        <div class="mt-4 p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 max-w-sm mx-auto grid grid-cols-2 gap-3 text-left">
-          <div>
-            <span class="text-[9px] font-mono text-slate-400 block uppercase">Nº de Pedido</span>
-            <span id="confirmed-order-number" class="text-sm font-mono font-bold text-red-600 dark:text-red-400">ORD-1024</span>
-          </div>
-          <div>
-            <span class="text-[9px] font-mono text-slate-400 block uppercase">Nº Autorización</span>
-            <span id="confirmed-auth-code" class="text-sm font-mono font-bold text-emerald-600">AUTH-94285</span>
-          </div>
-        </div>
-
-        <!-- Línea de Tiempo de Seguimiento en Vivo (Live Tracking estilo Temu / Tipti) -->
-        <div class="mt-5 p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 max-w-md mx-auto text-left shadow-xs">
-          <div class="flex items-center justify-between mb-3 border-b border-slate-100 dark:border-slate-700 pb-2">
-            <span class="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-              <i data-lucide="truck" class="w-4 h-4 text-red-600"></i>
-              Seguimiento del Envío en Pasto
-            </span>
-            <span class="text-[10px] font-bold text-amber-600 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 rounded-md">En Preparación</span>
-          </div>
-
-          <div class="space-y-3 text-xs">
-            <div class="flex items-start gap-3">
-              <div class="w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 mt-0.5 text-[10px] font-bold">✓</div>
-              <div>
-                <span class="font-bold text-slate-800 dark:text-slate-200 block">1. Pago Aprobado y Confirmado</span>
-                <span class="text-[11px] text-slate-400" id="tracking-payment-label">Transacción verificada exitosamente</span>
-              </div>
-            </div>
-            <div class="flex items-start gap-3">
-              <div class="w-5 h-5 rounded-full bg-amber-500 text-white flex items-center justify-center shrink-0 mt-0.5 text-[10px] animate-pulse font-bold">●</div>
-              <div>
-                <span class="font-bold text-slate-800 dark:text-slate-200 block">2. Empacando en Tienda ECONOMAX</span>
-                <span class="text-[11px] text-slate-400">Luz Angela preparando tus productos en Juanoy Bajo</span>
-              </div>
-            </div>
-            <div class="flex items-start gap-3 opacity-50">
-              <div class="w-5 h-5 rounded-full bg-slate-300 dark:bg-slate-700 text-slate-600 flex items-center justify-center shrink-0 mt-0.5 text-[10px] font-bold">3</div>
-              <div>
-                <span class="font-bold text-slate-800 dark:text-slate-200 block">3. Repartidor Asignado</span>
-                <span class="text-[11px] text-slate-400">En camino a tu dirección en Pasto</span>
-              </div>
-            </div>
-            <div class="flex items-start gap-3 opacity-50">
-              <div class="w-5 h-5 rounded-full bg-slate-300 dark:bg-slate-700 text-slate-600 flex items-center justify-center shrink-0 mt-0.5 text-[10px] font-bold">4</div>
-              <div>
-                <span class="font-bold text-slate-800 dark:text-slate-200 block">4. Entrega en Puerta</span>
-                <span class="text-[11px] text-slate-400">Domicilio entregado con éxito</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="mt-5 flex flex-col sm:flex-row items-center justify-center gap-3">
-          <button onclick="window.print()" class="w-full sm:w-auto px-5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition flex items-center justify-center gap-2">
-            <i data-lucide="printer" class="w-4 h-4"></i>
-            <span>Descargar / Imprimir Recibo</span>
-          </button>
-          <button onclick="closeCheckoutModal()" class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-red-600 text-white text-xs font-bold hover:bg-red-700 transition shadow-md shadow-red-600/20">
-            Seguir Explorando la Tienda
-          </button>
+          <span>Conexión segura garantizada</span>
         </div>
       </div>
 

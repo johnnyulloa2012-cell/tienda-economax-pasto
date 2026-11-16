@@ -735,6 +735,25 @@ function setCheckoutStep(step) {
   if (step2) step2.classList.toggle('hidden', step !== 2);
   if (step3) step3.classList.toggle('hidden', step !== 3);
 
+  // Controlar visibilidad del footer fijo según el paso activo
+  const footerEl = document.getElementById('checkout-modal-footer');
+  const footerStep1 = document.getElementById('footer-actions-step-1');
+  const footerStep2 = document.getElementById('footer-actions-step-2');
+  
+  if (footerEl) {
+    if (step === 3) {
+      footerEl.classList.add('hidden'); // En el paso 3 de confirmación se oculta el footer
+    } else {
+      footerEl.classList.remove('hidden');
+    }
+  }
+  if (footerStep1) footerStep1.classList.toggle('hidden', step !== 1);
+  if (footerStep2) footerStep2.classList.toggle('hidden', step !== 2);
+  
+  // Regresar el scroll al inicio en cada paso
+  const scrollArea = document.getElementById('checkout-steps-scroll-area');
+  if (scrollArea) scrollArea.scrollTop = 0;
+
   dots.forEach((dot, idx) => {
     if (idx + 1 <= step) {
       dot.classList.add('bg-red-600', 'text-white');
@@ -872,9 +891,12 @@ function togglePaymentMethodUI(method) {
     }
     if (formNequi) formNequi.classList.remove('hidden');
     if (payBtn) {
-      payBtn.className = 'px-5 sm:px-6 py-3 bg-gradient-to-r from-purple-700 to-indigo-700 hover:from-purple-600 active:scale-95 text-white font-bold text-xs sm:text-sm rounded-xl flex items-center gap-2 transition shadow-lg shadow-purple-700/30 cursor-pointer';
+      payBtn.className = 'flex-1 sm:flex-none px-6 py-3 rounded-xl font-bold text-xs sm:text-sm text-white flex items-center justify-center gap-2 shadow-lg cursor-pointer transition active:scale-95';
+      payBtn.setAttribute('style', 'background-color: #4a005f !important; background: linear-gradient(135deg, #2b0038 0%, #6a0080 100%) !important; color: #ffffff !important; box-shadow: 0 4px 14px 0 rgba(74, 0, 95, 0.4) !important;');
     }
-    if (payBtnText) payBtnText.textContent = `📱 Confirmar Pedido con Nequi (${totalFormatted})`;
+    const iconEl = document.getElementById('pay-now-btn-icon');
+    if (iconEl) iconEl.textContent = '📱';
+    if (payBtnText) payBtnText.textContent = `Confirmar Pedido con Nequi (${totalFormatted})`;
     
     // Actualizar valor exacto a transferir en la tarjeta de Nequi
     const amountEl = document.getElementById('nequi-amount-display');
@@ -886,9 +908,12 @@ function togglePaymentMethodUI(method) {
     }
     if (formCash) formCash.classList.remove('hidden');
     if (payBtn) {
-      payBtn.className = 'px-5 sm:px-6 py-3 bg-gradient-to-r from-amber-600 to-emerald-600 hover:from-amber-500 active:scale-95 text-white font-bold text-xs sm:text-sm rounded-xl flex items-center gap-2 transition shadow-lg shadow-amber-600/30 cursor-pointer';
+      payBtn.className = 'flex-1 sm:flex-none px-6 py-3 rounded-xl font-bold text-xs sm:text-sm text-white flex items-center justify-center gap-2 shadow-lg cursor-pointer transition active:scale-95';
+      payBtn.setAttribute('style', 'background-color: #059669 !important; background: linear-gradient(135deg, #10b981 0%, #047857 100%) !important; color: #ffffff !important; box-shadow: 0 4px 14px 0 rgba(5, 150, 105, 0.4) !important;');
     }
-    if (payBtnText) payBtnText.textContent = `🛵 Confirmar Pedido Contra Entrega`;
+    const iconEl = document.getElementById('pay-now-btn-icon');
+    if (iconEl) iconEl.textContent = '🛵';
+    if (payBtnText) payBtnText.textContent = 'Confirmar Pedido Contra Entrega';
   }
   lucide.createIcons();
 }
