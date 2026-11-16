@@ -872,7 +872,7 @@ function togglePaymentMethodUI(method) {
     }
     if (formNequi) formNequi.classList.remove('hidden');
     if (payBtn) {
-      payBtn.className = 'px-8 py-3.5 bg-gradient-to-r from-purple-700 to-indigo-700 hover:from-purple-600 hover:to-indigo-600 active:scale-95 text-white font-bold text-xs rounded-xl flex items-center gap-2 transition shadow-lg shadow-purple-700/30 cursor-pointer';
+      payBtn.className = 'px-5 sm:px-6 py-3 bg-gradient-to-r from-purple-700 to-indigo-700 hover:from-purple-600 active:scale-95 text-white font-bold text-xs sm:text-sm rounded-xl flex items-center gap-2 transition shadow-lg shadow-purple-700/30 cursor-pointer';
     }
     if (payBtnText) payBtnText.textContent = `📱 Confirmar Pedido con Nequi (${totalFormatted})`;
     
@@ -886,7 +886,7 @@ function togglePaymentMethodUI(method) {
     }
     if (formCash) formCash.classList.remove('hidden');
     if (payBtn) {
-      payBtn.className = 'px-8 py-3.5 bg-gradient-to-r from-amber-600 to-emerald-600 hover:from-amber-500 hover:to-emerald-500 active:scale-95 text-white font-bold text-xs rounded-xl flex items-center gap-2 transition shadow-lg shadow-amber-600/30 cursor-pointer';
+      payBtn.className = 'px-5 sm:px-6 py-3 bg-gradient-to-r from-amber-600 to-emerald-600 hover:from-amber-500 active:scale-95 text-white font-bold text-xs sm:text-sm rounded-xl flex items-center gap-2 transition shadow-lg shadow-amber-600/30 cursor-pointer';
     }
     if (payBtnText) payBtnText.textContent = `🛵 Confirmar Pedido Contra Entrega`;
   }
