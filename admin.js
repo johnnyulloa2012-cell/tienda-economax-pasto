@@ -472,7 +472,7 @@ function renderProductsTable() {
         <!-- Preview & Nombre -->
         <td class="py-3.5 px-4 flex items-center gap-3">
           <div class="w-12 h-12 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center shrink-0 overflow-hidden p-1 shadow-xs">
-            ${p.image ? `<img src="${p.image}" alt="${p.name}" class="w-full h-full object-contain" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='block';" />` : ''}
+            ${p.image ? `<img src="${p.image.startsWith('images/') && !p.image.includes('?') ? p.image + '?v=20261116' : p.image}" alt="${p.name}" class="w-full h-full object-contain" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='block';" />` : ''}
             <i data-lucide="box" class="w-5 h-5 text-red-500 ${p.image ? 'hidden' : ''}"></i>
           </div>
           <div>
@@ -783,7 +783,7 @@ function openEditProductModal(id) {
   const imgInput = document.getElementById('edit-product-image');
   const imgPreview = document.getElementById('edit-product-image-preview');
   if (imgInput) imgInput.value = p.image || '';
-  if (imgPreview) imgPreview.src = p.image || 'logo.jpg';
+  if (imgPreview) imgPreview.src = (p.image && p.image.startsWith('images/') && !p.image.includes('?')) ? `${p.image}?v=20261116` : (p.image || 'logo.jpg');
 
   modal.classList.remove('hidden');
   document.body.style.overflow = 'hidden';

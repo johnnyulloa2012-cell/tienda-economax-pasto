@@ -1,7 +1,7 @@
 [
   {
     "id": "prod-dessini",
-    "image": "",
+    "image": "images/prod-dessini.jpg",
     "code": "ECO-001",
     "name": "Sartén Dessini Italy Original (Doble Parrilla)",
     "category": "cocina",
@@ -12,7 +12,7 @@
     "discount": "-18%",
     "rating": 5,
     "reviews": 38,
-    "badge": "",
+    "badge": "ORIGINAL ITALY",
     "badgeColor": "bg-red-600 text-white",
     "colors": [
       "#0f172a",
@@ -29,18 +29,18 @@
   },
   {
     "id": "prod-swiss-home",
-    "image": "",
+    "image": "images/prod-swiss-home.jpg",
     "code": "ECO-002",
     "name": "Juego de Ollas Swiss Home 12 Piezas Acero Inox",
-    "category": "",
-    "categoryName": "",
+    "category": "cocina",
+    "categoryName": "Utensilios de Cocina",
     "price": 400000,
     "originalPrice": 480000,
     "cost": 290000,
     "discount": "-17%",
     "rating": 5,
     "reviews": 29,
-    "badge": "",
+    "badge": "SWISS HOME 12 PCS",
     "badgeColor": "bg-amber-600 text-white",
     "colors": [
       "#94a3b8",
@@ -50,7 +50,7 @@
       "Set Completo 12 Piezas"
     ],
     "description": "Batería de cocina premium de 12 piezas en acero inoxidable quirúrgico de alta durabilidad. Fondos de difusión térmica de múltiples capas y tapas de vidrio templado con termostato.",
-    "icon": "",
+    "icon": "package",
     "stock": 10,
     "sales": 0,
     "status": "Activo"

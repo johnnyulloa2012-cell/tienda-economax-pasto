@@ -165,6 +165,15 @@ function formatPrice(amount) {
   return `${symbol}${converted.toLocaleString('es-CO', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
 
+// Normalización de URL de imagen con control de caché local
+function resolveProductImageUrl(src) {
+  if (!src) return '';
+  if (src.startsWith('images/') && !src.includes('?')) {
+    return `${src}?v=20261116`;
+  }
+  return src;
+}
+
 // Normalización de texto (sin tildes y en minúsculas) para búsqueda y filtros robustos
 function normalizeStr(str) {
   return (str || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
@@ -276,7 +285,7 @@ function renderProducts() {
     const categoryName = item.categoryName || (normalizeCategorySlug(item.category) === 'cocina' ? 'Utensilios de Cocina' : normalizeCategorySlug(item.category) === 'snacks' ? 'Snacks & Dulcería' : 'Canasta Familiar');
     const description = item.description || '';
     const icon = item.icon || 'shopping-bag';
-    const image = item.image || '';
+    const image = resolveProductImageUrl(item.image || '');
     const stock = item.stock !== undefined ? item.stock : 10;
     
     const card = document.createElement('div');
@@ -528,7 +537,7 @@ function updateCartUI() {
       itemsContainer.innerHTML = state.cart.map(item => `
         <div class="flex items-center gap-4 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/70 dark:border-slate-800 transition-all">
           <div class="w-14 h-14 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center shrink-0 overflow-hidden p-1 shadow-xs">
-            ${item.image ? `<img src="${item.image}" alt="${item.name}" class="w-full h-full object-contain" onerror="this.style.display='none';" />` : `<span class="w-3.5 h-3.5 rounded-full ring-2 ring-white dark:ring-slate-900" style="background-color: ${item.color || '#dc2626'}"></span>`}
+            ${item.image ? `<img src="${resolveProductImageUrl(item.image)}" alt="${item.name}" class="w-full h-full object-contain" onerror="this.style.display='none';" />` : `<span class="w-3.5 h-3.5 rounded-full ring-2 ring-white dark:ring-slate-900" style="background-color: ${item.color || '#dc2626'}"></span>`}
           </div>
           <div class="flex-1 min-w-0">
             <h4 class="text-sm font-semibold text-slate-900 dark:text-white truncate">${item.name}</h4>
@@ -618,7 +627,7 @@ function openQuickView(productId) {
     if (item.image) {
       imgBox.innerHTML = `
         <img 
-          src="${item.image}" 
+          src="${resolveProductImageUrl(item.image)}" 
           alt="${item.name}" 
           class="max-h-64 max-w-full object-contain drop-shadow-md rounded-2xl" 
           onerror="this.src='logo.jpg'" 
