@@ -6,9 +6,9 @@ Este documento recopila el estado de las correcciones y mejoras del proyecto.
 
 ## 1. Críticos (Seguridad y Acceso)
 
-- [ ] **Proteger el Panel de Administración (`admin.html`) con contraseña o PIN**
+- [x] **Proteger el Panel de Administración (`admin.html`) con contraseña o PIN** *(Corregido ✅)*
   - Implementar un PIN de acceso sencillo para que solo Doña Angela o tú puedan entrar.
-- [ ] **Autenticar y proteger las rutas de la API en `server.js`**
+- [x] **Autenticar y proteger las rutas de la API en `server.js`** *(Corregido ✅)*
   - Proteger los endpoints de modificación de catálogo.
 - [x] **Eliminar la desactivación de verificación SSL/TLS en `server.js`** *(Corregido ✅)*
   - Se retiró la línea insegura `NODE_TLS_REJECT_UNAUTHORIZED = '0'`.

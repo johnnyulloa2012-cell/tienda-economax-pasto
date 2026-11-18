@@ -2,3 +2,5 @@ node_modules/
 .git/
 cloudflared.exe
 *.log
+data/auth.json
+data/.session-secret

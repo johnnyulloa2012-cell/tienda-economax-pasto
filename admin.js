@@ -94,29 +94,173 @@ const adminState = {
 const GIST_BACKUP_RAW = 'https://gist.githubusercontent.com/johnnyulloa2012-cell/f2f04c1385ee96b43658513c438ab939/raw/products.json';
 const GIST_BACKUP_STATUS = 'https://gist.githubusercontent.com/johnnyulloa2012-cell/f2f04c1385ee96b43658513c438ab939/raw/status.json';
 
-// Respaldo directo en la nube GitHub Gist desde el navegador (garantiza que nunca se pierda nada)
-async function syncGistDirect(productsData) {
+// =================== SEGURIDAD Y SESIÓN DE ADMINISTRADOR ===================
+let adminListenersAttached = false;
+
+function lockAdminUI(message) {
+  const loginScreen = document.getElementById('admin-login-screen');
+  const sidebar = document.getElementById('admin-sidebar');
+  const mainShell = document.getElementById('admin-main-shell');
+  const errEl = document.getElementById('admin-login-error');
+  const pinInput = document.getElementById('admin-pin-input');
+
+  adminState.orders = [];
+  const ordersTbody = document.getElementById('orders-table-body');
+  if (ordersTbody) ordersTbody.innerHTML = '';
+
+  if (sidebar) sidebar.classList.add('hidden');
+  if (mainShell) mainShell.classList.add('hidden');
+  if (loginScreen) loginScreen.classList.remove('hidden');
+
+  if (errEl) {
+    if (message) {
+      errEl.textContent = message;
+      errEl.classList.remove('hidden');
+    } else {
+      errEl.textContent = '';
+      errEl.classList.add('hidden');
+    }
+  }
+  if (pinInput) {
+    pinInput.value = '';
+    setTimeout(() => pinInput.focus(), 50);
+  }
+  if (typeof lucide !== 'undefined') lucide.createIcons();
+}
+
+async function adminFetch(url, options = {}) {
+  const res = await fetch(url, {
+    ...options,
+    credentials: 'same-origin'
+  });
+  if (res.status === 401) {
+    lockAdminUI('🔒 Sesión cerrada o no autorizada. Ingresa tu PIN.');
+  }
+  return res;
+}
+
+function unlockAndInitAdmin() {
+  const loginScreen = document.getElementById('admin-login-screen');
+  const sidebar = document.getElementById('admin-sidebar');
+  const mainShell = document.getElementById('admin-main-shell');
+
+  if (loginScreen) loginScreen.classList.add('hidden');
+  if (sidebar) sidebar.classList.remove('hidden');
+  if (mainShell) mainShell.classList.remove('hidden');
+
+  if (!adminListenersAttached) {
+    setupNavigation();
+    setupEventListeners();
+    adminListenersAttached = true;
+  }
+
+  renderDashboard();
+  renderProductsTable();
+  renderOrdersTable();
+  renderCoupons();
+  loadSettings();
+  if (typeof lucide !== 'undefined') lucide.createIcons();
+  syncWithServer();
+}
+
+async function checkAdminAuth() {
   try {
-    const token = ['gh', 'o_', 'Nv2IpX2AtxCNLrmOD6cJN1i9i7bS3K2uQvaI'].join('');
-    const gistId = 'f2f04c1385ee96b43658513c438ab939';
-    const now = Date.now();
-    await fetch(`https://api.github.com/gists/${gistId}`, {
-      method: 'PATCH',
-      headers: {
-        'Authorization': `token ${token}`,
-        'Accept': 'application/vnd.github.v3+json',
-        'User-Agent': 'Tienda-Economax-Client'
-      },
-      body: JSON.stringify({
-        files: {
-          'products.json': { content: JSON.stringify(productsData, null, 2) },
-          'status.json': { content: JSON.stringify({ lastSync: new Date().toISOString(), timestamp: now }) }
-        }
-      })
-    });
-    console.log('[Gist Direct] ✅ Catálogo respaldado directamente en la nube.');
+    const res = await fetch('/api/auth/status?t=' + Date.now(), { credentials: 'same-origin' });
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.authenticated) {
+        unlockAndInitAdmin();
+        return;
+      }
+    }
   } catch (e) {
-    console.warn('[Gist Direct] Aviso en respaldo directo:', e);
+    console.warn('No se pudo verificar sesión:', e);
+  }
+  lockAdminUI();
+}
+
+async function handleAdminLogin(e) {
+  e.preventDefault();
+  const pinInput = document.getElementById('admin-pin-input');
+  const errEl = document.getElementById('admin-login-error');
+  const btn = document.getElementById('admin-login-btn');
+  const pin = pinInput ? pinInput.value.trim() : '';
+
+  if (!pin) return;
+  if (errEl) errEl.classList.add('hidden');
+  if (btn) btn.disabled = true;
+
+  try {
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ pin })
+    });
+    const data = await res.json().catch(() => ({}));
+    if (res.ok && data.success) {
+      if (pinInput) pinInput.value = '';
+      unlockAndInitAdmin();
+      showToast('🔓 Sesión administrativa iniciada');
+    } else {
+      const msg = data.error || 'PIN incorrecto';
+      if (errEl) {
+        errEl.textContent = msg;
+        errEl.classList.remove('hidden');
+      }
+      if (pinInput) {
+        pinInput.value = '';
+        pinInput.focus();
+      }
+    }
+  } catch (err) {
+    if (errEl) {
+      errEl.textContent = 'Error de conexión con el servidor.';
+      errEl.classList.remove('hidden');
+    }
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+
+async function logoutAdmin() {
+  try {
+    await fetch('/api/auth/logout', { method: 'POST', credentials: 'same-origin' });
+  } catch {}
+  localStorage.removeItem('economax_admin_orders');
+  lockAdminUI('🔒 Panel bloqueado. Ingresa tu PIN para volver a entrar.');
+}
+
+async function handleChangePin(e) {
+  e.preventDefault();
+  const currentPin = document.getElementById('pin-current')?.value.trim() || '';
+  const newPin = document.getElementById('pin-new')?.value.trim() || '';
+  const confirmPin = document.getElementById('pin-confirm')?.value.trim() || '';
+
+  if (newPin.length < 4) {
+    showToast('⚠️ El nuevo PIN debe tener al menos 4 caracteres o dígitos');
+    return;
+  }
+  if (newPin !== confirmPin) {
+    showToast('⚠️ La confirmación del nuevo PIN no coincide');
+    return;
+  }
+
+  try {
+    const res = await adminFetch('/api/auth/change-pin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ currentPin, newPin })
+    });
+    const data = await res.json().catch(() => ({}));
+    if (res.ok && data.success) {
+      document.getElementById('change-pin-form')?.reset();
+      showToast('✅ PIN de acceso actualizado correctamente');
+    } else {
+      showToast('⚠️ ' + (data.error || 'No se pudo cambiar el PIN'));
+    }
+  } catch {
+    showToast('⚠️ Error de red al actualizar el PIN');
   }
 }
 
@@ -170,7 +314,7 @@ async function syncWithServer() {
       }
     }
 
-    const resOrders = await fetch('/api/orders?t=' + Date.now());
+    const resOrders = await adminFetch('/api/orders?t=' + Date.now());
     if (resOrders.ok) {
       const serverOrders = await resOrders.json();
       if (Array.isArray(serverOrders)) {
@@ -185,18 +329,13 @@ async function syncWithServer() {
   }
 }
 
-// Inicialización del Dashboard
+// Inicialización segura del Dashboard (bloqueado hasta verificar PIN)
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
-  setupNavigation();
-  renderDashboard();
-  renderProductsTable();
-  renderOrdersTable();
-  renderCoupons();
-  loadSettings();
-  setupEventListeners();
+  const loginForm = document.getElementById('admin-login-form');
+  if (loginForm) loginForm.addEventListener('submit', handleAdminLogin);
   lucide.createIcons();
-  syncWithServer();
+  checkAdminAuth();
 });
 
 // Helper de formato de moneda colombiana (COP)
@@ -214,11 +353,8 @@ async function persistData() {
   localStorage.setItem('economax_admin_settings', JSON.stringify(adminState.settings));
 
   try {
-    // 1. Sincronizar directamente con la nube indestructible GitHub Gist
-    syncGistDirect(adminState.products);
-
-    // 2. Sincronizar catálogo con el servidor backend de Render
-    const resProducts = await fetch('/api/products', {
+    // 1. Sincronizar catálogo con el servidor autenticado (el backend respalda en Gist)
+    const resProducts = await adminFetch('/api/products', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(adminState.products)
@@ -231,15 +367,15 @@ async function persistData() {
       console.log('✅ Catálogo sincronizado exitosamente con el servidor.');
     }
 
-    // Sincronizar parámetros del negocio
-    await fetch('/api/settings', {
+    // 2. Sincronizar parámetros del negocio
+    await adminFetch('/api/settings', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(adminState.settings)
     }).catch(() => {});
 
-    // Sincronizar órdenes
-    await fetch('/api/orders', {
+    // 3. Sincronizar órdenes
+    await adminFetch('/api/orders', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(adminState.orders)
@@ -956,6 +1092,9 @@ function setupEventListeners() {
   // Formulario ajustes
   const settingsForm = document.getElementById('settings-form');
   if (settingsForm) settingsForm.addEventListener('submit', handleSaveSettings);
+
+  const changePinForm = document.getElementById('change-pin-form');
+  if (changePinForm) changePinForm.addEventListener('submit', handleChangePin);
 }
 
 // Disparar el selector de archivo o cámara en celular y PC
@@ -1031,6 +1170,7 @@ async function handleImageFileUpload(event, targetInputId, previewImgId, spinner
     try {
       const response = await fetch('/api/upload', {
         method: 'POST',
+        credentials: 'same-origin',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ image: compressedBase64 })
       });
@@ -1042,42 +1182,7 @@ async function handleImageFileUpload(event, targetInputId, previewImgId, spinner
         }
       }
     } catch (e) {
-      console.warn('Servidor no respondió de inmediato, probando CDN permanente directo...');
-    }
-
-    // 4. Si el servidor estuviese dormido, subir directamente al repositorio GitHub en images/uploads/
-    if (!uploadedUrl) {
-      try {
-        const token = ['gh', 'o_', 'Nv2IpX2AtxCNLrmOD6cJN1i9i7bS3K2uQvaI'].join('');
-        const cleanExt = (file.name && file.name.includes('.')) ? file.name.substring(file.name.lastIndexOf('.')).toLowerCase() : '.jpg';
-        const cleanFilename = `upload-${Date.now()}-${Math.floor(Math.random() * 10000)}${cleanExt}`;
-        const repoPath = `images/uploads/${cleanFilename}`;
-        const base64Pure = compressedBase64.replace(/^data:image\/[a-zA-Z0-9\+\-\.]+;base64,/, '');
-
-        const directRes = await fetch(`https://api.github.com/repos/johnnyulloa2012-cell/tienda-economax-pasto/contents/${repoPath}`, {
-          method: 'PUT',
-          headers: {
-            'Authorization': `token ${token}`,
-            'Accept': 'application/vnd.github.v3+json',
-            'User-Agent': 'Tienda-Economax-Client',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            message: `Subida directa de foto: ${cleanFilename}`,
-            content: base64Pure,
-            branch: 'main'
-          })
-        });
-        if (directRes.ok) {
-          const directData = await directRes.json();
-          uploadedUrl = (directData.content && directData.content.download_url)
-            ? directData.content.download_url
-            : `https://raw.githubusercontent.com/johnnyulloa2012-cell/tienda-economax-pasto/main/${repoPath}`;
-          console.log('[Upload] Foto guardada permanentemente en GitHub:', uploadedUrl);
-        }
-      } catch (e) {
-        console.warn('Subida directa a GitHub falló:', e);
-      }
+      console.warn('Servidor no respondió de inmediato, guardando localmente:', e);
     }
 
     const finalUrl = uploadedUrl || compressedBase64;
@@ -1163,3 +1268,5 @@ window.viewOrderReceipt = viewOrderReceipt;
 window.closeReceiptModal = closeReceiptModal;
 window.approveCurrentOpenReceipt = approveCurrentOpenReceipt;
 window.approveOrderDirectly = approveOrderDirectly;
+
+window.logoutAdmin = logoutAdmin;
