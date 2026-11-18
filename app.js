@@ -744,20 +744,14 @@ function setCheckoutStep(step) {
   if (step2) step2.classList.toggle('hidden', step !== 2);
   if (step3) step3.classList.toggle('hidden', step !== 3);
 
-  // Controlar visibilidad del footer fijo según el paso activo
-  const footerEl = document.getElementById('checkout-modal-footer');
+  // Controlar visibilidad del footer según el paso (estilo Tipti)
   const footerStep1 = document.getElementById('footer-actions-step-1');
   const footerStep2 = document.getElementById('footer-actions-step-2');
-  
-  if (footerEl) {
-    if (step === 3) {
-      footerEl.classList.add('hidden'); // En el paso 3 de confirmación se oculta el footer
-    } else {
-      footerEl.classList.remove('hidden');
-    }
-  }
+  const footerStep3 = document.getElementById('footer-actions-step-3');
+
   if (footerStep1) footerStep1.classList.toggle('hidden', step !== 1);
   if (footerStep2) footerStep2.classList.toggle('hidden', step !== 2);
+  if (footerStep3) footerStep3.classList.toggle('hidden', step !== 3);
   
   // Regresar el scroll al inicio en cada paso
   const scrollArea = document.getElementById('checkout-steps-scroll-area');
@@ -1108,20 +1102,8 @@ async function processPaymentAndConfirm() {
       : 'Toca aquí para avisarle por WhatsApp a Doña Ángela y confirmar tu despacho';
   }
 
-  // Pasar visualmente a Step 3
-  const step1 = document.getElementById('checkout-step-1');
-  const step2 = document.getElementById('checkout-step-2');
-  const step3 = document.getElementById('checkout-step-3');
-  const dots = document.querySelectorAll('.checkout-step-dot');
-
-  if (step1) step1.classList.add('hidden');
-  if (step2) step2.classList.add('hidden');
-  if (step3) step3.classList.remove('hidden');
-
-  dots.forEach((dot) => {
-    dot.classList.add('bg-red-600', 'text-white');
-    dot.classList.remove('bg-slate-200', 'text-slate-600', 'dark:bg-slate-700', 'dark:text-slate-400');
-  });
+  // Pasar al Paso 3 oficial (oculta footer de pago, activa confirmación y resetea scroll arriba)
+  setCheckoutStep(3);
 
   // Limpiar carrito y comprobante temporal
   state.cart = [];
