@@ -531,6 +531,7 @@ const server = http.createServer(async (req, res) => {
     res.setHeader('Content-Type', 'application/json; charset=utf-8');
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
 
+
     if (req.method === 'GET' || req.method === 'HEAD') {
       let products = readJsonFile('products.json', []);
       if ((!products || products.length === 0) && GIST_BACKUP_ID) {
@@ -678,9 +679,27 @@ const server = http.createServer(async (req, res) => {
   }
 
   // 3. /api/orders (GET requiere Admin; POST array requiere Admin; POST nueva orden única permitido para checkout con validación)
-  if (pathname === '/api/orders') {
+if (pathname === '/api/orders' || pathname.startsWith('/api/orders/')) {
     res.setHeader('Content-Type', 'application/json; charset=utf-8');
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+
+    if (req.method === 'DELETE') {
+      if (!requireAdmin(req, res)) return;
+      const orderId = (parsedUrl.searchParams && parsedUrl.searchParams.get('id')) || (pathname.startsWith('/api/orders/') ? pathname.replace('/api/orders/', '').trim() : null);
+      if (!orderId) {
+        res.writeHead(400);
+        res.end(JSON.stringify({ error: 'ID de orden requerido' }));
+        return;
+      }
+      let currentOrders = readJsonFile('orders.json', []);
+      const beforeCount = currentOrders.length;
+      currentOrders = currentOrders.filter(o => o.id !== orderId);
+      writeJsonFile('orders.json', currentOrders);
+      syncBackupToGist(null, null, currentOrders);
+      res.writeHead(200);
+      res.end(JSON.stringify({ success: true, deleted: orderId, removed: beforeCount - currentOrders.length }));
+      return;
+    }
 
     if (req.method === 'GET' || req.method === 'HEAD') {
       if (!requireAdmin(req, res)) return;

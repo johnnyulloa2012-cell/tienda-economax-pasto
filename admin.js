@@ -681,7 +681,7 @@ function renderOrdersTable() {
   if (adminState.orders.length === 0) {
     tbody.innerHTML = `
       <tr>
-        <td colspan="7" class="py-14 text-center text-slate-400 dark:text-slate-500">
+        <td colspan="8" class="py-14 text-center text-slate-400 dark:text-slate-500">
           <i data-lucide="inbox" class="w-10 h-10 mx-auto mb-2.5 opacity-30 text-red-500"></i>
           <p class="font-bold text-sm text-slate-700 dark:text-slate-300">No hay pedidos registrados todavía</p>
           <p class="text-xs text-slate-400 mt-1 max-w-sm mx-auto">Cuando los clientes hagan compras desde la tienda web, sus pedidos aparecerán aquí con su comprobante de Nequi.</p>
@@ -1270,3 +1270,127 @@ window.approveCurrentOpenReceipt = approveCurrentOpenReceipt;
 window.approveOrderDirectly = approveOrderDirectly;
 
 window.logoutAdmin = logoutAdmin;
+
+// ================= OPERACIONES DE PEDIDOS, WHATSAPP Y ALERTAS EN VIVO =================
+
+// Sonido nativo de campana / caja registradora usando Web Audio API
+function playNewOrderSound() {
+  try {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContext) return;
+    const ctx = new AudioContext();
+
+    const playTone = (freq, start, duration) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, ctx.currentTime + start);
+      gain.gain.setValueAtTime(0, ctx.currentTime + start);
+      gain.gain.linearRampToValueAtTime(0.28, ctx.currentTime + start + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + start + duration);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(ctx.currentTime + start);
+      osc.stop(ctx.currentTime + start + duration);
+    };
+
+    // Melodía agradable: C5 -> E5 -> G5 -> C6
+    playTone(523.25, 0, 0.3);
+    playTone(659.25, 0.1, 0.3);
+    playTone(783.99, 0.2, 0.4);
+    playTone(1046.50, 0.32, 0.6);
+  } catch (e) {
+    console.log('Audio no disponible:', e);
+  }
+}
+
+// Notificar al cliente por WhatsApp con mensaje pre-redactado según estado
+function sendOrderWhatsApp(orderId) {
+  const order = adminState.orders.find(o => o.id === orderId);
+  if (!order) return;
+
+  const rawPhone = (order.phone || order.email || '').replace(/\D/g, '');
+  if (!rawPhone || rawPhone.length < 7) {
+    alert('Este pedido no tiene un número de celular o WhatsApp válido registrado.');
+    return;
+  }
+
+  const phone = rawPhone.length === 10 ? '57' + rawPhone : rawPhone;
+  const status = (order.status || '').toLowerCase();
+
+  let message = '';
+  if (status.includes('verificar') || status.includes('pendiente')) {
+    message = `¡Hola ${order.customer}! Te saluda Luz Ángela de *Tienda ECONOMAX* (Pasto).\n\n` +
+      `Recibimos tu pedido *${order.id}* por un total de *${formatAdminPrice(order.total)}*.\n` +
+      `Estamos verificando tu pago para alistar tus productos y coordinar el despacho a *${order.address}*.\n\n` +
+      `¡Muchas gracias por tu compra! 🙏`;
+  } else if (status.includes('preparando') || status.includes('pagado')) {
+    message = `¡Hola ${order.customer}! Te saluda Luz Ángela de *Tienda ECONOMAX*.\n\n` +
+      `✅ Tu pago para el pedido *${order.id}* ha sido verificado con éxito.\n` +
+      `📦 Ya estamos empacando tus productos:\n${order.items}\n\n` +
+      `En breve te avisamos cuando el domiciliario salga hacia tu dirección (*${order.address}*).`;
+  } else if (status.includes('enviado') || status.includes('despachado')) {
+    message = `¡Hola ${order.customer}! 🛵 *Tu pedido de Tienda ECONOMAX va en camino*\n\n` +
+      `📦 *Pedido:* ${order.id}\n` +
+      `📍 *Destino:* ${order.address}\n` +
+      `💰 *Total:* ${formatAdminPrice(order.total)}\n\n` +
+      `El repartidor se comunicará contigo al llegar a tu puerta. ¡Gracias por confiar en nosotros!`;
+  } else {
+    message = `¡Hola ${order.customer}! Te saluda Luz Ángela de *Tienda ECONOMAX*.\n\n` +
+      `Te escribo respecto a tu pedido *${order.id}*. ¡Muchas gracias por preferirnos en Juanoy Bajo! Si necesitas algo más, aquí estamos siempre a la orden. 😊`;
+  }
+
+  const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+  window.open(url, '_blank');
+  showToast(`📲 Abriendo WhatsApp para notificar a ${order.customer}...`);
+}
+
+// Eliminar un pedido individual
+async function deleteOrder(orderId) {
+  if (!confirm(`¿Estás seguro de que deseas eliminar el pedido ${orderId}? Esta acción no se puede deshacer.`)) {
+    return;
+  }
+  adminState.orders = adminState.orders.filter(o => o.id !== orderId);
+  await persistData();
+  renderOrdersTable();
+  renderDashboard();
+  showToast(`🗑️ Pedido ${orderId} eliminado exitosamente`);
+}
+
+// Limpiar pedidos de prueba antiguos (Juan Perez, jose)
+async function cleanTestOrders() {
+  const testIds = ['ORD-ECONOMAX-6878', 'ORD-ECONOMAX-7095', 'ORD-ECONOMAX-8348', 'ORD-ECONOMAX-7012'];
+  const testOrders = adminState.orders.filter(o => 
+    testIds.includes(o.id) || 
+    (o.customer && (o.customer.toLowerCase().includes('juan perez') || o.customer.toLowerCase().includes('jose')))
+  );
+
+  if (testOrders.length === 0) {
+    showToast('ℹ️ No hay pedidos de prueba antiguos para limpiar');
+    return;
+  }
+
+  if (!confirm(`¿Deseas eliminar los ${testOrders.length} pedidos de prueba del historial para dejar el panel limpio para ventas reales?`)) {
+    return;
+  }
+
+  adminState.orders = adminState.orders.filter(o => !testOrders.some(t => t.id === o.id));
+  await persistData();
+  renderOrdersTable();
+  renderDashboard();
+  showToast(`✨ Se eliminaron ${testOrders.length} pedidos de prueba`);
+}
+
+// Polling automático cada 15 segundos para sincronizar nuevos pedidos en tiempo real
+if (typeof window !== 'undefined') {
+  setInterval(() => {
+    if (document.visibilityState === 'visible' && !document.getElementById('admin-sidebar')?.classList.contains('hidden')) {
+      syncWithServer();
+    }
+  }, 15000);
+}
+
+window.sendOrderWhatsApp = sendOrderWhatsApp;
+window.deleteOrder = deleteOrder;
+window.cleanTestOrders = cleanTestOrders;
+window.playNewOrderSound = playNewOrderSound;

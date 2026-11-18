@@ -12,7 +12,6 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "tailwindcss": "^3.4.17",
-    "ws": "^8.21.3"
+    "tailwindcss": "^3.4.17"
   }
 }

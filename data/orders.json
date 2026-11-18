@@ -10,7 +10,7 @@
     "items": "1x Leche Entera Grande 1.000ml, 4x Pan Tradicional de Dulce y de Sal",
     "total": 5800,
     "payment": "Tarjeta Bancaria",
-    "status": "Pagado / En Preparación"
+    "status": "Pendiente por verificar comprobante"
   },
   {
     "id": "ORD-ECONOMAX-7095",
@@ -23,7 +23,7 @@
     "items": "1x Leche Entera Grande 1.000ml, 4x Pan Tradicional de Dulce y de Sal",
     "total": 5800,
     "payment": "Tarjeta Bancaria",
-    "status": "Pagado / En Preparación"
+    "status": "Pendiente por verificar comprobante"
   },
   {
     "id": "ORD-ECONOMAX-8348",
@@ -47,6 +47,6 @@
     "items": "1x Sartén Dessini Italy Original (Doble Parrilla)",
     "total": 180000,
     "payment": "Nequi (300 472 0904 - Luz Angela Valencia Sinza)",
-    "status": "Pendiente"
+    "status": "Entregado"
   }
 ]

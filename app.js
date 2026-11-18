@@ -732,7 +732,7 @@ function setCheckoutStep(step) {
     if (payTotalEl) payTotalEl.textContent = formatPrice(subtotal);
 
     const activeRadio = document.querySelector('input[name="payment-method-type"]:checked');
-    togglePaymentMethodUI(activeRadio ? activeRadio.value : 'card');
+    togglePaymentMethodUI(activeRadio ? activeRadio.value : 'nequi');
   }
 
   const step1 = document.getElementById('checkout-step-1');
@@ -900,7 +900,7 @@ function togglePaymentMethodUI(method) {
     }
     if (formNequi) formNequi.classList.remove('hidden');
     if (payBtn) {
-      payBtn.className = 'flex-1 sm:flex-none px-6 py-3 rounded-xl font-bold text-xs sm:text-sm text-white flex items-center justify-center gap-2 shadow-lg cursor-pointer transition active:scale-95';
+      payBtn.className = 'flex-1 sm:flex-none px-6 py-3 rounded-xl font-bold text-xs sm:text-sm text-white flex items-center justify-center gap-2 shadow-lg cursor-pointer transition active:scale-95 whitespace-nowrap min-w-[210px]';
       payBtn.setAttribute('style', 'background-color: #4a005f !important; background: linear-gradient(135deg, #2b0038 0%, #6a0080 100%) !important; color: #ffffff !important; box-shadow: 0 4px 14px 0 rgba(74, 0, 95, 0.4) !important;');
     }
     const iconEl = document.getElementById('pay-now-btn-icon');
@@ -917,7 +917,7 @@ function togglePaymentMethodUI(method) {
     }
     if (formCash) formCash.classList.remove('hidden');
     if (payBtn) {
-      payBtn.className = 'flex-1 sm:flex-none px-6 py-3 rounded-xl font-bold text-xs sm:text-sm text-white flex items-center justify-center gap-2 shadow-lg cursor-pointer transition active:scale-95';
+      payBtn.className = 'flex-1 sm:flex-none px-6 py-3 rounded-xl font-bold text-xs sm:text-sm text-white flex items-center justify-center gap-2 shadow-lg cursor-pointer transition active:scale-95 whitespace-nowrap min-w-[210px]';
       payBtn.setAttribute('style', 'background-color: #059669 !important; background: linear-gradient(135deg, #10b981 0%, #047857 100%) !important; color: #ffffff !important; box-shadow: 0 4px 14px 0 rgba(5, 150, 105, 0.4) !important;');
     }
     const iconEl = document.getElementById('pay-now-btn-icon');
@@ -1075,6 +1075,38 @@ async function processPaymentAndConfirm() {
       body: JSON.stringify(orderData)
     }).catch(e => console.log('Sincronizando orden:', e));
   } catch (e) {}
+
+    // Configurar enlace directo de WhatsApp para avisar a Doña Ángela
+  const waBtn = document.getElementById('btn-notify-whatsapp-dona-angela');
+  const waBtnText = document.getElementById('btn-whatsapp-text');
+  const waHintText = document.getElementById('whatsapp-hint-text');
+
+  const waMessage = 
+    `¡Hola Doña Ángela! Acabo de hacer una compra en la web de *Tienda ECONOMAX*:\n\n` +
+    `📦 *Pedido:* ${orderNumber}\n` +
+    `👤 *Cliente:* ${name}\n` +
+    `📱 *Celular:* ${phone}\n` +
+    `📍 *Entrega:* ${address} - B. ${barrio}${notes ? ' (' + notes + ')' : ''}\n` +
+    `💰 *Total:* ${totalFormatted}\n` +
+    `💳 *Método:* ${paymentMethodLabel}\n` +
+    `🛒 *Productos:* ${orderData.items}\n\n` +
+    (method === 'nequi'
+      ? `📲 *Adjunto aquí el comprobante de mi transferencia por Nequi* para que por favor verifique y prepare el despacho. ¡Muchas gracias!`
+      : `🛵 *Quedo pendiente del domiciliario para pagar en efectivo contra entrega.* ¡Muchas gracias!`);
+
+  if (waBtn) {
+    waBtn.href = `https://wa.me/573004720904?text=${encodeURIComponent(waMessage)}`;
+  }
+  if (waBtnText) {
+    waBtnText.textContent = method === 'nequi' 
+      ? 'Enviar Comprobante Nequi a Doña Ángela (WhatsApp)' 
+      : 'Avisar Pedido a Doña Ángela (WhatsApp 300 472 0904)';
+  }
+  if (waHintText) {
+    waHintText.textContent = method === 'nequi'
+      ? 'Toca aquí para compartirle tu comprobante al WhatsApp oficial (300 472 0904)'
+      : 'Toca aquí para avisarle por WhatsApp a Doña Ángela y confirmar tu despacho';
+  }
 
   // Pasar visualmente a Step 3
   const step1 = document.getElementById('checkout-step-1');

@@ -1145,6 +1145,17 @@
             </div>
           </div>
 
+          <!-- Botón Directo para Notificar / Enviar Comprobante por WhatsApp a Doña Ángela -->
+          <div class="mt-4 max-w-sm mx-auto">
+            <a id="btn-notify-whatsapp-dona-angela" href="https://wa.me/573004720904" target="_blank" rel="noopener noreferrer" class="w-full py-3.5 px-4 rounded-2xl text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2.5 shadow-lg shadow-emerald-600/30 transition transform hover:scale-[1.02] active:scale-95 cursor-pointer text-center" style="background-color: #059669 !important; background: linear-gradient(135deg, #10b981 0%, #047857 100%) !important;">
+              <span class="text-base">📲</span>
+              <span id="btn-whatsapp-text">Avisar a Doña Ángela por WhatsApp</span>
+            </a>
+            <p id="whatsapp-hint-text" class="text-[11px] text-slate-500 dark:text-slate-400 mt-1.5 text-center">
+              Toca para abrir WhatsApp y enviarle el comprobante a Doña Ángela (300 472 0904)
+            </p>
+          </div>
+
           <!-- Línea de Tiempo de Seguimiento en Vivo -->
           <div class="mt-5 p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 max-w-md mx-auto text-left shadow-xs">
             <div class="flex items-center justify-between mb-3 border-b border-slate-100 dark:border-slate-700 pb-2">
@@ -1218,7 +1229,7 @@
           </button>
           
           <!-- Botón de Confirmación Principal con Colores Fuertes y Atractivos -->
-          <button id="pay-now-btn" type="button" onclick="processPaymentAndConfirm()" class="flex-1 sm:flex-none px-6 py-3 rounded-xl font-bold text-xs sm:text-sm text-white flex items-center justify-center gap-2 shadow-lg cursor-pointer transition active:scale-95" style="background-color: #4a005f !important; background: linear-gradient(135deg, #2b0038 0%, #6a0080 100%) !important; color: #ffffff !important; box-shadow: 0 4px 14px 0 rgba(74, 0, 95, 0.4) !important;">
+          <button id="pay-now-btn" type="button" onclick="processPaymentAndConfirm()" class="flex-1 sm:flex-none px-6 py-3 rounded-xl font-bold text-xs sm:text-sm text-white flex items-center justify-center gap-2 shadow-lg cursor-pointer transition active:scale-95 whitespace-nowrap min-w-[210px]" style="background-color: #4a005f !important; background: linear-gradient(135deg, #2b0038 0%, #6a0080 100%) !important; color: #ffffff !important; box-shadow: 0 4px 14px 0 rgba(74, 0, 95, 0.4) !important;">
             <span id="pay-now-btn-icon" class="text-base">📱</span>
             <span id="pay-now-btn-text">Confirmar Pedido con Nequi</span>
           </button>
