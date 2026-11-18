@@ -264,9 +264,14 @@ function renderProducts() {
     grid.innerHTML = `
       <div class="col-span-full py-16 text-center text-slate-500 dark:text-slate-400">
         <i data-lucide="package-search" class="w-12 h-12 mx-auto mb-3 opacity-40 text-red-500"></i>
-        <p class="text-lg font-medium">No se encontraron productos disponibles para este filtro.</p>
-        <button onclick="selectCategoryFilter('all')" class="mt-4 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-semibold shadow-md transition-all">
-          Ver Todo el Catálogo
+        <p class="text-base sm:text-lg font-bold text-slate-800 dark:text-slate-200">
+          ${state.searchQuery ? `No encontramos resultados para "${state.searchQuery}"` : 'No se encontraron productos disponibles para este filtro.'}
+        </p>
+        <p class="text-xs text-slate-400 mt-1 max-w-sm mx-auto">
+          ${state.searchQuery ? 'Verifica la ortografía o prueba con palabras como "arroz", "aceite", "olla", "jabón", "leche" o "ropa".' : 'Intenta seleccionando otra categoría o limpiando los filtros.'}
+        </p>
+        <button onclick="clearSearch(); selectCategoryFilter('all');" class="mt-4 px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold shadow-md transition-all cursor-pointer">
+          Ver Todo el Catálogo (67 Productos)
         </button>
       </div>
     `;
@@ -1205,14 +1210,21 @@ function setupEventListeners() {
     });
   }
 
-  // Búsqueda en vivo con renderProducts reactivo
-  const searchInput = document.getElementById('search-input');
-  if (searchInput) {
-    searchInput.addEventListener('input', (e) => {
-      state.searchQuery = e.target.value.toLowerCase().trim();
-      renderProducts();
-    });
-  }
+  // Búsqueda sincronizada en vivo (Escritorio, Móvil y Catálogo)
+  ['search-input', 'search-input-mobile', 'search-input-catalog'].forEach(id => {
+    const input = document.getElementById(id);
+    if (input) {
+      input.addEventListener('input', (e) => {
+        applySearch(e.target.value, false);
+      });
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          applySearch(e.target.value, true);
+        }
+      });
+    }
+  });
 
   // Newsletter
   const newsletterForm = document.getElementById('newsletter-form');
@@ -1295,3 +1307,74 @@ function selectCategoryFilter(category, scroll = false) {
 }
 
 
+
+// ================= SISTEMA DE BÚSQUEDA INTELIGENTE SINCRONIZADA =================
+
+function applySearch(query, shouldScroll = false) {
+  const q = (query || '').toLowerCase().trim();
+  state.searchQuery = q;
+
+  // Sincronizar todos los inputs de búsqueda en la página
+  ['search-input', 'search-input-mobile', 'search-input-catalog'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.value !== query) el.value = query;
+  });
+
+  // Mostrar u ocultar botones de limpiar búsqueda
+  ['clear-search-desktop-btn', 'clear-search-mobile-btn', 'clear-search-catalog-btn'].forEach(id => {
+    const btn = document.getElementById(id);
+    if (btn) btn.classList.toggle('hidden', !q);
+  });
+
+  // Indicador de búsqueda activa sobre el catálogo
+  const indicator = document.getElementById('search-active-indicator');
+  const termDisplay = document.getElementById('search-term-display');
+  if (indicator) indicator.classList.toggle('hidden', !q);
+  if (termDisplay) termDisplay.textContent = q ? `"${query}"` : '';
+
+  // Si hay búsqueda activa, buscar en TODO el catálogo para que las pestañas no oculten productos
+  if (q && state.activeCategory !== 'all') {
+    state.activeCategory = 'all';
+    const categoryTabs = document.querySelectorAll('[data-category]');
+    categoryTabs.forEach(t => {
+      const catAttr = t.getAttribute('data-category');
+      if (catAttr === 'all') {
+        t.classList.remove('bg-slate-100', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300');
+        t.classList.add('bg-red-600', 'text-white', 'shadow-md');
+      } else {
+        t.classList.remove('bg-red-600', 'text-white', 'shadow-md');
+        t.classList.add('bg-slate-100', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300');
+      }
+    });
+  }
+
+  renderProducts();
+
+  if (shouldScroll) {
+    const catalogoEl = document.getElementById('catalogo');
+    if (catalogoEl) {
+      catalogoEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+}
+
+function clearSearch() {
+  applySearch('', false);
+}
+
+function focusAndSearch(inputId) {
+  const el = document.getElementById(inputId);
+  if (el) {
+    el.focus();
+    if (el.value.trim()) {
+      applySearch(el.value, true);
+    } else {
+      const catalogoEl = document.getElementById('catalogo');
+      if (catalogoEl) catalogoEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+}
+
+window.applySearch = applySearch;
+window.clearSearch = clearSearch;
+window.focusAndSearch = focusAndSearch;
